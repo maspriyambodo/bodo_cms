@@ -12,9 +12,10 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('users', function (Blueprint $table) {
             $table->id(); // Membuat kolom `id` sebagai BIGINT UNSIGNED AUTO_INCREMENT
-            $table->integer('role')->nullable(); // Kolom `role`
+            $table->integer('role')->nullable(false); // Kolom `role`
             $table->string('name')->nullable(false); // Kolom `name` tidak boleh NULL
             $table->string('email')->unique(); // Kolom `email` dengan UNIQUE constraint
+            $table->string('pict')->default('src/media/avatars/blank.png')->nullable();
             $table->timestamp('email_verified_at')->nullable(); // Kolom `email_verified_at`
             $table->string('password'); // Kolom `password`
             $table->string('remember_token', 100)->nullable(); // Kolom `remember_token`
