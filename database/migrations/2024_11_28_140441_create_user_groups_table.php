@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id(); // Auto-incrementing ID
             $table->string('name')->nullable(); // VARCHAR(255)
             $table->string('description')->nullable(); // VARCHAR(255)
-            $table->integer('is_trash')->nullable()->comment('0. aktif 1. deleted'); // INT
+            $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted');
             $table->timestamp('created_at')->nullable(); // TIME
             $table->integer('created_by')->nullable(); // INT
             $table->timestamp('updated_at')->nullable(); // TIMESTAMP
