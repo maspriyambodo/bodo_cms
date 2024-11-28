@@ -28,6 +28,7 @@ return new class extends Migration
             
             $table->primary('id'); // Set the primary key
         });
+        DB::statement('ALTER TABLE sys_menu CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;');
     }
 
     /**
