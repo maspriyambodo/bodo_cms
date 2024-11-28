@@ -24,3 +24,4 @@ yarn-error.log
 /nbproject
 /storage/access_log
 storage/error_log
+composer.lock
