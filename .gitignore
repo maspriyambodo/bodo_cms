@@ -22,3 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 /nbproject
+/storage/access_log
+storage/error_log
