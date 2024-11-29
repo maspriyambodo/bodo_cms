@@ -230,15 +230,15 @@
                         <div class=toolbar>
                             <div class="container-fluid py-6 py-lg-0 d-flex flex-column flex-lg-row align-items-lg-stretch justify-content-lg-between">
                                 <div class="page-title d-flex flex-column me-5">
-                                    <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0">Dashboard</h1>
+                                    <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0 text-capitalize">{{  str_replace('-',' ',request()->route()->uri); }}</h1>
                                     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 pt-1">
                                         <li class="breadcrumb-item text-muted">
-                                            <a href=../../demo8/dist/index.html class="text-muted text-hover-primary">Home</a>
+                                            <a href="{{ route('dashboard'); }}" class="text-muted text-hover-primary">Home</a>
                                         </li>
                                         <li class=breadcrumb-item>
                                             <span class="bullet bg-gray-200 w-5px h-2px"></span>
                                         </li>
-                                        <li class="breadcrumb-item text-dark">Default</li>
+                                        <li class="breadcrumb-item text-dark">{{  str_replace('-',' ',request()->route()->uri); }}</li>
                                     </ul>
                                 </div>
 
