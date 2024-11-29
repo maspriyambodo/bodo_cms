@@ -90,8 +90,8 @@ class SysMenuSeeder extends Seeder {
             [
                 'id' => 6,
                 'menu_parent' => null,
-                'nama' => 'Users',
-                'link' => 'users',
+                'nama' => 'User',
+                'link' => 'user-management',
                 'order_no' => 5,
                 'group_menu' => 2,
                 'icon' => null,
