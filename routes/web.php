@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Usergroups;
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('usergroups.index');
+    
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 });
 
 require __DIR__ . '/auth.php';
