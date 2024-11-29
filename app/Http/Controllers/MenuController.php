@@ -17,7 +17,7 @@ class MenuController extends Controller {
 //        dd($user->role);
         $role_user = User_groups::where('id', $user->role)->first();
         $menus = Menu::with('children')->whereNull('menu_parent')->get();
-        return view('usergroups.index', [
+        return view('menu.index', [
             'user' => $request->user(),
             'role_user' => $role_user,
             'menus' => $menus
