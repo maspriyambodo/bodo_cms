@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User_groups;
 use App\Models\Menu;
+use App\Models\MenuGroup;
 
 class MenuServiceProvider extends ServiceProvider {
 
@@ -26,14 +27,14 @@ class MenuServiceProvider extends ServiceProvider {
                 if (Auth::check()) {
                     $user = Auth::user();
                     $role_user = User_groups::find($user->role);
-                    $menus = Menu::with('children')->whereNull('menu_parent')->get();
-
-                    $view->with(compact('user', 'role_user', 'menus'));
+                    $menus = Menu::with('children')->whereNull('menu_parent')->where('is_trash', 0)->get();
+                    $menugroup = MenuGroup::where('is_trash', 0)->get();
+                    $view->with(compact('user', 'role_user', 'menus', 'menugroup'));
                 } else {
-                    $view->with(['user' => null, 'role_user' => null, 'menus' => collect()]);
+                    $view->with(['user' => null, 'role_user' => null, 'menus' => collect(), 'menugroup' => null]);
                 }
             } catch (\Exception $e) {
-                Log::error('Error in MenuServiceProvider: ' . $e->getMessage());
+                \Log::error('Error in MenuServiceProvider: ' . $e->getMessage());
             }
         });
     }
