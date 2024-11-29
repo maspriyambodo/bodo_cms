@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Usergroups;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,13 +15,15 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    Route::get('/user-groups', [Usergroups::class, 'index'])->name('usergroups.index');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile');
     
-    Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
+    Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
+    
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 });
 
 require __DIR__ . '/auth.php';
