@@ -73,7 +73,7 @@
                                 @foreach($menus as $menu)
                                 @if($menu->children->isEmpty())
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ $menu->link }}">
+                                    <a class="menu-link {{ request()->routeIs($menu->link) ? 'active' : '' }}" href="{{ $menu->link }}">
                                         <span class="menu-icon">
                                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                             <span class="svg-icon svg-icon-2">
@@ -197,8 +197,8 @@
                 <div class="wrapper d-flex flex-column flex-row-fluid" id=kt_wrapper>
                     <div id=kt_header class="header align-items-stretch">
                         <div class=header-brand>
-                            <a href=../../demo8/dist/index.html>
-                                <img alt=Logo src=assets/media/logos/logo-1-dark.svg class="h-25px h-lg-25px">
+                            <a href="">
+                                <img alt=Logo src="{{ asset('src/media/logos/logo-1-dark.svg'); }}" class="h-25px h-lg-25px">
                             </a>
                             <div id=kt_aside_toggle class="btn btn-icon w-auto px-0 btn-active-color-primary aside-minimize" data-kt-toggle=true data-kt-toggle-state=active data-kt-toggle-target=body data-kt-toggle-name=aside-minimize>
                                 <span class="svg-icon svg-icon-1 me-n1 minimize-default">
