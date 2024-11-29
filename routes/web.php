@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Usergroups;
-use App\Http\Controllers\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\GroupMenu;
+use App\Http\Controllers\Parameter;
+use App\Http\Controllers\Permission;
+use App\Http\Controllers\Usergroups;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,11 +18,18 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile');
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+    
+    Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
+    
+    Route::get('/parameter', [Parameter::class, 'index'])->name('parameter-system');
+    
+    Route::get('/permission', [Permission::class, 'index'])->name('permission-system');
+    
+    Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
     
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
     
@@ -27,3 +37,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Auth::routes();
