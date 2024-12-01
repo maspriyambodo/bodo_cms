@@ -17,7 +17,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/permission', [Permission::class, 'index'])->name('permission-system');
     
     Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
+    Route::get('/user-management-json', [UserController::class, 'json'])->name('user-json');
     
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
     
