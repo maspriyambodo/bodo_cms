@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use App\Models\MenuGroup;
 
 class Menu extends Model {
 
@@ -27,8 +26,9 @@ class Menu extends Model {
         'updated_at'
     ];
 
+    // Define the relationship for child menus
     public function children() {
-        return $this->hasMany(Menu::class, 'menu_parent');
+        return $this->hasMany(Menu::class, 'menu_parent', 'id'); // Assuming 'menu_parent' is the foreign key
     }
 
     public function parent() {
