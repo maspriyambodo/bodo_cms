@@ -18,7 +18,7 @@
         <link href="{{ asset('src/plugins/global/plugins.bundle.css'); }}" rel=stylesheet>
         <link href="{{ asset('src/css/style.bundle.css'); }}" rel=stylesheet>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @yield('stylesheet')
+        @stack('stylesheet')
     </head>
     <body id=kt_body class="header-tablet-and-mobile-fixed aside-enabled">
         <div class="d-flex flex-column flex-root">
@@ -280,6 +280,6 @@
         <script src="{{ asset('src/js/custom/apps/chat/chat.js'); }}"></script>
         <script src="{{ asset('src/js/custom/modals/create-app.js'); }}"></script>
         <script src="{{ asset('src/js/custom/modals/upgrade-plan.js'); }}"></script>
-        @yield('scripts')
+        @stack('scripts')
     </body>
 </html>
