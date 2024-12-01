@@ -11,6 +11,7 @@ class User_groups extends Model {
     use HasFactory,
         Notifiable;
 
+    protected $table = 'user_groups';
     protected $fillable = [
         'name',
         'description',
