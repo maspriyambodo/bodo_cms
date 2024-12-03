@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\User_groups;
+use App\Models\Parameter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller {
-
-    protected $view, $create, $read, $update, $delete;
 
     public function json(Request $request) {
         DB::enableQueryLog();
@@ -69,11 +71,10 @@ class UserController extends Controller {
     }
 
     public function index(Request $request) {
-        if (request()->ajax()) {
-            return DataTables::of(User::query())->toJson();
-        }
-
-        return view('users.index');
+        $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
+        $root_user = Parameter::where('id', 'ROOT')->first();
+        $dt_role = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
+        return view('users.index', compact('default_password', 'dt_role'));
     }
 
     public function create() {
@@ -81,22 +82,40 @@ class UserController extends Controller {
     }
 
     public function store(Request $request) {
-        $request->validate([
-            'role' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+        $validator = Validator::make($request->all(), [
+            'namatxt' => 'required|string|max:255',
+            'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
+            'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
+            'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errors' => $validator->errors(),
+                            ], 422);
+        }
+        try {
+            $user = User::create([
+                'name' => $request->namatxt,
+                'email' => $request->mailtxt,
+                'password' => Hash::make($request->pwtxt),
+                'role' => $request->leveltxt,
+                'created_by' => auth()->user()->id
+            ]);
 
-        User::create([
-            'role' => $request->role,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'created_by' => auth()->id(), // assuming you have authentication
-        ]);
-
-        return redirect()->route('users.index')->with('success', 'User  created successfully.');
+            return response()->json([
+                        'success' => true,
+                        'message' => 'User  created successfully!',
+                        'user' => $user, // Optionally return the created user
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to create user: ' . $e->getMessage());
+            return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $e->getMessage() // Optionally log the error for debugging
+                            ], 500);
+        }
     }
 
     public function edit(User $user) {
