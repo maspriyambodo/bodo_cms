@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
     Route::get('/user-management-json', [UserController::class, 'json'])->name('user-json');
+    Route::get('/user-management-edit/{id}', [UserController::class, 'edit'])->name('user-edit');
     
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
     
