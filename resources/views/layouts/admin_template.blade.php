@@ -75,7 +75,6 @@
                                 <div class="menu-item">
                                     <a class="menu-link {{ request()->routeIs($menu->link) ? 'active' : '' }}" href="{{ $menu->link }}">
                                         <span class="menu-icon">
-                                            <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                             <span class="svg-icon svg-icon-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
@@ -84,7 +83,6 @@
                                                 <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
                                                 </svg>
                                             </span>
-                                            <!--end::Svg Icon-->
                                         </span>
                                         <span class="menu-title">{{ $menu->nama }}</span>
                                     </a>
@@ -95,7 +93,6 @@
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">
                                         <span class="menu-icon">
-                                            <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
                                             <span class="svg-icon svg-icon-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
@@ -104,7 +101,6 @@
                                                 <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
                                                 </svg>
                                             </span>
-                                            <!--end::Svg Icon-->
                                         </span>
                                         <span class="menu-title">{{ $menu->nama }}</span>
                                         <span class="menu-arrow"></span>
@@ -126,7 +122,6 @@
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">
                                         <span class="menu-icon">
-                                            <!--begin::Svg Icon | path: icons/duotune/general/gen022.svg-->
                                             <span class="svg-icon svg-icon-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
@@ -135,7 +130,6 @@
                                                 <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
                                                 </svg>
                                             </span>
-                                            <!--end::Svg Icon-->
                                         </span>
                                         <span class="menu-title">{{ $menu->nama }}</span>
                                         <span class="menu-arrow"></span>
