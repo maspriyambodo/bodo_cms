@@ -11,7 +11,7 @@
                 <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
                     <th>No</th>
                     <th>#</th>
-                    <th>Nama</th>
+                    <th>Name</th>
                     <th>Email</th>
                     <th>Level</th>
                     <th>Status</th>
@@ -32,7 +32,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="fv-row mb-10">
-                        <label for="namatxt" class="required form-label">Nama</label>
+                        <label for="namatxt" class="required form-label">Name</label>
                         <input id="namatxt" name="namatxt" type="text" class="form-control form-control-solid" required=""/>
                     </div>
                     <div class="fv-row mb-10">
@@ -66,7 +66,47 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 fw-bold" id="editTitle">Edit Data User</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="edit_form" class="form" action="#" autocomplete="off">
+                @csrf
+                <div class="modal-body">
+                    <div class="fv-row mb-10">
+                        <label for="namatxt2" class="required form-label">Name</label>
+                        <input id="namatxt2" name="namatxt2" type="text" class="form-control form-control-solid" required=""/>
+                    </div>
+                    <div class="fv-row mb-10">
+                        <label for="mailtxt2" class="required form-label">Email</label>
+                        <input id="mailtxt2" name="mailtxt2" type="email" class="form-control form-control-solid" required=""/>
+                    </div>
+                    <div class="fv-row mb-10">
+                        <label for="leveltxt2" class="required form-label">Level</label>
+                        <select id="leveltxt2" name="leveltxt2" class="form-control" required="">
+                            <option value="">select level</option>
+                            @foreach($dt_role as $role)
+                            <option value="{{ $role->id; }}">{{ $role->name; }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="editbtn_submit" type="button" class="btn btn-primary">
+                        <span class="indicator-label">
+                            Save
+                        </span>
+                        <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @push('scripts')
 <script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js'); }}"></script>
@@ -80,7 +120,6 @@ var KTDatatablesServerSide = function () {
             searchDelay: 500,
             serverSide: true,
             paging: true,
-            ordering: true,
             deferRender: true,
             info: true,
             stateSave: true,
@@ -112,15 +151,12 @@ var KTDatatablesServerSide = function () {
                     d.keyword = $("#keyword").val();
                 }
             },
-            order: [[0, "asc"]],
             columnDefs: [
                 {orderable: false, targets: []},
             ],
             columns: [
                 {
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
+                    data: 'no_urut',
                     className: "text-center",
                     orderable: false
                 },
@@ -234,6 +270,8 @@ KTUtil.onDOMContentLoaded(function () {
                                             confirmButton: "btn btn-primary"
                                         }
                                     }).then(function () {
+                                        submitButton.setAttribute('data-kt-indicator', 'off');
+                                        submitButton.disabled = false;
                                         $('#table-user').DataTable().ajax.reload();
                                         $("#addModal").modal('toggle');
                                     });
@@ -247,6 +285,8 @@ KTUtil.onDOMContentLoaded(function () {
                                         customClass: {
                                             confirmButton: "btn btn-primary"
                                         }
+                                    }).then(function () {
+                                        window.location.reload();
                                     });
                                 }
                             })
@@ -260,6 +300,8 @@ KTUtil.onDOMContentLoaded(function () {
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
+                                }).then(function () {
+                                    window.location.reload();
                                 });
                             });
                 }
@@ -267,5 +309,49 @@ KTUtil.onDOMContentLoaded(function () {
         }
     });
 
+</script>
+<script>
+    function editData(val) {
+        $.ajax({
+            url: 'user-management-edit/' + val, // Replace with your API endpoint
+            type: 'GET',
+            dataType: 'json', // Expected data type from the server
+            success: function (data) {
+                if (data.success) {
+                    $('input[name="namatxt2"]').val(data.dt_user['name']);
+                    $('input[name="mailtxt2"]').val(data.dt_user['email']);
+                    $("#leveltxt2").val(data.dt_user['role']);
+                    $("#editModal").modal('show');
+                } else {
+                    Swal.fire({
+                        text: 'error while get data!',
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function () {
+                    window.location.reload();
+                });
+            }
+        });
+    }
 </script>
 @endpush
