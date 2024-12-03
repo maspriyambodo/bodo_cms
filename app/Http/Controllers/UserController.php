@@ -6,22 +6,22 @@ use App\Models\User;
 use App\Models\User_groups;
 use App\Models\Parameter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller {
 
     public function json(Request $request) {
-        DB::enableQueryLog();
-        $exec = User::select('users.id', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
+        $exec = DB::table(DB::raw('(SELECT @row := 0) AS a, users'))->select(DB::raw('(@row := @row + 1) AS no_urut'), 'users.id', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
                 ->join('user_groups', 'users.role', '=', 'user_groups.id');
         $this->applyFilters($exec, $request);
-        $users = $exec->latest()->get();
-        $query = DB::getQueryLog();
-        $query = end($query);
+        $exec->orderBy('users.name', 'asc');
+        $users = $exec->get();
         return Datatables::of($users)
                         ->editColumn('created_at', fn($row) => date('d/M/Y', strtotime($row->created_at)))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
@@ -42,25 +42,28 @@ class UserController extends Controller {
 
     private function getActionButtons($row) {
         $exec = Controller::permission_user();
+        $enc_id_user = Crypt::encryptString($row->id);
         if (!$exec['update'] && !$exec['delete']) {
             return '';
         }
-        $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+        $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
             <i class="bi bi-three-dots-vertical"></i>
-        </a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">';
+        </a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true"><div class="menu-item px-3">
+                <span class="text-center text-muted py-3">Menu Action</span>
+            </div>';
 
         if ($exec['update']) {
-            $buttons .= '<div class="menu-item px-3">
-                <a href="#" class="menu-link px-3">
-                    Edit
+            $buttons .= '<div class="menu-item px-3 border">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $enc_id_user . '&apos;);">
+                    <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
                 </a>
             </div>';
         }
 
         if ($exec['delete']) {
-            $buttons .= '<div class="menu-item px-3">
-                <a href="#" class="menu-link px-3">
-                    Delete
+            $buttons .= '<div class="menu-item px-3 border">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $enc_id_user . '&apos;);">
+                    <i class="bi bi-trash text-danger mx-2"></i> Delete
                 </a>
             </div>';
         }
@@ -79,6 +82,21 @@ class UserController extends Controller {
 
     public function create() {
         return view('users.create');
+    }
+
+    public function edit(Request $request) {
+        $dec_id_user = Crypt::decryptString($request->id);
+        $exec = User::where('id', $dec_id_user)->first();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_user' => $exec,
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
     }
 
     public function store(Request $request) {
@@ -116,10 +134,6 @@ class UserController extends Controller {
                         'error' => $e->getMessage() // Optionally log the error for debugging
                             ], 500);
         }
-    }
-
-    public function edit(User $user) {
-        return view('users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user) {
