@@ -45,23 +45,25 @@ class UserController extends Controller {
         }
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
             <i class="bi bi-three-dots-vertical"></i>
-        </a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
-            <div class="menu-item px-3">
+        </a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">';
+
+        if ($exec['update']) {
+            $buttons .= '<div class="menu-item px-3">
                 <a href="#" class="menu-link px-3">
-                    Menu item 1
+                    Edit
                 </a>
-            </div>
-        </div>';
+            </div>';
+        }
 
-//        if ($exec['update']) {
-//            $buttons .= '<li><a class="dropdown-item" href="#">Edit</a></li>';
-//        }
-//
-//        if ($exec['delete']) {
-//            $buttons .= '<li><a class="dropdown-item" href="#">Delete</a></li>';
-//        }
+        if ($exec['delete']) {
+            $buttons .= '<div class="menu-item px-3">
+                <a href="#" class="menu-link px-3">
+                    Delete
+                </a>
+            </div>';
+        }
 
-//        $buttons .= "</ul></div>";
+        $buttons .= "</div>";
 
         return $buttons;
     }
