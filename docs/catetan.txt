@@ -1,0 +1,8 @@
+--------------------print last query--------------------
+use Illuminate\Support\Facades\DB;
+DB::enableQueryLog();
+$exec = User::select(query contoh);
+$query = DB::getQueryLog();
+$query = end($query);
+dd($query);
+--------------------print last query--------------------
