@@ -117,6 +117,21 @@ class SysMenuSeeder extends Seeder {
                 'updated_by' => 1,
                 'updated_at' => '2024-11-28 23:16:11',
             ],
+            [
+                'id' => 8,
+                'menu_parent' => null,
+                'nama' => 'Speed Test',
+                'link' => 'speed-test',
+                'order_no' => 7,
+                'group_menu' => 2,
+                'icon' => null,
+                'description' => 'user group management',
+                'is_trash' => 0,
+                'created_by' => 1,
+                'created_at' => '2024-11-28 23:16:05',
+                'updated_by' => 1,
+                'updated_at' => '2024-11-28 23:16:11',
+            ],
         ]);
     }
 }
