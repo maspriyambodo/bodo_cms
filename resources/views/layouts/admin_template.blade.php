@@ -235,7 +235,10 @@
                                         <li class="breadcrumb-item text-dark">{{  str_replace('-',' ',request()->route()->uri); }}</li>
                                     </ul>
                                 </div>
-
+                                <div class="page-title d-flex flex-column me-5">
+                                    <h1 id="clock" class="d-flex flex-column text-dark fw-bolder fs-3 mb-0 text-capitalize"></h1>
+                                    <h2 class="d-flex flex-column fs-3 mb-0 text-capitalize">{{ date('d F Y'); }}<span id="dayName"></span></h2>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -274,6 +277,25 @@
         <script src="{{ asset('src/js/custom/apps/chat/chat.js'); }}"></script>
         <script src="{{ asset('src/js/custom/modals/create-app.js'); }}"></script>
         <script src="{{ asset('src/js/custom/modals/upgrade-plan.js'); }}"></script>
+        <script>
+            $(document).ready(function () {
+                function updateClock() {
+                    var now = new Date();
+                    var hours = now.getHours();
+                    var minutes = now.getMinutes();
+                    var seconds = now.getSeconds();
+                    hours = (hours < 10 ? "0" : "") + hours;
+                    minutes = (minutes < 10 ? "0" : "") + minutes;
+                    seconds = (seconds < 10 ? "0" : "") + seconds;
+                    var timeString = hours + ":" + minutes + ":" + seconds;
+                    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    var dayName = days[now.getDay()];
+                    $('#clock').text(timeString + ' ' + dayName);
+                }
+                updateClock();
+                setInterval(updateClock, 1000);
+            });
+        </script>
         @stack('scripts')
     </body>
 </html>
