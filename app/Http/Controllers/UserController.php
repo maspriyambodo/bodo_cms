@@ -77,7 +77,7 @@ class UserController extends Controller {
 
         if ($exec['delete']) {
             $buttons .= '<div class="menu-item px-3 border">
-                <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPass(&apos;' . $enc_id_user . '&apos;);">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPassword(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-key text-info mx-2"></i> Reset Password
                 </a>
             </div>';
@@ -101,14 +101,24 @@ class UserController extends Controller {
 
     public function edit(Request $request) {
         $dec_id_user = decrypt($request->id);
+        $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
         $exec = User::where('id', $dec_id_user)->first();
         if ($exec) {
             $enc_id_user = encrypt($exec->id); // generate new id encryption
-            return response()->json([
-                        'success' => true,
-                        'new_id' => $enc_id_user,
-                        'dt_user' => $exec,
-            ]);
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'new_id' => $enc_id_user,
+                            'dt_user' => $exec,
+                            'default_password' => $default_password->param_value
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'new_id' => $enc_id_user,
+                            'dt_user' => $exec,
+                ]);
+            }
         } else {
             return response()->json([
                         'success' => false
@@ -133,6 +143,11 @@ class UserController extends Controller {
             $dec_id_user3 = decrypt($request->d_id2); // delete id user
             $validator = Validator::make($request->all(), [
                 'd_id2' => 'required',
+            ]);
+        } elseif ($request->d_id3) {
+            $dec_id_user4 = decrypt($request->d_id3); // delete id user
+            $validator = Validator::make($request->all(), [
+                'd_id3' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
@@ -169,6 +184,13 @@ class UserController extends Controller {
                 User::where('id', $dec_id_user3)
                         ->update([
                             'is_trash' => 0,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->d_id3) {
+                $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
+                User::where('id', $dec_id_user4)
+                        ->update([
+                            'password' => Hash::make($default_password->param_value),
                             'updated_by' => auth()->user()->id
                 ]);
             } else {
