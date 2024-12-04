@@ -110,6 +110,20 @@ class SysPermissionsSeeder extends Seeder {
                 'updated_at' => '2024-11-28 23:10:18',
                 'updated_by' => 1,
             ],
+            [
+                'id' => 8,
+                'role_id' => 9,
+                'id_menu' => 8,
+                'v' => 1,
+                'c' => 1,
+                'r' => 1,
+                'u' => 1,
+                'd' => 1,
+                'created_at' => '2024-11-28 23:10:12',
+                'created_by' => 1,
+                'updated_at' => '2024-11-28 23:10:18',
+                'updated_by' => 1,
+            ],
         ]);
     }
 }
