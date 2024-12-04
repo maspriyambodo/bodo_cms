@@ -135,6 +135,7 @@ class UserController extends Controller {
                         'errors' => $validator->errors(),
                             ], 422);
         }
+        DB::beginTransaction(); // Start transaction
         try {
             if ($request->e_id) {
                 User::where('id', $dec_id_user)
@@ -144,17 +145,11 @@ class UserController extends Controller {
                             'role' => $request->leveltxt2,
                             'updated_by' => auth()->user()->id
                 ]);
-                return response()->json([
-                            'success' => true
-                ]);
             } elseif ($request->d_id) {
                 User::where('id', $dec_id_user2)
                         ->update([
                             'is_trash' => 1,
                             'updated_by' => auth()->user()->id
-                ]);
-                return response()->json([
-                            'success' => true
                 ]);
             } else {
                 User::create([
@@ -164,12 +159,17 @@ class UserController extends Controller {
                     'role' => $request->leveltxt,
                     'created_by' => auth()->user()->id
                 ]);
-                return response()->json([
-                            'success' => true
-                ]);
             }
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true
+            ]);
         } catch (\Exception $e) {
-            Log::error('Failed to create user: ' . $e->getMessage());
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $e->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
             return response()->json([
                         'success' => false,
                         'message' => 'Failed to create user.',
