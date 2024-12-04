@@ -2,6 +2,7 @@
 @push('stylesheet')
 <link href="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.css'); }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('src/plugins/custom/datatables/datatables.bundle.css'); }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('src/plugins/custom/lightbox2-2.11.4/css/lightbox.min.css'); }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('content')
 <div class="card">
@@ -12,6 +13,7 @@
                     <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
                         <th>No</th>
                         <th>#</th>
+                        <th>Pict</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Level</th>
@@ -195,6 +197,13 @@
 @push('scripts')
 <script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js'); }}"></script>
 <script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js'); }}"></script>
+<script src="{{ asset('src/plugins/custom/lightbox2-2.11.4/js/lightbox.min.js'); }}"></script>
+<script>
+lightbox.option({
+      'resizeDuration': 200,
+      'wrapAround': true
+    });
+</script>
 <script>
 var dt;
 var KTDatatablesServerSide = function () {
@@ -244,6 +253,7 @@ var KTDatatablesServerSide = function () {
                     orderable: false
                 },
                 {data: "button", className: "text-center", orderable: false},
+                {data: "picture", className: "text-center", orderable: false},
                 {data: "name"},
                 {data: "email"},
                 {data: "role_name"},
@@ -333,7 +343,6 @@ KTUtil.onDOMContentLoaded(function () {
                     })
                             .then(response => response.json())
                             .then(data => {
-                                console.log(data.errors);
                                 if (data.success) {
                                     Swal.fire({
                                         text: "data has been saved",

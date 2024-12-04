@@ -15,7 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller {
 
     public function json(Request $request) {
-        $exec = DB::table(DB::raw('(SELECT @row := 0) AS a, users'))->select(DB::raw('(@row := @row + 1) AS no_urut'), 'users.id', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
+        $exec = DB::table(DB::raw('(SELECT @row := 0) AS a, users'))->select(DB::raw('(@row := @row + 1) AS no_urut'), 'users.id', 'users.pict', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
                 ->join('user_groups', 'users.role', '=', 'user_groups.id');
         if (auth()->user()->role <> 9) {
             $exec->where('is_trash', 0);
@@ -27,7 +27,8 @@ class UserController extends Controller {
                         ->editColumn('created_at', fn($row) => date('d/M/Y', strtotime($row->created_at)))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
-                        ->rawColumns(['status_aktif', 'button'])
+                        ->addColumn('picture', fn($row) => $this->getPictUser($row))
+                        ->rawColumns(['status_aktif', 'button', 'picture'])
                         ->make(true);
     }
 
@@ -39,6 +40,21 @@ class UserController extends Controller {
                         ->orWhere('user_groups.name', 'like', "%" . $request->keyword . "%");
             });
         }
+    }
+
+    private function getPictUser($row) {
+        if ($row->pict) {
+            $picture = '<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                        <a href="' . asset($row->pict) . '" data-lightbox="user-picture" data-title="' . $row->name . '">
+                                                            <div class="symbol-label">
+                                    <img src="' . asset($row->pict) . '" alt="' . asset($row->name) . '" class="w-100">
+                                </div>
+                                                    </a>
+                    </div>';
+        } else {
+            $picture = '';
+        }
+        return $picture;
     }
 
     private function getActionButtons($row) {
