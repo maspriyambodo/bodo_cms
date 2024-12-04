@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Menu;
+use App\Models\Menu as SysMenu;
+use App\Models\User_groups as UserGroup;
 
 class Permission extends Model {
 
@@ -13,8 +14,6 @@ class Permission extends Model {
         Notifiable;
 
     protected $table = 'sys_permissions';
-    protected $primaryKey = 'id';
-    protected $keyType = 'int';
     protected $fillable = [
         'role_id',
         'id_menu',
@@ -28,10 +27,10 @@ class Permission extends Model {
     ];
 
     public function menu() {
-        return $this->belongsTo(SysMenu::class, 'id_menu', 'id');
+        return $this->belongsTo(SysMenu::class, 'id_menu');
     }
 
     public function role() {
-        return $this->belongsTo(UserGroup::class, 'role_id', 'id');
+        return $this->belongsTo(UserGroup::class, 'role_id');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use App\Models\User;
+use App\Models\Permission as SysPermission;
 
 class User_groups extends Model {
 
@@ -12,8 +14,6 @@ class User_groups extends Model {
         Notifiable;
 
     protected $table = 'user_groups';
-    protected $primaryKey = 'id';
-    protected $keyType = 'int'; // Change based on your actual type
     protected $fillable = [
         'name',
         'description',
@@ -23,10 +23,10 @@ class User_groups extends Model {
     ];
 
     public function users() {
-        return $this->hasMany(User::class, 'role', 'id');
+        return $this->hasMany(User::class, 'role');
     }
 
     public function permissions() {
-        return $this->hasMany(SysPermission::class, 'role_id', 'id');
+        return $this->hasMany(SysPermission::class, 'role_id');
     }
 }

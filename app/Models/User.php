@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Permission as SysPermission;
+use App\Models\User_groups as UserGroup;
 
 class User extends Authenticatable {
 
@@ -58,7 +59,7 @@ class User extends Authenticatable {
     }
 
     public function group() {
-        return $this->belongsTo(UserGroup::class, 'role', 'id');
+        return $this->belongsTo(UserGroup::class, 'role');
     }
 
     public function hasPermission($role_user) {
@@ -68,5 +69,22 @@ class User extends Authenticatable {
 
     public function permissions() {
         return $this->hasMany(SysPermission::class, 'role_id', 'role');
+    }
+
+    public static function getUserPermissions() {
+        return DB::table('users')
+                        ->join('sys_permissions', 'users.role', '=', 'sys_permissions.role_id')
+                        ->join('sys_menu', 'sys_permissions.id_menu', '=', 'sys_menu.id')
+                        ->select(
+                                'users.id',
+                                'users.role',
+                                'sys_permissions.v',
+                                'sys_permissions.c',
+                                'sys_permissions.r',
+                                'sys_permissions.u',
+                                'sys_permissions.d',
+                                'sys_menu.link'
+                        )
+                        ->get();
     }
 }

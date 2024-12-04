@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Menu as SysMenu;
 
 class MenuGroup extends Model {
 
@@ -12,8 +13,6 @@ class MenuGroup extends Model {
         Notifiable;
 
     protected $table = 'sys_menu_group';
-    protected $primaryKey = 'id';
-    protected $keyType = 'int';
     protected $fillable = [
         'nama',
         'description',
@@ -24,6 +23,6 @@ class MenuGroup extends Model {
     ];
 
     public function menus() {
-        return $this->hasMany(SysMenu::class, 'group_menu', 'id');
+        return $this->hasMany(SysMenu::class, 'group_menu');
     }
 }
