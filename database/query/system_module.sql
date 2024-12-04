@@ -1,5 +1,5 @@
 CREATE TABLE `laracms.sys_menu`  (
-  `id` decimal(0, 0) NOT NULL,
+  `id` int NOT NULL,
   `menu_parent` int NULL DEFAULT NULL,
   `nama` varchar(50) NULL DEFAULT NULL,
   `link` varchar(255) NULL DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `laracms.sys_menu`  (
 );
 
 CREATE TABLE `laracms.sys_menu_group`  (
-  `id` decimal(0, 0) NOT NULL,
+  `id` int NOT NULL,
   `nama` varchar(255) NULL DEFAULT NULL,
   `description` varchar(255) NULL DEFAULT NULL,
   `order_no` int NULL DEFAULT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `laracms.sys_menu_group`  (
 );
 
 CREATE TABLE `laracms.sys_permissions`  (
-  `id` decimal(0, 0) NOT NULL,
+  `id` int NOT NULL,
   `role_id` int NULL DEFAULT NULL,
   `id_menu` int NULL DEFAULT NULL,
   `v` int NULL DEFAULT 0 COMMENT 'view',
@@ -58,7 +58,7 @@ CREATE TABLE `laracms.user_groups`  (
 );
 
 CREATE TABLE `laracms.users`  (
-  `id` decimal(0, 0) NOT NULL,
+  `id` int NOT NULL,
   `role` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
