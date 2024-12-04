@@ -35,8 +35,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user-management-store', [UserController::class, 'store'])->name('user-store');
 
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
-
-    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 });
 
 require __DIR__ . '/auth.php';
