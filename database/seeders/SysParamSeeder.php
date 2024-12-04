@@ -23,6 +23,28 @@ class SysParamSeeder extends Seeder {
                 'updated_at' => '2024-11-28 23:25:57',
                 'updated_by' => 1,
             ],
+            [
+                'id' => 'DEFAULT_PASSWORD',
+                'param_group' => 'PASSWORD',
+                'param_value' => 'bodo_cms2024!',
+                'param_desc' => 'password default for all new user',
+                'is_trash' => 0,
+                'created_at' => '2024-11-28 23:25:51',
+                'created_by' => 1,
+                'updated_at' => '2024-11-28 23:25:57',
+                'updated_by' => 1,
+            ],
+            [
+                'id' => 'LOGO_1',
+                'param_group' => 'LOGO',
+                'param_value' => 'src/media/logos/logo-1-dark.svg',
+                'param_desc' => 'logo untuk navbar admin cms',
+                'is_trash' => 0,
+                'created_at' => '2024-11-28 23:25:51',
+                'created_by' => 1,
+                'updated_at' => '2024-11-28 23:25:57',
+                'updated_by' => 1,
+            ]
         ]);
     }
 }
