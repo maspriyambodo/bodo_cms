@@ -27,7 +27,7 @@
                     <div class="aside-toolbar flex-column-auto" id=kt_aside_toolbar>
                         <div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
                             <div class="symbol symbol-50px">
-                                <img src="{{ asset('src/media/avatars/150-26.jpg'); }}" alt="">
+                                <img src="{{ asset($user->pict); }}" alt="">
                             </div>
                             <div class="aside-user-info flex-row-fluid flex-wrap ms-5">
                                 <div class=d-flex>
@@ -73,7 +73,7 @@
                                 @foreach($menus as $menu)
                                 @if($menu->children->isEmpty())
                                 <div class="menu-item">
-                                    <a class="menu-link {{ request()->routeIs($menu->link) ? 'active' : '' }}" href="{{ $menu->link }}">
+                                    <a class="menu-link {{ request()->routeIs($menu->link) ? 'active' : '' }}" href="{{ request()->routeIs($menu->link) ? 'javascript:void(0);' : $menu->link }}">
                                         <span class="menu-icon">
                                             <span class="svg-icon svg-icon-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
