@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Permission as SysPermission;
 
 class User extends Authenticatable {
 
@@ -58,6 +59,11 @@ class User extends Authenticatable {
 
     public function group() {
         return $this->belongsTo(UserGroup::class, 'role', 'id');
+    }
+
+    public function hasPermission($role_user) {
+        // Assuming you have a relationship to get user permissions
+        return $this->permissions()->where('role_id', $role_user)->exists();
     }
 
     public function permissions() {
