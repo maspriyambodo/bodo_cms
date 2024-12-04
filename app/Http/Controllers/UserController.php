@@ -61,13 +61,22 @@ class UserController extends Controller {
             </div>';
         }
 
-        if ($exec['delete']) {
+        if ($exec['delete'] && $row->is_trash == 0) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
                 </a>
-            </div>
-            <div class="menu-item px-3 border">
+            </div>';
+        } else {
+            $buttons .= '<div class="menu-item px-3 border">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="restoreData(&apos;' . $enc_id_user . '&apos;);">
+                    <i class="bi bi-recycle text-success mx-2"></i> Activate
+                </a>
+            </div>';
+        }
+
+        if ($exec['delete']) {
+            $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPass(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-key text-info mx-2"></i> Reset Password
                 </a>
@@ -120,6 +129,11 @@ class UserController extends Controller {
             $validator = Validator::make($request->all(), [
                 'd_id' => 'required',
             ]);
+        } elseif ($request->d_id2) {
+            $dec_id_user3 = decrypt($request->d_id2); // delete id user
+            $validator = Validator::make($request->all(), [
+                'd_id2' => 'required',
+            ]);
         } else {
             $validator = Validator::make($request->all(), [
                 'namatxt' => 'required|string|max:255',
@@ -149,6 +163,12 @@ class UserController extends Controller {
                 User::where('id', $dec_id_user2)
                         ->update([
                             'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->d_id2) {
+                User::where('id', $dec_id_user3)
+                        ->update([
+                            'is_trash' => 0,
                             'updated_by' => auth()->user()->id
                 ]);
             } else {
