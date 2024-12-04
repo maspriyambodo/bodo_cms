@@ -6,19 +6,21 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <table id="table-user" class="table table-rounded table-striped table-hover gy-5 gs-7 border">
-            <thead>
-                <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
-                    <th>No</th>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Level</th>
-                    <th>Status</th>
-                    <th>Register Date</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="table-responsive">
+            <table id="table-user" class="table table-rounded table-striped table-hover gy-5 gs-7 border" style="width: 100%;">
+                <thead>
+                    <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
+                        <th>No</th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Level</th>
+                        <th>Status</th>
+                        <th>Register Date</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
@@ -75,6 +77,7 @@
             </div>
             <form id="edit_form" class="form" action="#" autocomplete="off">
                 @csrf
+                <input type="hidden" name="e_id" readonly=""/>
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="namatxt2" class="required form-label">Name</label>
@@ -98,7 +101,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button id="editbtn_submit" type="button" class="btn btn-primary">
                         <span class="indicator-label">
-                            Save
+                            Update
                         </span>
                         <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                     </button>
@@ -116,7 +119,6 @@ var dt;
 var KTDatatablesServerSide = function () {
     var initDatatable = function () {
         var dt = $('#table-user').DataTable({
-            responsive: true,
             searchDelay: 500,
             serverSide: true,
             paging: true,
@@ -186,15 +188,9 @@ var KTDatatablesServerSide = function () {
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
     KTDatatablesServerSide.init();
-});
-</script>
+});</script>
 <script>
-
-
-// Define form element
     const form = document.getElementById('add_form');
-
-// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     var validator = FormValidation.formValidation(
             form,
             {
@@ -231,7 +227,6 @@ KTUtil.onDOMContentLoaded(function () {
                         }
                     }
                 },
-
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap: new FormValidation.plugins.Bootstrap5({
@@ -242,7 +237,6 @@ KTUtil.onDOMContentLoaded(function () {
                 }
             }
     );
-
     const submitButton = document.getElementById('addbtn_submit');
     submitButton.addEventListener('click', function (e) {
         e.preventDefault();
@@ -307,17 +301,16 @@ KTUtil.onDOMContentLoaded(function () {
                 }
             });
         }
-    });
-
-</script>
+    });</script>
 <script>
     function editData(val) {
         $.ajax({
-            url: 'user-management-edit/' + val, // Replace with your API endpoint
+            url: 'user-management-edit/' + val,
             type: 'GET',
-            dataType: 'json', // Expected data type from the server
+            dataType: 'json',
             success: function (data) {
                 if (data.success) {
+                    $('input[name="e_id"]').val(data.new_id);
                     $('input[name="namatxt2"]').val(data.dt_user['name']);
                     $('input[name="mailtxt2"]').val(data.dt_user['email']);
                     $("#leveltxt2").val(data.dt_user['role']);
@@ -353,5 +346,112 @@ KTUtil.onDOMContentLoaded(function () {
             }
         });
     }
+</script>
+<script>
+    const formEdit = document.getElementById('edit_form');
+    var validator = FormValidation.formValidation(
+            formEdit,
+            {
+                fields: {
+                    namatxt2: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The name is required'
+                            }
+                        }
+                    },
+                    mailtxt2: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The email is required'
+                            },
+                            emailAddress: {
+                                message: 'The input is not a valid email address'
+                            }
+                        }
+                    },
+                    leveltxt2: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The level is required'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap5({
+                        rowSelector: '.fv-row',
+                        eleInvalidClass: '',
+                        eleValidClass: ''
+                    })
+                }
+            }
+    );
+    const updateButton = document.getElementById('editbtn_submit');
+    updateButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (validator) {
+            validator.validate().then(function (status) {
+                if (status == 'Valid') {
+                    updateButton.setAttribute('data-kt-indicator', 'on');
+                    updateButton.disabled = true;
+                    const formData = new FormData(formEdit);
+                    fetch('user-management-store', {
+                        method: 'POST',
+                        body: formData
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        text: "data has been updated",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK",
+                                        allowOutsideClick: false,
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then(function () {
+                                        updateButton.setAttribute('data-kt-indicator', 'off');
+                                        updateButton.disabled = false;
+                                        $('#table-user').DataTable().ajax.reload();
+                                        $("#editModal").modal('toggle');
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        text: "error while insert data, errcode: 04121113",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK",
+                                        allowOutsideClick: false,
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then(function () {
+                                        window.location.reload();
+                                    });
+                                }
+                            })
+                            .catch((error) => {
+                                Swal.fire({
+                                    text: error,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: false,
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then(function () {
+                                    window.location.reload();
+                                });
+                            });
+                }
+            });
+        }
+    });
+
 </script>
 @endpush

@@ -42,7 +42,7 @@ class UserController extends Controller {
 
     private function getActionButtons($row) {
         $exec = Controller::permission_user();
-        $enc_id_user = Crypt::encryptString($row->id);
+        $enc_id_user = encrypt($row->id);
         if (!$exec['update'] && !$exec['delete']) {
             return '';
         }
@@ -65,6 +65,11 @@ class UserController extends Controller {
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
                 </a>
+            </div>
+            <div class="menu-item px-3 border">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPass(&apos;' . $enc_id_user . '&apos;);">
+                    <i class="bi bi-key text-info mx-2"></i> Reset Password
+                </a>
             </div>';
         }
 
@@ -85,11 +90,13 @@ class UserController extends Controller {
     }
 
     public function edit(Request $request) {
-        $dec_id_user = Crypt::decryptString($request->id);
+        $dec_id_user = decrypt($request->id);
         $exec = User::where('id', $dec_id_user)->first();
         if ($exec) {
+            $enc_id_user = encrypt($exec->id); // generate new id encryption
             return response()->json([
                         'success' => true,
+                        'new_id' => $enc_id_user,
                         'dt_user' => $exec,
             ]);
         } else {
@@ -100,12 +107,22 @@ class UserController extends Controller {
     }
 
     public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'namatxt' => 'required|string|max:255',
-            'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
-            'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
-            'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
-        ]);
+        $dec_id_user = decrypt($request->e_id);
+        if ($request->e_id) {
+            $validator = Validator::make($request->all(), [
+                'namatxt2' => 'required|string|max:255',
+                'mailtxt2' => 'required|email|max:255',
+                'leveltxt2' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'namatxt' => 'required|string|max:255',
+                'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
+                'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
+                'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+            ]);
+        }
+
         if ($validator->fails()) {
             return response()->json([
                         'success' => false,
@@ -113,19 +130,31 @@ class UserController extends Controller {
                             ], 422);
         }
         try {
-            $user = User::create([
-                'name' => $request->namatxt,
-                'email' => $request->mailtxt,
-                'password' => Hash::make($request->pwtxt),
-                'role' => $request->leveltxt,
-                'created_by' => auth()->user()->id
-            ]);
-
-            return response()->json([
-                        'success' => true,
-                        'message' => 'User  created successfully!',
-                        'user' => $user, // Optionally return the created user
-            ]);
+            if ($request->e_id) {
+                User::where('id', $dec_id_user)
+                        ->update([
+                            'name' => $request->namatxt2,
+                            'email' => $request->mailtxt2,
+                            'role' => $request->leveltxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+                return response()->json([
+                            'success' => true,
+                            'message' => 'User updated successfully!'
+                ]);
+            } else {
+                User::create([
+                    'name' => $request->namatxt,
+                    'email' => $request->mailtxt,
+                    'password' => Hash::make($request->pwtxt),
+                    'role' => $request->leveltxt,
+                    'created_by' => auth()->user()->id
+                ]);
+                return response()->json([
+                            'success' => true,
+                            'message' => 'User created successfully!'
+                ]);
+            }
         } catch (\Exception $e) {
             Log::error('Failed to create user: ' . $e->getMessage());
             return response()->json([
@@ -134,18 +163,6 @@ class UserController extends Controller {
                         'error' => $e->getMessage() // Optionally log the error for debugging
                             ], 500);
         }
-    }
-
-    public function update(Request $request, User $user) {
-        $request->validate([
-            'role' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-        ]);
-
-        $user->update($request->only('role', 'name', 'email'));
-
-        return redirect()->route('users.index')->with('success', 'User  updated successfully.');
     }
 
     public function destroy(User $user) {
