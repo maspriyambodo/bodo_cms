@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller {
@@ -19,6 +17,9 @@ class UserController extends Controller {
     public function json(Request $request) {
         $exec = DB::table(DB::raw('(SELECT @row := 0) AS a, users'))->select(DB::raw('(@row := @row + 1) AS no_urut'), 'users.id', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
                 ->join('user_groups', 'users.role', '=', 'user_groups.id');
+        if (auth()->user()->role <> 9) {
+            $exec->where('is_trash', 0);
+        }
         $this->applyFilters($exec, $request);
         $exec->orderBy('users.name', 'asc');
         $users = $exec->get();
@@ -107,12 +108,17 @@ class UserController extends Controller {
     }
 
     public function store(Request $request) {
-        $dec_id_user = decrypt($request->e_id);
         if ($request->e_id) {
+            $dec_id_user = decrypt($request->e_id);
             $validator = Validator::make($request->all(), [
                 'namatxt2' => 'required|string|max:255',
                 'mailtxt2' => 'required|email|max:255',
                 'leveltxt2' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+            ]);
+        } elseif ($request->d_id) {
+            $dec_id_user2 = decrypt($request->d_id); // delete id user
+            $validator = Validator::make($request->all(), [
+                'd_id' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
@@ -139,8 +145,16 @@ class UserController extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
                 return response()->json([
-                            'success' => true,
-                            'message' => 'User updated successfully!'
+                            'success' => true
+                ]);
+            } elseif ($request->d_id) {
+                User::where('id', $dec_id_user2)
+                        ->update([
+                            'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+                return response()->json([
+                            'success' => true
                 ]);
             } else {
                 User::create([
@@ -151,8 +165,7 @@ class UserController extends Controller {
                     'created_by' => auth()->user()->id
                 ]);
                 return response()->json([
-                            'success' => true,
-                            'message' => 'User created successfully!'
+                            'success' => true
                 ]);
             }
         } catch (\Exception $e) {
