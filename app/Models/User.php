@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory,
+        Notifiable;
+
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
 
     /**
      * The attributes that are mass assignable.
@@ -18,14 +22,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'role',
         'name',
         'email',
         'pict',
+        'email_verified_at',
         'password',
-        'role',
-        'is_trash',
+        'remember_token',
+        'is _trash',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**
@@ -43,11 +49,18 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function group() {
+        return $this->belongsTo(UserGroup::class, 'role', 'id');
+    }
+
+    public function permissions() {
+        return $this->hasMany(SysPermission::class, 'role_id', 'role');
     }
 }

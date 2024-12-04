@@ -12,18 +12,19 @@ class Menu extends Model {
         Notifiable;
 
     protected $table = 'sys_menu';
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
     protected $fillable = [
         'menu_parent',
         'nama',
         'link',
         'order_no',
         'group_menu',
+        'icon',
         'description',
         'is_trash',
         'created_by',
-        'created_at',
-        'updated_by',
-        'updated_at'
+        'updated_by'
     ];
 
     // Define the relationship for child menus
@@ -33,5 +34,13 @@ class Menu extends Model {
 
     public function parent() {
         return $this->belongsTo(Menu::class, 'menu_parent');
+    }
+
+    public function group() {
+        return $this->belongsTo(SysMenuGroup::class, 'group_menu', 'id');
+    }
+
+    public function permissions() {
+        return $this->hasMany(SysPermission::class, 'id_menu', 'id');
     }
 }

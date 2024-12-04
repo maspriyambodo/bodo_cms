@@ -12,10 +12,18 @@ class MenuGroup extends Model {
         Notifiable;
 
     protected $table = 'sys_menu_group';
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
     protected $fillable = [
         'nama',
         'description',
         'order_no',
-        'is_trash'
+        'is_trash',
+        'created_by',
+        'updated_by'
     ];
+
+    public function menus() {
+        return $this->hasMany(SysMenu::class, 'group_menu', 'id');
+    }
 }

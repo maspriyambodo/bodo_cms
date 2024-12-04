@@ -12,13 +12,21 @@ class User_groups extends Model {
         Notifiable;
 
     protected $table = 'user_groups';
+    protected $primaryKey = 'id';
+    protected $keyType = 'int'; // Change based on your actual type
     protected $fillable = [
         'name',
         'description',
         'is_trash',
-        'created_at',
-        'updated_at',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
+
+    public function users() {
+        return $this->hasMany(User::class, 'role', 'id');
+    }
+
+    public function permissions() {
+        return $this->hasMany(SysPermission::class, 'role_id', 'id');
+    }
 }
