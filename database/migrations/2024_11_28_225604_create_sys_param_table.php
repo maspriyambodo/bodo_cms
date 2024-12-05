@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('param_group', 32)->nullable(); // VARCHAR(32)
             $table->string('param_value', 32)->nullable(); // VARCHAR(32)
             $table->string('param_desc', 128)->nullable(); // VARCHAR(128)
-            $table->integer('is_trash')->nullable()->comment('0. aktif 1. deleted');
+            $table->integer('is_trash')->nullable()->default(0)->comment('0. aktif 1. deleted');
             $table->timestamp('created_at')->nullable();
             $table->integer('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
