@@ -24,7 +24,7 @@ return new class extends Migration {
         });
 
         // Set charset and collation for the table
-        DB::statement('ALTER TABLE sys_param CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;');
+        DB::statement('ALTER TABLE sys_param CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;ALTER TABLE `laracms`.`sys_param` ADD UNIQUE INDEX(`id`) USING BTREE;');
     }
 
     /**
