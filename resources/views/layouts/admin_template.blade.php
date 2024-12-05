@@ -2,7 +2,7 @@
 <html lang=en>
     <head>
         <base href="{{route('dashboard');}}">
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . config('app.name', 'Laravel'); }}</title>
         <meta name=description content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free.">
         <meta name=keywords content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon">
         <meta name=viewport content="width=device-width,initial-scale=1">
@@ -11,7 +11,7 @@
         <meta property=og:type content=article>
         <meta property=og:title content="Metronic - Bootstrap 5 HTML, VueJS, React, Angular &amp; Laravel Admin Dashboard Theme">
         <meta property=og:url content=https://keenthemes.com/metronic>
-        <meta property=og:site_name content="{{ config('app.name', 'Laravel') }}">
+        <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . config('app.name', 'Laravel'); }}">
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
         <link rel="shortcut icon" href=assets/media/logos/favicon.ico>
         <link rel=stylesheet href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
@@ -67,131 +67,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="aside-menu flex-column-fluid">
-                        <div class="hover-scroll-overlay-y px-2 my-5 my-lg-5" id=kt_aside_menu_wrapper data-kt-scroll=true data-kt-scroll-height=auto data-kt-scroll-dependencies="{default: '#kt_aside_toolbar, #kt_aside_footer', lg: '#kt_header, #kt_aside_toolbar, #kt_aside_footer'}" data-kt-scroll-wrappers=#kt_aside_menu data-kt-scroll-offset=5px>
-                            <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id=#kt_aside_menu data-kt-menu=true>
-                                @foreach($menus as $menu)
-                                @if($menu->children->isEmpty())
-                                <div class="menu-item">
-                                    <a class="menu-link {{ request()->routeIs($menu->link) ? 'active' : '' }}" href="{{ request()->routeIs($menu->link) ? 'javascript:void(0);' : $menu->link }}">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title">{{ $menu->nama; }}</span>
-                                    </a>
-                                </div>
-                                @endif
-                                @foreach($menu->children as $child)
-                                @if($child->children->isEmpty())
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                    <span class="menu-link">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title">{{ $menu->nama }}</span>
-                                        <span class="menu-arrow"></span>
-                                    </span>
-                                    <div class="menu-sub menu-sub-accordion menu-active-bg" style="display: none; overflow: hidden;" kt-hidden-height="273">
-                                        <div class="menu-item">
-                                            <a class="menu-link" href="{{ $child->link }}">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">{{ $child->nama }}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                @if($child->children->isNotEmpty())
-                                @foreach($child->children as $subChild)
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                    <span class="menu-link">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black"></rect>
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title">{{ $menu->nama }}</span>
-                                        <span class="menu-arrow"></span>
-                                    </span>
-                                    <div class="menu-sub menu-sub-accordion menu-active-bg" style="display: none; overflow: hidden;" kt-hidden-height="312">
-                                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                            <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">{{ $child->nama }}</span>
-                                                <span class="menu-arrow"></span>
-                                            </span>
-                                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                                <div class="menu-item">
-                                                    <a class="menu-link" href="{{ $subChild->link }}">
-                                                        <span class="menu-bullet">
-                                                            <span class="bullet bullet-dot"></span>
-                                                        </span>
-                                                        <span class="menu-title">{{ $subChild->nama }}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                                @endif
-                                @endforeach
-                                @endforeach
-                                <div class=menu-item>
-                                    <div class=menu-content>
-                                        <div class="separator mx-1 my-4"></div>
-                                    </div>
-                                </div>
-
-                                <div class=menu-item>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <a class="menu-link" href="{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();">
-                                            <span class=menu-icon>
-                                                <span class="svg-icon svg-icon-2">
-                                                    <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none>
-                                                    <rect x=2 y=2 width=9 height=9 rx=2 fill=black />
-                                                    <rect opacity=0.3 x=13 y=2 width=9 height=9 rx=2 fill=black />
-                                                    <rect opacity=0.3 x=13 y=13 width=9 height=9 rx=2 fill=black />
-                                                    <rect opacity=0.3 x=2 y=13 width=9 height=9 rx=2 fill=black />
-                                                    </svg>
-                                                </span>
-                                            </span>
-                                            <span class=menu-title>{{ __('Log Out') }}</span>
-                                        </a>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.navigation')
                 </div>
                 <div class="wrapper d-flex flex-column flex-row-fluid" id=kt_wrapper>
                     <div id=kt_header class="header align-items-stretch">
                         <div class=header-brand>
-                            <a href="{{ request()->routeIs('dashboard') ? 'javascript:void(0);' : $menu->link }}">
+                            <a href="{{ request()->routeIs('dashboard') ? 'javascript:void(0);' : route('dashboard') }}">
                                 <img alt="logo" src="{{ asset('src/media/logos/logo-1-dark.svg'); }}" class="h-25px h-lg-25px">
                             </a>
                             <div id=kt_aside_toggle class="btn btn-icon w-auto px-0 btn-active-color-primary aside-minimize" data-kt-toggle=true data-kt-toggle-state=active data-kt-toggle-target=body data-kt-toggle-name=aside-minimize>
@@ -252,7 +133,7 @@
                     <div class="footer py-4 d-flex flex-lg-column" id=kt_footer>
                         <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                             <div class="text-dark order-2 order-md-1">
-                                <span class="text-muted fw-bold me-1">@php echo date('Y'); @endphp©</span>
+                                <span class="text-muted fw-bold me-1">@php echo date('Y'); @endphp &copy;</span>
                                 <a href=https://keenthemes.com target=_blank class="text-gray-800 text-hover-primary">{{ config('app.name', 'Laravel') }}</a>
                             </div>
                         </div>
@@ -260,7 +141,6 @@
                 </div>
             </div>
         </div>
-
         <div id=kt_scrolltop class=scrolltop data-kt-scrolltop=true>
             <span class=svg-icon>
                 <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none>
