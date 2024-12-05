@@ -15,6 +15,15 @@ use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller {
 
     public function json(Request $request) {
+        $permisi = Controller::permission_user();
+        if (!$permisi['read']) {
+            return [
+                'draw' => 0,
+                'recordsTotal' => 0,
+                'recordsFiltered' => 0,
+                'data' => []
+            ];
+        }
         $exec = DB::table(DB::raw('(SELECT @row := 0) AS a, users'))->select(DB::raw('(@row := @row + 1) AS no_urut'), 'users.id', 'users.pict', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
                 ->join('user_groups', 'users.role', '=', 'user_groups.id');
         if (auth()->user()->role <> 9) {
