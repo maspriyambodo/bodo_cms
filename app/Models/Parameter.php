@@ -11,7 +11,14 @@ class Parameter extends Model {
     use HasFactory,
         Notifiable;
 
-    public $incrementing = false;
-    protected $keyType = 'string';
     protected $table = 'sys_param';
+    protected $fillable = [
+        'id',
+        'param_group',
+        'param_value',
+        'param_desc',
+        'is_trash',
+        'created_by',
+        'updated_by'
+    ];
 }
