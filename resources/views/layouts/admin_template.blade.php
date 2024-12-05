@@ -84,7 +84,7 @@
                                                 </svg>
                                             </span>
                                         </span>
-                                        <span class="menu-title">{{ $menu->nama }}</span>
+                                        <span class="menu-title">{{ $menu->nama; }}</span>
                                     </a>
                                 </div>
                                 @endif
