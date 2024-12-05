@@ -13,8 +13,8 @@ use App\Models\Parameter as db_param;
 class Parameter extends Controller {
 
     public function index(Request $request) {
-        $access_create = $this->user_permission()['create'];
-        return view('parameter.index', compact('access_create'));
+        $access_user = $this->user_permission();
+        return view('parameter.index', compact('access_user'));
     }
 
     private function user_permission() {
