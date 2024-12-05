@@ -7,6 +7,7 @@ use App\Http\Controllers\Parameter;
 use App\Http\Controllers\Permission;
 use App\Http\Controllers\Usergroups;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SpeedTestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user-management-store', [UserController::class, 'store'])->name('user-store');
 
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
+    
+    Route::get('/speed-test', [SpeedTestController::class, 'index'])->name('speed-test');
+    Route::get('/speed-test-json', [SpeedTestController::class, 'json'])->name('speed-json');
 });
 
 require __DIR__ . '/auth.php';
