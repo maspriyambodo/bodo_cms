@@ -65,19 +65,31 @@
             range0.value = 0;
             range0.endValue = 10;
             range0.axisFill.fillOpacity = 1;
-            range0.axisFill.fill = colorSet.getIndex(0);
+            range0.axisFill.fill = colorSet.getIndex(5);
 
             var range1 = axis2.axisRanges.create();
             range1.value = 10;
-            range1.endValue = 50;
+            range1.endValue = 30;
             range1.axisFill.fillOpacity = 1;
-            range1.axisFill.fill = colorSet.getIndex(2);
+            range1.axisFill.fill = colorSet.getIndex(4);
             
             var range2 = axis2.axisRanges.create();
-            range2.value = 50;
-            range2.endValue = 100;
+            range2.value = 30;
+            range2.endValue = 50;
             range2.axisFill.fillOpacity = 1;
             range2.axisFill.fill = colorSet.getIndex(3);
+            
+            var range3 = axis2.axisRanges.create();
+            range3.value = 50;
+            range3.endValue = 70;
+            range3.axisFill.fillOpacity = 1;
+            range3.axisFill.fill = colorSet.getIndex(2);
+            
+            var range4 = axis2.axisRanges.create();
+            range4.value = 70;
+            range4.endValue = 100;
+            range4.axisFill.fillOpacity = 1;
+            range4.axisFill.fill = colorSet.getIndex(1);
 
             // Label
             var label = chart.radarContainer.createChild(am4core.Label);
