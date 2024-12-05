@@ -441,7 +441,7 @@ lightbox.option({
 </script>
 <script>
     const formEdit = document.getElementById('edit_form');
-    var validator = FormValidation.formValidation(
+    var validator2 = FormValidation.formValidation(
             formEdit,
             {
                 fields: {
@@ -483,8 +483,8 @@ lightbox.option({
     const updateButton = document.getElementById('editbtn_submit');
     updateButton.addEventListener('click', function (e) {
         e.preventDefault();
-        if (validator) {
-            validator.validate().then(function (status) {
+        if (validator2) {
+            validator2.validate().then(function (status) {
                 if (status == 'Valid') {
                     updateButton.setAttribute('data-kt-indicator', 'on');
                     updateButton.disabled = true;
@@ -589,7 +589,7 @@ lightbox.option({
 </script>
 <script>
     const formDelete = document.getElementById('delete_form');
-    var validator = FormValidation.formValidation(
+    var validator3 = FormValidation.formValidation(
             formEdit,
             {
                 fields: {
@@ -614,8 +614,8 @@ lightbox.option({
     const delButton = document.getElementById('delbtn_submit');
     delButton.addEventListener('click', function (e) {
         e.preventDefault();
-        if (validator) {
-            validator.validate().then(function (status) {
+        if (validator3) {
+            validator3.validate().then(function (status) {
                 if (status == 'Valid') {
                     delButton.setAttribute('data-kt-indicator', 'on');
                     delButton.disabled = true;
@@ -721,7 +721,7 @@ lightbox.option({
 <script>
     const formRestore = document.getElementById('restore_form');
     const actButton = document.getElementById('actbtn_submit');
-    var validator = FormValidation.formValidation(
+    var validator4 = FormValidation.formValidation(
             formEdit,
             {
                 fields: {
@@ -745,8 +745,8 @@ lightbox.option({
     );
     actButton.addEventListener('click', function (e) {
         e.preventDefault();
-        if (validator) {
-            validator.validate().then(function (status) {
+        if (validator4) {
+            validator4.validate().then(function (status) {
                 if (status == 'Valid') {
                     actButton.setAttribute('data-kt-indicator', 'on');
                     actButton.disabled = true;
@@ -853,7 +853,7 @@ lightbox.option({
 <script>
     const formReset = document.getElementById('reset_form');
     const resetButton = document.getElementById('resetbtn_submit');
-    var validator = FormValidation.formValidation(
+    var validator5 = FormValidation.formValidation(
             formEdit,
             {
                 fields: {
@@ -877,8 +877,8 @@ lightbox.option({
     );
     resetButton.addEventListener('click', function (e) {
         e.preventDefault();
-        if (validator) {
-            validator.validate().then(function (status) {
+        if (validator5) {
+            validator5.validate().then(function (status) {
                 if (status == 'Valid') {
                     resetButton.setAttribute('data-kt-indicator', 'on');
                     resetButton.disabled = true;
