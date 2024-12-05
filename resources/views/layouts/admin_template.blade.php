@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang=en>
-    <head><base href="">
+    <head>
+        <base href="{{route('dashboard');}}">
         <title>{{ config('app.name', 'Laravel') }}</title>
         <meta name=description content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free.">
         <meta name=keywords content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon">
@@ -14,7 +15,6 @@
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
         <link rel="shortcut icon" href=assets/media/logos/favicon.ico>
         <link rel=stylesheet href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
-        <link href="{{ asset('src/plugins/custom/fullcalendar/fullcalendar.bundle.css'); }}" rel=stylesheet>
         <link href="{{ asset('src/plugins/global/plugins.bundle.css'); }}" rel=stylesheet>
         <link href="{{ asset('src/css/style.bundle.css'); }}" rel=stylesheet>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -191,8 +191,8 @@
                 <div class="wrapper d-flex flex-column flex-row-fluid" id=kt_wrapper>
                     <div id=kt_header class="header align-items-stretch">
                         <div class=header-brand>
-                            <a href="">
-                                <img alt=Logo src="{{ asset('src/media/logos/logo-1-dark.svg'); }}" class="h-25px h-lg-25px">
+                            <a href="{{ request()->routeIs('dashboard') ? 'javascript:void(0);' : $menu->link }}">
+                                <img alt="logo" src="{{ asset('src/media/logos/logo-1-dark.svg'); }}" class="h-25px h-lg-25px">
                             </a>
                             <div id=kt_aside_toggle class="btn btn-icon w-auto px-0 btn-active-color-primary aside-minimize" data-kt-toggle=true data-kt-toggle-state=active data-kt-toggle-target=body data-kt-toggle-name=aside-minimize>
                                 <span class="svg-icon svg-icon-1 me-n1 minimize-default">
@@ -272,11 +272,6 @@
         <script>var hostUrl = "{{ asset('src/'); }}";</script>
         <script src="{{ asset('src/plugins/global/plugins.bundle.js'); }}"></script>
         <script src="{{ asset('src/js/scripts.bundle.js'); }}"></script>
-        <script src="{{ asset('src/plugins/custom/fullcalendar/fullcalendar.bundle.js'); }}"></script>
-        <script src="{{ asset('src/js/custom/widgets.js'); }}"></script>
-        <script src="{{ asset('src/js/custom/apps/chat/chat.js'); }}"></script>
-        <script src="{{ asset('src/js/custom/modals/create-app.js'); }}"></script>
-        <script src="{{ asset('src/js/custom/modals/upgrade-plan.js'); }}"></script>
         <script>
             $(document).ready(function () {
                 function updateClock() {

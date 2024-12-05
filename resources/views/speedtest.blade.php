@@ -10,7 +10,6 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <h1>Download Speed Gauge</h1>
         <div id="chartdiv"></div>
         <div class="text-center my-4">
             <button id="start-test" class="btn btn-success">Start Speed Test</button>
