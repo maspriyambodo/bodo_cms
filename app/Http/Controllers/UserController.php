@@ -119,8 +119,8 @@ class UserController extends Controller {
         $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
         $root_user = Parameter::where('id', 'ROOT')->first();
         $dt_role = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
-        $access_create = $this->user_permission()['create'];
-        return view('users.index', compact('default_password', 'dt_role', 'access_create'));
+        $user_access = $this->user_permission();
+        return view('users.index', compact('default_password', 'dt_role', 'user_access'));
     }
 
     public function create() {
