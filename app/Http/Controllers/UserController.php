@@ -14,9 +14,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller {
 
+    private function user_permission() {
+        return Controller::permission_user();
+    }
+
     public function json(Request $request) {
-        $permisi = Controller::permission_user();
-        if (!$permisi['read']) {
+        if (!$this->user_permission()['read']) {
             return [
                 'draw' => 0,
                 'recordsTotal' => 0,
@@ -67,9 +70,8 @@ class UserController extends Controller {
     }
 
     private function getActionButtons($row) {
-        $exec = Controller::permission_user();
         $enc_id_user = encrypt($row->id);
-        if (!$exec['update'] && !$exec['delete']) {
+        if (!$this->user_permission()['update'] && !$this->user_permission()['delete']) {
             return '';
         }
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
@@ -78,7 +80,7 @@ class UserController extends Controller {
                 <span class="text-center text-muted py-3">Menu Action</span>
             </div>';
 
-        if ($exec['update']) {
+        if ($this->user_permission()['update']) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
@@ -86,7 +88,7 @@ class UserController extends Controller {
             </div>';
         }
 
-        if ($exec['delete'] && $row->is_trash == 0) {
+        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
@@ -100,7 +102,7 @@ class UserController extends Controller {
             </div>';
         }
 
-        if ($exec['delete']) {
+        if ($this->user_permission()['delete']) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPassword(&apos;' . $enc_id_user . '&apos;);">
                     <i class="bi bi-key text-info mx-2"></i> Reset Password
@@ -117,7 +119,8 @@ class UserController extends Controller {
         $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
         $root_user = Parameter::where('id', 'ROOT')->first();
         $dt_role = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
-        return view('users.index', compact('default_password', 'dt_role'));
+        $access_create = $this->user_permission()['create'];
+        return view('users.index', compact('default_password', 'dt_role', 'access_create'));
     }
 
     public function create() {
