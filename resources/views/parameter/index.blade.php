@@ -31,6 +31,7 @@
 @endif
 @if($access_user['delete'])
 @include('parameter.delete_parameter')
+@include('parameter.restore_parameter')
 @endif
 @endsection
 @push('scripts')

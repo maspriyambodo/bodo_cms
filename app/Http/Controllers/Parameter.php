@@ -126,6 +126,13 @@ class Parameter extends Controller {
                 'valtxt3' => 'required|string|max:255',
                 'desctxt3' => 'required|string',
             ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                'idtxt4' => 'required|string|max:255',
+                'gruptxt4' => 'required|string|max:255',
+                'valtxt4' => 'required|string|max:255',
+                'desctxt4' => 'required|string',
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -156,6 +163,13 @@ class Parameter extends Controller {
                         ->where('param_value', $request->valtxt3)
                         ->update([
                             'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'restore') {
+                db_param::where('id', $request->idtxt4)
+                        ->where('param_value', $request->valtxt4)
+                        ->update([
+                            'is_trash' => 0,
                             'updated_by' => auth()->user()->id
                 ]);
             }
