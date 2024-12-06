@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps(); // Membuat kolom `created_at` dan `updated_at`
             $table->integer('created_by')->nullable(); // Kolom `created_by`
             $table->integer('updated_by')->nullable(); // Kolom `updated_by`
-            $table->foreign('id_kabupaten')->references('id_kabupaten')->on('mt_kabupaten')->onDelete('cascade');
+//            $table->foreign('id_kabupaten')->references('id_kabupaten')->on('mt_kabupaten')->onDelete('cascade');
         });
     }
 
