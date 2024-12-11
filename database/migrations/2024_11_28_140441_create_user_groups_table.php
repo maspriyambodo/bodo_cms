@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id(); // Auto-incrementing ID
             $table->string('name')->nullable()->collate('utf8mb4_general_ci'); // VARCHAR(255) with collation
             $table->string('description')->nullable()->collate('utf8mb4_general_ci'); // VARCHAR(255) with collation
-            $table->integer('is_trash')->nullable()->comment('0. aktif 1. deleted'); // INT
+            $table->integer('is_trash')->default(0)->nullable()->comment('0. aktif 1. deleted'); // INT
             $table->timestamp('created_at')->nullable(); // TIMESTAMP
             $table->integer('created_by')->nullable(); // INT
             $table->timestamp('updated_at')->nullable(); // TIMESTAMP
