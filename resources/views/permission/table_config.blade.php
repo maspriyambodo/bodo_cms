@@ -35,7 +35,7 @@
                     }, {
                         render: function (data, type, row, meta) {
                             var nama_role = '';
-                            if(row.parent){
+                            if (row.parent) {
                                 nama_role = row.parent.name;
                             }
                             return nama_role;
