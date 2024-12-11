@@ -14,12 +14,12 @@ return new class extends Migration {
             $table->id(); // Auto-incrementing ID
             $table->integer('role_id')->nullable(); // INT
             $table->integer('id_menu')->nullable(); // INT
-            $table->integer('is_trash')->nullable()->default(0)->comment('0. aktif 1. deleted');
             $table->integer('v')->nullable()->default(0)->comment('view'); // INT
             $table->integer('c')->nullable()->default(0)->comment('create'); // INT
             $table->integer('r')->nullable()->default(0)->comment('read'); // INT
             $table->integer('u')->nullable()->default(0)->comment('update'); // INT
             $table->integer('d')->nullable()->default(0)->comment('delete'); // INT
+            $table->integer('is_trash')->nullable()->default(0)->comment('0. aktif 1. deleted');
             $table->timestamp('created_at')->nullable();
             $table->integer('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
