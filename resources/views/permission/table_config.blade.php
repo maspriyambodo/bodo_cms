@@ -15,16 +15,23 @@
                         d.keyword = $("#keyword").val();
                     }
                 },
-                columns: [{
-                        orderable: false,
+                columnDefs: [
+                    {
+                        orderable: false, targets: [0, 1, 3, 4]
+
+                    }
+                ],
+                columns: [
+                    {
+
                         className: "text-center",
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     }, {
                         data: "button",
-                        className: "text-center",
-                        orderable: false
+                        className: "text-center"
+
                     }, {
                         data: "name"
                     }, {
@@ -43,7 +50,8 @@
                     }, {
                         data: "created_at",
                         className: 'text-center'
-                    }],
+                    }
+                ],
                 displayStart: 0,
                 pageLength: 10,
                 rowCallback: function (row, data) {

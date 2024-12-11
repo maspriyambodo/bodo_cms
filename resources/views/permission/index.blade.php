@@ -65,13 +65,13 @@
             <table id="table-permission" class="table table-rounded table-striped table-hover gy-5 gs-7 border my-5">
                 <thead>
                     <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
-                        <th>No</th>
-                        <th>#</th>
-                        <th>Parent</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Register Date</th>
+                        <th class="text-center">No</th>
+                        <th class="text-center">#</th>
+                        <th class="text-center sorting sorting_asc">Parent</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Register Date</th>
                     </tr>
                 </thead>
             </table>
