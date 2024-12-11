@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="parenttxt" class="required form-label">Parent</label>
-                        <select id="parenttxt" name="parenttxt" class="form-control form-control-solid" required="">
+                        <select id="parenttxt" name="parenttxt" class="form-control form-control-solid form-select" required="">
                             <option value=""></option>
                             <option value="0">parent</option>
                             @foreach($user_groups as $dt_grup)

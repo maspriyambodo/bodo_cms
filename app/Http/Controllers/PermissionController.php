@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Permission as db_permission;
+use App\Models\Parameter as ParameterModel;
 use App\Models\User_groups;
 
 class PermissionController extends Controller {
@@ -19,10 +20,13 @@ class PermissionController extends Controller {
 
     public function index(Request $request) {
         $user_access = $this->user_permission();
-        return view('permission.index', compact('user_access'));
+        $root_user = ParameterModel::where('id', 'ROOT')->first();
+        $user_groups = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
+        return view('permission.index', compact('user_access', 'user_groups'));
     }
 
     public function json(Request $request) {
+        $root_user = ParameterModel::where('id', 'ROOT')->first();
         if (!$this->user_permission()['read']) {
             return [
                 'draw' => 0,
@@ -31,10 +35,18 @@ class PermissionController extends Controller {
                 'data' => []
             ];
         }
-        $exec = User_groups::with('children');
+        DB::enableQueryLog();
+        $exec = User_groups::with('children', 'parent');
         $this->applyFilters($exec, $request);
+        if (auth()->user()->role <> $root_user->param_value) {
+            $exec->where('id', $root_user->param_value);
+        }
         $exec->orderBy('id', 'asc');
         $dt_param = $exec->get();
+        
+$query = DB::getQueryLog();
+$query = end($query);
+//dd($query);
         return Datatables::of($dt_param)
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
@@ -83,7 +95,7 @@ class PermissionController extends Controller {
                 </a>
             </div>';
         }
-        
+
         if ($this->user_permission()['delete']) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="configData(&apos;' . $row->id . '&apos;);">
@@ -98,12 +110,33 @@ class PermissionController extends Controller {
     }
 
     public function edit(Request $request) {
-        
+        $exec = User_groups::where('id', $request->id)->first();
+        if ($exec) {
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'dt_permission' => $exec
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'dt_permission' => $exec
+                ]);
+            }
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
     }
 
     public function store(Request $request) {
         if ($request->q == 'add') {
-            
+            $validator = Validator::make($request->all(), [
+                'parenttxt' => 'required|integer',
+                'nametxt' => 'required|string|max:50|unique:user_groups,name',
+                'descriptontxt' => 'required|string'
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -113,6 +146,14 @@ class PermissionController extends Controller {
         }
         DB::beginTransaction(); // Start transaction
         try {
+            if ($request->q == 'add') {
+                User_groups::create([
+                    'parent_id' => $request->parenttxt,
+                    'name' => $request->nametxt,
+                    'description' => $request->descriptontxt,
+                    'created_by' => auth()->user()->id
+                ]);
+            }
             DB::commit(); // Commit transaction
             return response()->json([
                         'success' => true
