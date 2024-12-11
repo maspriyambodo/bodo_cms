@@ -16,6 +16,7 @@ class User_groups extends Model {
     protected $table = 'user_groups';
     protected $fillable = [
         'name',
+        'parent_id',
         'description',
         'is_trash',
         'created_by',
@@ -28,5 +29,14 @@ class User_groups extends Model {
 
     public function permissions() {
         return $this->hasMany(SysPermission::class, 'role_id');
+    }
+
+    public function parent() {
+        return $this->belongsTo(User_groups::class, 'parent_id');
+    }
+
+    // Define the relationship with the child groups
+    public function children() {
+        return $this->hasMany(User_groups::class, 'parent_id', 'id');
     }
 }
