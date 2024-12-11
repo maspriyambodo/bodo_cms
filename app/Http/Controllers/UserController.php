@@ -27,7 +27,7 @@ class UserController extends Controller {
                 'data' => []
             ];
         }
-        $exec = DB::table(DB::raw('(SELECT @row := 0) AS a, users'))->select(DB::raw('(@row := @row + 1) AS no_urut'), 'users.id', 'users.pict', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
+        $exec = User::select('users.id', 'users.pict', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
                 ->join('user_groups', 'users.role', '=', 'user_groups.id');
         if (auth()->user()->role <> 9) {
             $exec->where('is_trash', 0);
