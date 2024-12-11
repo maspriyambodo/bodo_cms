@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="table-responsive py-5">
-            <table id="table-parameter" class="table table-rounded table-striped table-hover gy-5 gs-7 border">
+            <table id="table-parameter" class="table table-rounded table-hover border">
                 <thead>
                     <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
                         <th class="text-center">#</th>
