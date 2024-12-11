@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/permission', [PermissionController::class, 'index'])->name('permission');
     Route::get('/permission-json', [PermissionController::class, 'json'])->name('permission');
     Route::post('/permission-store', [PermissionController::class, 'store'])->name('permission');
+    Route::get('/permission-edit/{id}', [PermissionController::class, 'edit'])->name('permission');
 
     Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
     Route::get('/user-management-json', [UserController::class, 'json'])->name('user-management');
