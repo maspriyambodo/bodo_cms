@@ -35,7 +35,6 @@ class PermissionController extends Controller {
                 'data' => []
             ];
         }
-        DB::enableQueryLog();
         $exec = User_groups::with('children', 'parent');
         $this->applyFilters($exec, $request);
         if (auth()->user()->role <> $root_user->param_value) {
@@ -43,10 +42,6 @@ class PermissionController extends Controller {
         }
         $exec->orderBy('id', 'asc');
         $dt_param = $exec->get();
-        
-$query = DB::getQueryLog();
-$query = end($query);
-//dd($query);
         return Datatables::of($dt_param)
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
@@ -137,6 +132,12 @@ $query = end($query);
                 'nametxt' => 'required|string|max:50|unique:user_groups,name',
                 'descriptontxt' => 'required|string'
             ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                'parenttxt2' => 'required|integer',
+                'nametxt2' => 'required|string|max:50',
+                'descriptontxt2' => 'required|string'
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -152,6 +153,14 @@ $query = end($query);
                     'name' => $request->nametxt,
                     'description' => $request->descriptontxt,
                     'created_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'update') {
+                User_groups::where('id', $request->idtxt2)
+                        ->update([
+                            'parent_id' => $request->parenttxt2,
+                            'name' => $request->nametxt2,
+                            'description' => $request->descriptontxt2,
+                            'updated_by' => auth()->user()->id
                 ]);
             }
             DB::commit(); // Commit transaction

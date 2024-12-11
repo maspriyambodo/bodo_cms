@@ -7,6 +7,7 @@
             </div>
             <form id="edit_form" class="form" action="#" autocomplete="off">
                 @csrf
+                <input type="hidden" name="idtxt2"/>
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="parenttxt2" class="required form-label">Parent</label>
@@ -40,6 +41,7 @@
         </div>
     </div>
 </div>
+@push('scripts')
 <script>
     function editData(val) {
         $.ajax({
@@ -48,6 +50,7 @@
             dataType: 'json',
             success: function (data) {
                 if (data.success) {
+                    $('input[name="idtxt2"]').val(data.dt_permission['id']);
                     $('input[name="nametxt2"]').val(data.dt_permission['name']);
                     $('textarea[name="descriptontxt2"]').val(data.dt_permission['description']);
                     $("#parenttxt2").val(data.dt_permission['parent_id']);
@@ -187,3 +190,4 @@
         }
     });
 </script>
+@endpush
