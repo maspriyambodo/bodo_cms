@@ -29,7 +29,8 @@ class UserController extends Controller {
         }
         $exec = User::select('users.id', 'users.pict', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
                 ->join('user_groups', 'users.role', '=', 'user_groups.id');
-        if (auth()->user()->role <> 9) {
+        $root_user = Parameter::where('id', 'ROOT')->first();
+        if (auth()->user()->role <> $root_user->param_value) {
             $exec->where('is_trash', 0);
         }
         $this->applyFilters($exec, $request);
