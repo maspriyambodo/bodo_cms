@@ -33,16 +33,15 @@
                         className: "text-center"
 
                     }, {
-                        data: "name"
-                    }, {
-                        data: "children",
-                        render: function (data) {
-                            var child_name = '';
-                            for (var i = 0, l = data.length; i < l; i++) {
-                                child_name = data[i].name;
+                        render: function (data, type, row, meta) {
+                            var nama_role = '';
+                            if(row.parent){
+                                nama_role = row.parent.name;
                             }
-                            return child_name;
+                            return nama_role;
                         }
+                    }, {
+                        data: "name"
                     }, {
                         data: "description"
                     }, {
