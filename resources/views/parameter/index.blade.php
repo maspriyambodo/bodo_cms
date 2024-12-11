@@ -72,13 +72,13 @@
         </div>
     </div>
 </div>
-@if($access_user['create'])
+@if($user_access['create'])
 @include('parameter.add_parameter')
 @endif
-@if($access_user['update'])
+@if($user_access['update'])
 @include('parameter.edit_parameter')
 @endif
-@if($access_user['delete'])
+@if($user_access['delete'])
 @include('parameter.delete_parameter')
 @include('parameter.restore_parameter')
 @endif
@@ -86,7 +86,7 @@
 @push('scripts')
 <script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js'); }}"></script>
 <script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js'); }}"></script>
-@if($access_user['read'])
+@if($user_access['read'])
 @include('parameter.table_parameter')
 @endif
 @endpush
