@@ -4,7 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\GroupMenu;
 use App\Http\Controllers\Parameter;
-use App\Http\Controllers\Permission;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Usergroups;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SpeedTestController;
@@ -27,7 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/parameter-edit/{id}', [Parameter::class, 'edit'])->name('parameter');
     Route::post('/parameter-store', [Parameter::class, 'store'])->name('parameter');
 
-    Route::get('/permission', [Permission::class, 'index'])->name('permission');
+    Route::get('/permission', [PermissionController::class, 'index'])->name('permission');
+    Route::get('/permission-json', [PermissionController::class, 'json'])->name('permission');
 
     Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
     Route::get('/user-management-json', [UserController::class, 'json'])->name('user-management');
