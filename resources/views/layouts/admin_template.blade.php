@@ -14,10 +14,8 @@
         <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . config('app.name', 'Laravel'); }}">
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
         <link rel="shortcut icon" href=assets/media/logos/favicon.ico>
-        <link rel=stylesheet href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
-        <link href="{{ asset('src/plugins/global/plugins.bundle.css'); }}" rel=stylesheet>
-        <link href="{{ asset('src/css/style.bundle.css'); }}" rel=stylesheet>
-        
+        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
+        <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>
     <body id=kt_body class="header-tablet-and-mobile-fixed aside-enabled">
@@ -149,7 +147,8 @@
                 </svg>
             </span>
         </div>
-        <script>var hostUrl = "{{ asset('src/'); }}";</script>
+        <script>var hostUrl = "{{ asset(''); }}";</script>
+        <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         <script src="{{ asset('src/plugins/global/plugins.bundle.js'); }}"></script>
         <script src="{{ asset('src/js/scripts.bundle.js'); }}"></script>
         <script>
