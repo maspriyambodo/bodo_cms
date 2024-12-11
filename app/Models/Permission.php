@@ -17,6 +17,7 @@ class Permission extends Model {
     protected $fillable = [
         'role_id',
         'id_menu',
+        'is_trash',
         'v',
         'c',
         'r',
