@@ -16,13 +16,14 @@
                     }
                 },
                 columnDefs: [
-                    {orderable: false, targets: []},
+                    {orderable: false, targets: [0]},
                 ],
                 columns: [
                     {
-                        data: 'no_urut',
                         className: "text-center",
-                        orderable: false
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     },
                     {data: "button", className: "text-center", orderable: false},
                     {data: "picture", className: "text-center", orderable: false},

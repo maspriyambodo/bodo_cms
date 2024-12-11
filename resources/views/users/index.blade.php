@@ -8,12 +8,15 @@
 <div class="card">
     <div class="card-body">
         <div class="row clearfix">
+            @if($user_access['read'])
             <div class="col-md-4 my-2">
                 <input id="keyword" name="keyword" type="text" class="form-control" placeholder="search data..."/>
             </div>
+            @endif
             <div class="col-md-8 text-end my-2">
                 <div class="btn-group" role="group" aria-label="action button">
                     <!--begin::Menu wrapper-->
+                    @if($user_access['read'])
                     <div>
                         <!--begin::Toggle-->
                         <button type="button" class="btn btn-secondary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
@@ -58,7 +61,10 @@
                         </div>
                     </div>
                     <button id="dt_reload" type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="reload data" data-kt-initialized="1"><i class="bi bi-arrow-clockwise"></i></button>
+                    @endif
+                    @if($user_access['create'])
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal"><i data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="add new data" data-kt-initialized="1" class="bi bi-plus-lg"></i></button>
+                    @endif
                 </div>
             </div>
         </div>
