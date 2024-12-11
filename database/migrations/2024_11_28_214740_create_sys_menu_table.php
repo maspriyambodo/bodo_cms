@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('group_menu')->nullable()->comment('1. applications\r\n2. report\r\n3. systems');
             $table->string('icon', 50)->nullable()->charset('utf8mb4')->collation('utf8mb4_general_ci');
             $table->string('description', 255)->nullable()->charset('utf8mb4')->collation('utf8mb4_bin');
+            $table->integer('is_hide')->default(0)->comment('0. unhide 1. hidden');
             $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted');
             $table->integer('created_by')->nullable();
             $table->timestamp('created_at')->nullable();
