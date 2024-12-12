@@ -36,13 +36,33 @@ class PermissionController extends Controller {
             $dt_param = $exec->get();
         }
         return Datatables::of($dt_param)
-                        ->addColumn('view', fn($row) => $row->v == 1 ? '<div><input name="viewtxt[]" class="form-check-input" type="checkbox" id="vtxt' . $row->id . '" value="' . $row->v . '" checked></div>' : '<div><input name="viewtxt[]" class="form-check-input" type="checkbox" id="vtxt' . $row->id . '" value="0"></div>')
-                        ->addColumn('create', fn($row) => $row->c == 1 ? '<div><input name="createtxt[]" class="form-check-input" type="checkbox" id="ctxt' . $row->id . '" value="' . $row->c . '" checked></div>' : '<div><input name="createtxt[]" class="form-check-input" type="checkbox" id="ctxt' . $row->id . '" value="0"></div>')
-                        ->addColumn('read', fn($row) => $row->r == 1 ? '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="rtxt' . $row->id . '" value="' . $row->r . '" checked></div>' : '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="rtxt' . $row->id . '" value="0"></div>')
-                        ->addColumn('update', fn($row) => $row->u == 1 ? '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="utxt' . $row->id . '" value="' . $row->u . '" checked></div>' : '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="utxt' . $row->id . '" value="0"></div>')
-                        ->addColumn('delete', fn($row) => $row->v == 1 ? '<div><input name="deletetxt[]" class="form-check-input" type="checkbox" id="dtxt' . $row->id . '" value="' . $row->d . '" checked></div>' : '<div><input name="deletetxt[]" class="form-check-input" type="checkbox" id="dtxt' . $row->id . '" value="0"></div>')
+                        ->addColumn('view', fn($row) => $this->generateCheckbox('viewtxt[]', $row->menu->id, $row->v, 'vtxt' . $row->menu->id))
+                        ->addColumn('create', fn($row) => $this->generateCheckbox('createtxt[]', $row->menu->id, $row->c, 'ctxt' . $row->menu->id))
+                        ->addColumn('read', fn($row) => $this->generateCheckbox('readtxt[]', $row->menu->id, $row->r, 'rtxt' . $row->menu->id))
+                        ->addColumn('update', fn($row) => $this->generateCheckbox('updatetxt[]', $row->menu->id, $row->u, 'utxt' . $row->menu->id))
+                        ->addColumn('delete', fn($row) => $this->generateCheckbox('deletetxt[]', $row->menu->id, $row->d, 'dtxt' . $row->menu->id))
                         ->rawColumns(['view', 'create', 'read', 'update', 'delete'])
                         ->make(true);
+    }
+
+    private function generateCheckbox($name, $menuId, $value, $id) {
+        $checked = $value == 1 ? 'checked' : '';
+        $onclick_event = '';
+        if ($name == 'viewtxt[]') {
+            $onclick_event = 'v_menu(' . $menuId . ');';
+        } elseif ($name == 'createtxt[]') {
+            $onclick_event = 'c_menu(' . $menuId . ');';
+        } elseif ($name == 'readtxt[]') {
+            $onclick_event = 'r_menu(' . $menuId . ');';
+        } elseif ($name == 'updatetxt[]') {
+            $onclick_event = 'u_menu(' . $menuId . ');';
+        } else {
+            $onclick_event = 'd_menu(' . $menuId . ');';
+        }
+        return '<div>
+                <input type="hidden" name="id_menu[]" value="' . $menuId . '"/>
+                <input name="' . $name . '" class="form-check-input" type="checkbox" id="' . $id . '" value="' . $value . '" onclick="' . $onclick_event . '" ' . $checked . '>
+            </div>';
     }
 
     public function json(Request $request) {
@@ -150,23 +170,23 @@ class PermissionController extends Controller {
     public function store(Request $request) {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
-                'parenttxt' => 'required|integer',
-                'nametxt' => 'required|string|max:50|unique:user_groups,name',
-                'descriptontxt' => 'required|string'
+                        'parenttxt' => 'required|integer',
+                        'nametxt' => 'required|string|max:50|unique:user_groups,name',
+                        'descriptontxt' => 'required|string'
             ]);
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
-                'parenttxt2' => 'required|integer',
-                'nametxt2' => 'required|string|max:50',
-                'descriptontxt2' => 'required|string'
+                        'parenttxt2' => 'required|integer',
+                        'nametxt2' => 'required|string|max:50',
+                        'descriptontxt2' => 'required|string'
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
-                'd_id' => 'required|integer',
+                        'd_id' => 'required|integer',
             ]);
         } elseif ($request->q == 'setpermission') {
             $validator = Validator::make($request->all(), [
-                'd_id2' => 'required|integer',
+                        'setidtxt' => 'required|integer',
             ]);
         }
         if ($validator->fails()) {
@@ -179,10 +199,10 @@ class PermissionController extends Controller {
         try {
             if ($request->q == 'add') {
                 $User_groups = User_groups::create([
-                    'parent_id' => $request->parenttxt,
-                    'name' => $request->nametxt,
-                    'description' => $request->descriptontxt,
-                    'created_by' => auth()->user()->id
+                            'parent_id' => $request->parenttxt,
+                            'name' => $request->nametxt,
+                            'description' => $request->descriptontxt,
+                            'created_by' => auth()->user()->id
                 ]);
                 $lastInsertedId = $User_groups->id;
                 $this->insert_permission($lastInsertedId);
@@ -221,9 +241,22 @@ class PermissionController extends Controller {
                             ], 500);
         }
     }
-    
+
     private function set_permission($data) {
-        dd($data);
+        for ($index = 0; $index < count($data->id_menu); $index++) {
+            db_permission::where([
+                        'role_id' => $data->setidtxt,
+                        'id_menu' => $data->id_menu[$index]
+                    ])
+                    ->update([
+                        'v' => $data->viewtxt[$index],
+                        'c' => $data->createtxt[$index],
+                        'r' => $data->readtxt[$index],
+                        'u' => $data->updatetxt[$index],
+                        'd' => $data->deletetxt[$index],
+                        'updated_by' => auth()->user()->id
+            ]);
+        }
     }
 
     private function delete_permission($id_role) {
@@ -240,6 +273,7 @@ class PermissionController extends Controller {
                         'updated_by' => auth()->user()->id
             ]);
         }
+        return true;
     }
 
     private function insert_permission($id_role) {
