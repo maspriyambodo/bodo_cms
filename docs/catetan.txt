@@ -6,3 +6,16 @@ $query = DB::getQueryLog();
 $query = end($query);
 dd($query);
 --------------------print last query--------------------
+--------------------exec store procedure--------------------
+dd(DB::select('exec sp_getreport_data_everify(' 
+        . $p_ClientID .','
+        . $p_LocationID.','
+        . $p_LastName.','
+        . $p_hiredate_from.','
+        . $p_hiredate_to.','
+        . $p_hirestatus.','
+        . $p_i9status.','
+        . $p_USERID.')'
+    )
+  );
+--------------------exec store procedure--------------------
