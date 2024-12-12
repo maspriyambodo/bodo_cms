@@ -26,6 +26,25 @@ class PermissionController extends Controller {
         return view('permission.index', compact('user_access', 'user_groups'));
     }
 
+    public function json2(Request $request) {
+        $exec = db_permission::with('menu')->where('role_id', $request->role_id);
+        $dt_param = $exec->get();
+        if (count($dt_param)) {
+            $dt_param = $exec->get();
+        } else {
+            $this->insert_permission($request->role_id);
+            $dt_param = $exec->get();
+        }
+        return Datatables::of($dt_param)
+                        ->addColumn('view', fn($row) => $row->v == 1 ? '<div><input name="viewtxt[]" class="form-check-input" type="checkbox" id="vtxt' . $row->id . '" value="' . $row->v . '" checked></div>' : '<div><input name="viewtxt[]" class="form-check-input" type="checkbox" id="vtxt' . $row->id . '" value="0"></div>')
+                        ->addColumn('create', fn($row) => $row->c == 1 ? '<div><input name="createtxt[]" class="form-check-input" type="checkbox" id="ctxt' . $row->id . '" value="' . $row->c . '" checked></div>' : '<div><input name="createtxt[]" class="form-check-input" type="checkbox" id="ctxt' . $row->id . '" value="0"></div>')
+                        ->addColumn('read', fn($row) => $row->r == 1 ? '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="rtxt' . $row->id . '" value="' . $row->r . '" checked></div>' : '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="rtxt' . $row->id . '" value="0"></div>')
+                        ->addColumn('update', fn($row) => $row->u == 1 ? '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="utxt' . $row->id . '" value="' . $row->u . '" checked></div>' : '<div><input name="readtxt[]" class="form-check-input" type="checkbox" id="utxt' . $row->id . '" value="0"></div>')
+                        ->addColumn('delete', fn($row) => $row->v == 1 ? '<div><input name="deletetxt[]" class="form-check-input" type="checkbox" id="dtxt' . $row->id . '" value="' . $row->d . '" checked></div>' : '<div><input name="deletetxt[]" class="form-check-input" type="checkbox" id="dtxt' . $row->id . '" value="0"></div>')
+                        ->rawColumns(['view', 'create', 'read', 'update', 'delete'])
+                        ->make(true);
+    }
+
     public function json(Request $request) {
         $root_user = ParameterModel::where('id', 'ROOT')->first();
         $role_user = auth()->user()->role;
@@ -145,6 +164,10 @@ class PermissionController extends Controller {
             $validator = Validator::make($request->all(), [
                 'd_id' => 'required|integer',
             ]);
+        } elseif ($request->q == 'setpermission') {
+            $validator = Validator::make($request->all(), [
+                'd_id2' => 'required|integer',
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -178,6 +201,8 @@ class PermissionController extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
                 $this->delete_permission($request->d_id);
+            } elseif ($request->q == 'setpermission') {
+                $this->set_permission($request);
             }
             DB::commit(); // Commit transaction
             return response()->json([
@@ -195,6 +220,10 @@ class PermissionController extends Controller {
                         'error' => $exc->getMessage() // Optionally log the error for debugging
                             ], 500);
         }
+    }
+    
+    private function set_permission($data) {
+        dd($data);
     }
 
     private function delete_permission($id_role) {
