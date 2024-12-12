@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_groups', function (Blueprint $table) {
             $table->id(); // Auto-incrementing ID
+            $table->integer('parent_id')->default(0)->nullable();
             $table->string('name')->nullable()->collate('utf8mb4_general_ci'); // VARCHAR(255) with collation
             $table->string('description')->nullable()->collate('utf8mb4_general_ci'); // VARCHAR(255) with collation
             $table->integer('is_trash')->default(0)->nullable()->comment('0. aktif 1. deleted'); // INT
