@@ -28,6 +28,7 @@ class PermissionController extends Controller {
 
     public function json(Request $request) {
         $root_user = ParameterModel::where('id', 'ROOT')->first();
+        $role_user = auth()->user()->role;
         if (!$this->user_permission()['read']) {
             return [
                 'draw' => 0,
@@ -38,8 +39,9 @@ class PermissionController extends Controller {
         }
         $exec = User_groups::with('children', 'parent');
         $this->applyFilters($exec, $request);
-        if (auth()->user()->role <> $root_user->param_value) {
+        if ($role_user <> $root_user->param_value) {
             $exec->where('id', $root_user->param_value);
+            $exec->orWhere('parent_id', $role_user);
         }
         $exec->orderBy('id', 'asc');
         $dt_param = $exec->get();
