@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Permission as db_permission;
 use App\Models\Parameter as ParameterModel;
 use App\Models\User_groups;
+use App\Models\Menu as db_menu;
 
 class PermissionController extends Controller {
 
@@ -148,12 +149,14 @@ class PermissionController extends Controller {
         DB::beginTransaction(); // Start transaction
         try {
             if ($request->q == 'add') {
-                User_groups::create([
+                $User_groups = User_groups::create([
                     'parent_id' => $request->parenttxt,
                     'name' => $request->nametxt,
                     'description' => $request->descriptontxt,
                     'created_by' => auth()->user()->id
                 ]);
+                $lastInsertedId = $User_groups->id;
+                $this->insert_permission($lastInsertedId);
             } elseif ($request->q == 'update') {
                 User_groups::where('id', $request->idtxt2)
                         ->update([
@@ -178,6 +181,22 @@ class PermissionController extends Controller {
                         'message' => 'Failed to create user.',
                         'error' => $exc->getMessage() // Optionally log the error for debugging
                             ], 500);
+        }
+    }
+
+    private function insert_permission($id_role) {
+        $tot_menu = db_menu::where('is_trash', 0)->get();
+        for ($index = 0; $index < count($tot_menu); $index++) {
+            $permission = new db_permission();
+            $permission->role_id = $id_role;
+            $permission->id_menu = $tot_menu[$index]->id;
+            $permission->v = 0;
+            $permission->c = 0;
+            $permission->r = 0;
+            $permission->u = 0;
+            $permission->d = 0;
+            $permission->created_by = auth()->user()->id;
+            $permission->save();
         }
     }
 }
