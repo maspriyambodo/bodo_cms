@@ -69,7 +69,7 @@ class PermissionController extends Controller {
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
             <i class="bi bi-three-dots-vertical"></i>
         </a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true"><div class="menu-item px-3">
-                <span class="text-center text-muted py-3">Menu Action</span>
+                <span class="text-center text-muted py-3 mb-2">' . $row->name . ' Action</span>
             </div>';
 
         if ($this->user_permission()['update']) {
@@ -141,6 +141,10 @@ class PermissionController extends Controller {
                 'nametxt2' => 'required|string|max:50',
                 'descriptontxt2' => 'required|string'
             ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                'd_id' => 'required|integer',
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -167,6 +171,13 @@ class PermissionController extends Controller {
                             'description' => $request->descriptontxt2,
                             'updated_by' => auth()->user()->id
                 ]);
+            } elseif ($request->q == 'delete') {
+                User_groups::where('id', $request->d_id)
+                        ->update([
+                            'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+                $this->delete_permission($request->d_id);
             }
             DB::commit(); // Commit transaction
             return response()->json([
@@ -183,6 +194,22 @@ class PermissionController extends Controller {
                         'message' => 'Failed to create user.',
                         'error' => $exc->getMessage() // Optionally log the error for debugging
                             ], 500);
+        }
+    }
+
+    private function delete_permission($id_role) {
+        $tot_menu = db_menu::all();
+        for ($index = 0; $index < count($tot_menu); $index++) {
+            db_permission::where('role_id', $id_role)
+                    ->update([
+                        'is_trash' => 1,
+                        'v' => 0,
+                        'c' => 0,
+                        'r' => 0,
+                        'u' => 0,
+                        'd' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
         }
     }
 
