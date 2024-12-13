@@ -44,6 +44,7 @@ class MenuController extends Controller {
         $exec = db_menu::with('parent', 'children', 'group');
         $this->applyFilters($exec, $request);
         if ($role_user <> $root_user->param_value) {
+            $exec->where('is_trash', 0);
             $exec->where('id', $root_user->param_value);
             $exec->orWhere('parent_id', $role_user);
         }
@@ -126,6 +127,27 @@ class MenuController extends Controller {
         db_permission::insert($form_data);
     }
 
+    public function edit(Request $request) {
+        $exec = db_menu::where('id', $request->id)->first();
+        if ($exec) {
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'dt_menu' => $exec
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'dt_menu' => $exec
+                ]);
+            }
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+
     public function store(Request $request) {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
@@ -133,7 +155,18 @@ class MenuController extends Controller {
                         'namatxt' => 'required|string|max:50|unique:sys_menu,nama',
                         'linktxt' => 'required|string|max:50|unique:sys_menu,link',
                         'gruptxt' => 'required|integer|exists:sys_menu_group,id',
-                        'vistxt' => 'required|integer'
+                        'vistxt' => 'required|integer',
+                        'descripttxt' => 'nullable|string|max:255'
+            ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                        'idtxt2' => 'required|integer|exists:sys_menu,id',
+                        'parenttxt2' => 'nullable|integer|exists:sys_menu,id',
+                        'namatxt2' => 'required|string|max:50',
+                        'linktxt2' => 'required|string|max:50',
+                        'gruptxt2' => 'required|integer|exists:sys_menu_group,id',
+                        'vistxt2' => 'required|integer',
+                        'descripttxt2' => 'nullable|string|max:255'
             ]);
         }
         if ($validator->fails()) {
@@ -152,12 +185,23 @@ class MenuController extends Controller {
                             'link' => $request->linktxt,
                             'order_no' => ($order_no->order_no + 1),
                             'group_menu' => $request->gruptxt,
-                            'description' => $request->gruptxt,
+                            'description' => $request->descripttxt,
                             'is_hide' => $request->vistxt,
                             'created_by' => auth()->user()->id
                 ]);
                 $lastInsertedId = $dt_menu->id;
                 $this->generate_permission($lastInsertedId);
+            } elseif ($request->q == 'update') {
+                db_menu::where('id', $request->idtxt2)
+                        ->update([
+                            'menu_parent' => $request->parenttxt2,
+                            'nama' => $request->namatxt2,
+                            'link' => $request->linktxt2,
+                            'group_menu' => $request->gruptxt2,
+                            'description' => $request->descripttxt2,
+                            'is_hide' => $request->vistxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
             }
             DB::commit(); // Commit transaction
             return response()->json([
