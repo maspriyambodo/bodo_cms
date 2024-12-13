@@ -18,10 +18,14 @@ class PermissionController extends Controller {
     private function user_permission() {
         return Controller::permission_user();
     }
+    
+    private function root_user() {
+        return ParameterModel::where('id', 'ROOT')->first();
+    }
 
     public function index(Request $request) {
         $user_access = $this->user_permission();
-        $root_user = ParameterModel::where('id', 'ROOT')->first();
+        $root_user = $this->root_user();
         $user_groups = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
         return view('permission.index', compact('user_access', 'user_groups'));
     }
@@ -66,7 +70,7 @@ class PermissionController extends Controller {
     }
 
     public function json(Request $request) {
-        $root_user = ParameterModel::where('id', 'ROOT')->first();
+        $root_user = $this->root_user();
         $role_user = auth()->user()->role;
         if (!$this->user_permission()['read']) {
             return [
