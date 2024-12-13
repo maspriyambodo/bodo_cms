@@ -36,6 +36,17 @@ class SysMenuGroupSeeder extends Seeder {
                 'updated_at' => '2024-11-28 23:00:36',
                 'updated_by' => 1,
             ],
+            [
+                'id' => 3,
+                'nama' => 'Master',
+                'description' => 'menu grup master data',
+                'order_no' => 3,
+                'is_trash' => 0,
+                'created_at' => '2024-11-28 23:00:29',
+                'created_by' => 1,
+                'updated_at' => '2024-11-28 23:00:36',
+                'updated_by' => 1,
+            ],
         ]);
     }
 }

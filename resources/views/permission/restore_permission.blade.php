@@ -6,8 +6,10 @@
             </div>
             <form id="restore_form" class="form" action="#" autocomplete="off">
                 @csrf
-                <input id="setidtxt3" name="setidtxt3" type="hidden" required=""/>
                 <div class="modal-body">
+                    <div class="fv-row">
+                        <input id="delidtxt" name="delidtxt" type="hidden" value=""/>
+                    </div>
                     <div class="alert alert-warning d-flex align-items-center p-5 mb-10">
                         <span class="svg-icon svg-icon-2hx svg-icon-danger me-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -61,7 +63,7 @@
             dataType: 'json',
             success: function (data) {
                 if (data.success) {
-                    $('input[name="setidtxt3"]').val(data.dt_permission['id']);
+                    $('input[name="delidtxt"]').val(data.dt_permission['id']);
                     $('input[name="nametxt3"]').val(data.dt_permission['name']);
                     $('textarea[name="descriptontxt3"]').val(data.dt_permission['description']);
                     $("#parenttxt3").val(data.dt_permission['parent_id']);
@@ -100,12 +102,11 @@
     }
 </script>
 <script>
-    const formEdit = document.getElementById('restore_form');
-    var validator2 = FormValidation.formValidation(
-            formEdit,
+    const restoreForm = document.getElementById('restore_form');
+    var validator_resotre = new FormValidation.formValidation(restoreForm,
             {
                 fields: {
-                    setidtxt3: {
+                    delidtxt: {
                         validators: {
                             notEmpty: {
                                 message: 'The ID is required'
@@ -123,24 +124,24 @@
                 }
             }
     );
-    const restoreButton = document.getElementById('restorebtn_submit');
-    restoreButton.addEventListener('click', function (e) {
+    const restoreBtn = document.getElementById('restorebtn_submit');
+    restoreBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        if (validator2) {
-            validator2.validate().then(function (status) {
+        if (validator_resotre) {
+            validator_resotre.validate().then(function (status) {
                 if (status == 'Valid') {
-                    restoreButton.setAttribute('data-kt-indicator', 'on');
-                    restoreButton.disabled = true;
-                    const formData = new FormData(formEdit);
+                    restoreBtn.setAttribute('data-kt-indicator', 'on');
+                    restoreBtn.disabled = true;
+                    const restoreformData = new FormData(restoreForm);
                     fetch('permission-store/?q=restore', {
                         method: 'POST',
-                        body: formData
+                        body: restoreformData
                     })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
                                     Swal.fire({
-                                        text: "data has been updated",
+                                        text: "data has been restored",
                                         icon: "success",
                                         buttonsStyling: !1,
                                         confirmButtonText: "OK",
@@ -149,14 +150,14 @@
                                             confirmButton: "btn btn-primary"
                                         }
                                     }).then(function () {
-                                        restoreButton.setAttribute('data-kt-indicator', 'off');
-                                        restoreButton.disabled = false;
+                                        restoreBtn.setAttribute('data-kt-indicator', 'off');
+                                        restoreBtn.disabled = false;
                                         $('#table-permission').DataTable().ajax.reload();
-                                        $("#editModal").modal('toggle');
+                                        $("#restoreModal").modal('toggle');
                                     });
                                 } else {
                                     Swal.fire({
-                                        text: "error while insert data, errcode: 04121113",
+                                        text: "error while insert data, errcode: 1258121204",
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "OK",

@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+    Route::get('/menu-json', [MenuController::class, 'json'])->name('menu');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
 
