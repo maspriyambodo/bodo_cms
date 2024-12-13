@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
     Route::get('/menu-json', [MenuController::class, 'json'])->name('menu');
+    Route::post('/menu-store', [MenuController::class, 'store'])->name('menu');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
 
