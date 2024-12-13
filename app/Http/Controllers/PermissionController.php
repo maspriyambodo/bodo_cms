@@ -190,7 +190,7 @@ class PermissionController extends Controller {
             ]);
         } elseif ($request->q == 'restore') {
             $validator = Validator::make($request->all(), [
-                'setidtxt3' => 'required|integer',
+                'delidtxt' => 'required|integer',
             ]);
         }
         if ($validator->fails()) {
@@ -228,9 +228,9 @@ class PermissionController extends Controller {
             } elseif ($request->q == 'setpermission') {
                 $setpermission = $this->set_permission($request);
             } elseif ($request->q == 'restore') {
-                User_groups::where('id', $request->setidtxt3)
+                User_groups::where('id', $request->delidtxt)
                         ->update([
-                            'is_trash' => 1,
+                            'is_trash' => 0,
                             'updated_by' => auth()->user()->id
                 ]);
             }

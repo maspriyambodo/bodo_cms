@@ -7,8 +7,11 @@
             </div>
             <form id="delete_form" class="form" action="#" autocomplete="off">
                 @csrf
-                <input id="d_id" name="d_id" type="hidden" required=""/>
+                
                 <div class="modal-body">
+                    <div class="fv-row">
+                        <input id="d_id" name="d_id" type="hidden" value=""/>
+                    </div>
                     <p id="deltxt"></p>
                     <p class="text-warning fw-bold mt-4">deleted data cannot be recovered</p>
                 </div>
@@ -71,8 +74,7 @@
 </script>
 <script>
     const formDelete = document.getElementById('delete_form');
-    var validator3 = FormValidation.formValidation(
-            formEdit,
+    var validator3 = new FormValidation.formValidation(formDelete,
             {
                 fields: {
                     d_id: {
