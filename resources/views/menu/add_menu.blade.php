@@ -43,6 +43,10 @@
                             <option value="1">Hidden</option>
                         </select>
                     </div>
+                    <div class="fv-row mb-10">
+                        <label for="descripttxt" class="required form-label">Description</label>
+                        <textarea id="descripttxt" name="descripttxt" class="form-control form-control-solid"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
