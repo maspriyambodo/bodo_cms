@@ -168,6 +168,10 @@ class MenuController extends Controller {
                         'vistxt2' => 'required|integer',
                         'descripttxt2' => 'nullable|string|max:255'
             ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                        'd_id' => 'required|integer|exists:sys_menu,id'
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -200,6 +204,12 @@ class MenuController extends Controller {
                             'group_menu' => $request->gruptxt2,
                             'description' => $request->descripttxt2,
                             'is_hide' => $request->vistxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'delete') {
+                db_menu::where('id', $request->d_id)
+                        ->update([
+                            'is_trash' => 1,
                             'updated_by' => auth()->user()->id
                 ]);
             }
