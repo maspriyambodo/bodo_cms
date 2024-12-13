@@ -152,7 +152,7 @@
         if (validator4) {
             validator4.validate().then(function (status) {
                 if (status == 'Valid') {
-                    $('input:checkbox').prop('checked', true);
+//                    $('input:checkbox').prop('checked', true);
                     confButton.setAttribute('data-kt-indicator', 'on');
                     confButton.disabled = true;
                     const formData = new FormData(formSetpermisi);
@@ -222,8 +222,10 @@
         d = $("#dtxt" + val);
         if ($("#vtxt" + val).prop('checked') == true) {
             document.getElementById("vtxt" + val).value = 1;
+            document.getElementById("tvtxt" + val).value = 1;
         } else {
             document.getElementById("vtxt" + val).value = 0;
+            document.getElementById("tvtxt" + val).value = 0;
             c.prop('checked', false);
             r.prop('checked', false);
             u.prop('checked', false);
@@ -237,10 +239,13 @@
             $("#ctxt" + val).prop('checked', false);
             msgtxt = 'you cannot select this without view access!';
             document.getElementById("ctxt" + val).value = 0;
+            document.getElementById("tctxt" + val).value = 0;
         } else if ($("#ctxt" + val).prop('checked') == true) {
             document.getElementById("ctxt" + val).value = 1;
+            document.getElementById("tctxt" + val).value = 1;
         } else {
             document.getElementById("ctxt" + val).value = 0;
+            document.getElementById("tctxt" + val).value = 0;
         }
         if (msgtxt) {
             Swal.fire({
@@ -262,10 +267,13 @@
             $("#rtxt" + val).prop('checked', false);
             msgtxt = 'you cannot select this without view access!';
             document.getElementById("rtxt" + val).value = 0;
+            document.getElementById("trtxt" + val).value = 0;
         } else if ($("#rtxt" + val).prop('checked') == true) {
             document.getElementById("rtxt" + val).value = 1;
+            document.getElementById("trtxt" + val).value = 1;
         } else {
             document.getElementById("rtxt" + val).value = 0;
+            document.getElementById("trtxt" + val).value = 0;
         }
         if (msgtxt) {
             Swal.fire({
@@ -288,14 +296,18 @@
             $("#utxt" + val).prop('checked', false);
             msgtxt = 'you cannot select this without view access!';
             document.getElementById("utxt" + val).value = 0;
+            document.getElementById("tutxt" + val).value = 0;
         } else if (read_menu == 0 & view_menu == 1) {
             $("#utxt" + val).prop('checked', false);
             msgtxt = 'you cannot select this without read access!';
             document.getElementById("utxt" + val).value = 0;
+            document.getElementById("tutxt" + val).value = 0;
         } else if ($("#utxt" + val).prop('checked') == true) {
             document.getElementById("utxt" + val).value = 1;
+            document.getElementById("tutxt" + val).value = 1;
         } else {
             document.getElementById("utxt" + val).value = 0;
+            document.getElementById("tutxt" + val).value = 0;
         }
         if (msgtxt) {
             Swal.fire({
@@ -318,14 +330,18 @@
             $("#dtxt" + val).prop('checked', false);
             msgtxt = 'you cannot select this without view access!';
             document.getElementById("dtxt" + val).value = 0;
+            document.getElementById("tdtxt" + val).value = 0;
         } else if (read_menu == 0 & view_menu == 1) {
             $("#dtxt" + val).prop('checked', false);
             msgtxt = 'you cannot select this without read access!';
             document.getElementById("dtxt" + val).value = 0;
+            document.getElementById("tdtxt" + val).value = 0;
         } else if ($("#dtxt" + val).prop('checked') == true) {
             document.getElementById("dtxt" + val).value = 1;
+            document.getElementById("tdtxt" + val).value = 1;
         } else {
             document.getElementById("dtxt" + val).value = 0;
+            document.getElementById("tdtxt" + val).value = 0;
         }
         if (msgtxt) {
             Swal.fire({

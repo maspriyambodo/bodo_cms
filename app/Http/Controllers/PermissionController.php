@@ -61,6 +61,7 @@ class PermissionController extends Controller {
         }
         return '<div>
                 <input name="' . $name . '" class="form-check-input" type="checkbox" id="' . $id . '" value="' . $value . '" onclick="' . $onclick_event . '" ' . $checked . '>
+                    <input name="t' . $name . '" class="form-check-input" type="hidden" id="t' . $id . '" value="' . $value . '">
             </div>';
     }
 
@@ -249,11 +250,11 @@ class PermissionController extends Controller {
             $form_data[$index] = [
                 'role_id' => $role_id,
                 'id_menu' => $id_menu,
-                'v' => $data->viewtxt[$index],
-                'c' => $data->createtxt[$index],
-                'r' => $data->readtxt[$index],
-                'u' => $data->updatetxt[$index],
-                'd' => $data->deletetxt[$index],
+                'v' => $data->tviewtxt[$index],
+                'c' => $data->tcreatetxt[$index],
+                'r' => $data->treadtxt[$index],
+                'u' => $data->tupdatetxt[$index],
+                'd' => $data->tdeletetxt[$index],
                 'updated_by' => auth()->user()->id
             ];
         }
