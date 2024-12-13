@@ -172,6 +172,10 @@ class MenuController extends Controller {
             $validator = Validator::make($request->all(), [
                         'd_id' => 'required|integer|exists:sys_menu,id'
             ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                        'delidtxt' => 'required|integer|exists:sys_menu,id'
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -210,6 +214,12 @@ class MenuController extends Controller {
                 db_menu::where('id', $request->d_id)
                         ->update([
                             'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'restore') {
+                db_menu::where('id', $request->delidtxt)
+                        ->update([
+                            'is_trash' => 0,
                             'updated_by' => auth()->user()->id
                 ]);
             }
