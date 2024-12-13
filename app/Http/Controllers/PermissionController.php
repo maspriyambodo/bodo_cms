@@ -236,8 +236,7 @@ class PermissionController extends Controller {
             }
             DB::commit(); // Commit transaction
             return response()->json([
-                        'success' => true,
-                        'set_permission' => $setpermission
+                        'success' => true
             ]);
         } catch (Exception $exc) {
             DB::rollBack(); // Rollback transaction
