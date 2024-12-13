@@ -133,7 +133,7 @@ class PermissionController extends Controller {
             </div>';
         }
 
-        if ($this->user_permission()['delete']) {
+        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="configData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-gear text-warning mx-2"></i> Config
@@ -188,6 +188,10 @@ class PermissionController extends Controller {
             $validator = Validator::make($request->all(), [
                 'setidtxt' => 'required|integer',
             ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                'setidtxt3' => 'required|integer',
+            ]);
         }
         if ($validator->fails()) {
             return response()->json([
@@ -223,6 +227,12 @@ class PermissionController extends Controller {
                 $this->delete_permission($request->d_id);
             } elseif ($request->q == 'setpermission') {
                 $setpermission = $this->set_permission($request);
+            } elseif ($request->q == 'restore') {
+                User_groups::where('id', $request->setidtxt3)
+                        ->update([
+                            'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
             }
             DB::commit(); // Commit transaction
             return response()->json([
