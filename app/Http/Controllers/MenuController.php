@@ -10,6 +10,7 @@ use App\Models\Permission as db_permission;
 use App\Models\Parameter as ParameterModel;
 use App\Models\User_groups;
 use App\Models\Menu as db_menu;
+use App\Models\MenuGroup;
 use Yajra\DataTables\Facades\DataTables;
 
 class MenuController extends Controller {
@@ -18,13 +19,19 @@ class MenuController extends Controller {
         return Controller::permission_user();
     }
 
+    private function root_user() {
+        return ParameterModel::where('id', 'ROOT')->first();
+    }
+
     public function index(Request $request) {
         $user_access = $this->user_permission();
-        return view('menu.index', compact('user_access'));
+        $menu_parent = db_menu::where('is_trash', 0)->get();
+        $menu_group = MenuGroup::where('is_trash', 0)->get();
+        return view('menu.index', compact('user_access', 'menu_parent', 'menu_group'));
     }
 
     public function json(Request $request) {
-        $root_user = ParameterModel::where('id', 'ROOT')->first();
+        $root_user = $this->root_user();
         $role_user = auth()->user()->role;
         if (!$this->user_permission()['read']) {
             return [
@@ -94,5 +101,79 @@ class MenuController extends Controller {
         $buttons .= "</div>";
 
         return $buttons;
+    }
+
+    private function generate_permission($id_menu) {
+        $root_user = $this->root_user();
+        $userId = auth()->user()->id;
+        $roleIds = User_groups::where('is_trash', 0)->pluck('id')->toArray();
+
+        $form_data = [];
+
+        foreach ($roleIds as $roleId) {
+            $form_data[] = [
+                'role_id' => $roleId,
+                'id_menu' => $id_menu,
+                'v' => $root_user->param_value == $roleId ? 1 : 0,
+                'c' => $root_user->param_value == $roleId ? 1 : 0,
+                'r' => $root_user->param_value == $roleId ? 1 : 0,
+                'u' => $root_user->param_value == $roleId ? 1 : 0,
+                'd' => $root_user->param_value == $roleId ? 1 : 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => $userId,
+            ];
+        }
+        db_permission::insert($form_data);
+    }
+
+    public function store(Request $request) {
+        if ($request->q == 'add') {
+            $validator = Validator::make($request->all(), [
+                        'parenttxt' => 'nullable|integer|exists:sys_menu,id',
+                        'namatxt' => 'required|string|max:50|unique:sys_menu,nama',
+                        'linktxt' => 'required|string|max:50|unique:sys_menu,link',
+                        'gruptxt' => 'required|integer|exists:sys_menu_group,id',
+                        'vistxt' => 'required|integer'
+            ]);
+        }
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errors' => $validator->errors(),
+                            ], 422);
+        }
+        DB::beginTransaction(); // Start transaction
+        try {
+            if ($request->q == 'add') {
+                $order_no = db_menu::where('group_menu', $request->gruptxt)->orderBy('order_no', 'desc')->first();
+                $dt_menu = db_menu::create([
+                            'menu_parent' => $request->parenttxt,
+                            'nama' => $request->namatxt,
+                            'link' => $request->linktxt,
+                            'order_no' => ($order_no->order_no + 1),
+                            'group_menu' => $request->gruptxt,
+                            'description' => $request->gruptxt,
+                            'is_hide' => $request->vistxt,
+                            'created_by' => auth()->user()->id
+                ]);
+                $lastInsertedId = $dt_menu->id;
+                $this->generate_permission($lastInsertedId);
+            }
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true
+            ]);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $exc->getMessage() // Optionally log the error for debugging
+                            ], 500);
+        }
     }
 }
