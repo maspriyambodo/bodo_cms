@@ -61,14 +61,17 @@ class MenuController extends Controller {
     private function applyFilters($query, Request $request) {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', "%" . $request->keyword . "%")
+                $q->where('nama', 'like', "%" . $request->keyword . "%")
                         ->orWhere('description', 'like', "%" . $request->keyword . "%");
             });
         }
     }
 
     private function getActionButtons($row) {
-        if (!$this->user_permission()['update'] && !$this->user_permission()['delete']) {
+        $permissions = $this->user_permission();
+        $canUpdate = $permissions['update'];
+        $canDelete = $permissions['delete'];
+        if (!$canUpdate && !$canDelete) {
             return '';
         }
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
@@ -77,7 +80,7 @@ class MenuController extends Controller {
                 <span class="text-center text-muted py-3 mb-2">' . $row->name . ' Action</span>
             </div>';
 
-        if ($this->user_permission()['update']) {
+        if ($canUpdate) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
@@ -85,18 +88,20 @@ class MenuController extends Controller {
             </div>';
         }
 
-        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
-            $buttons .= '<div class="menu-item px-3 border">
+        if ($canDelete && $row->is_trash == 0) {
+            if ($row->is_trash == 0) {
+                $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
                 </a>
             </div>';
-        } else {
-            $buttons .= '<div class="menu-item px-3 border">
+            } else {
+                $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="restoreData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-recycle text-success mx-2"></i> Activate
                 </a>
             </div>';
+            }
         }
 
         $buttons .= "</div>";
