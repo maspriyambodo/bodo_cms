@@ -29,7 +29,11 @@
                     {data: "picture", className: "text-center", orderable: false},
                     {data: "name"},
                     {data: "email"},
-                    {data: "role_name"},
+                    {
+                        render: function(data, type, row, meta){
+                            return row.group.name;
+                        }
+                    },
                     {data: "status_aktif"},
                     {data: "created_at", className: 'text-center'}
                 ],

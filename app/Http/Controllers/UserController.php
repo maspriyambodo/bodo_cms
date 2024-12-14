@@ -18,7 +18,12 @@ class UserController extends Controller {
         return Controller::permission_user();
     }
 
+    private function root_user() {
+        return Parameter::where('id', 'ROOT')->first();
+    }
+
     public function json(Request $request) {
+        $root_user = $this->root_user();
         if (!$this->user_permission()['read']) {
             return [
                 'draw' => 0,
@@ -27,9 +32,7 @@ class UserController extends Controller {
                 'data' => []
             ];
         }
-        $exec = User::select('users.id', 'users.pict', 'users.name', 'users.email', 'users.is_trash', 'users.created_at', 'user_groups.name AS role_name')
-                ->join('user_groups', 'users.role', '=', 'user_groups.id');
-        $root_user = Parameter::where('id', 'ROOT')->first();
+        $exec = User::with('group');
         if (auth()->user()->role <> $root_user->param_value) {
             $exec->where('is_trash', 0);
         }
@@ -37,7 +40,7 @@ class UserController extends Controller {
         $exec->orderBy('users.name', 'asc');
         $users = $exec->get();
         return Datatables::of($users)
-                        ->editColumn('created_at', fn($row) => date('d/M/Y', strtotime($row->created_at)))
+                        ->editColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d/M/Y'))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
                         ->addColumn('picture', fn($row) => $this->getPictUser($row))
@@ -48,10 +51,9 @@ class UserController extends Controller {
     private function applyFilters($query, Request $request) {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                $q->where('users.name', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('users.email', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('user_groups.name', 'like', "%" . $request->keyword . "%");
-            });
+                        $q->where('users.name', 'like', "%" . $request->keyword . "%")
+                        ->orWhere('users.email', 'like', "%" . $request->keyword . "%");
+                    });
         }
     }
 
@@ -71,8 +73,11 @@ class UserController extends Controller {
     }
 
     private function getActionButtons($row) {
-        $enc_id_user = encrypt($row->id);
-        if (!$this->user_permission()['update'] && !$this->user_permission()['delete']) {
+        $encIdUser = encrypt($row->id);
+        $permissions = $this->user_permission();
+        $canUpdate = $permissions['update'];
+        $canDelete = $permissions['delete'];
+        if (!$canUpdate && !$canDelete) {
             return '';
         }
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
@@ -81,31 +86,33 @@ class UserController extends Controller {
                 <span class="text-center text-muted py-3">Menu Action</span>
             </div>';
 
-        if ($this->user_permission()['update']) {
+        if ($canUpdate) {
             $buttons .= '<div class="menu-item px-3 border">
-                <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $enc_id_user . '&apos;);">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $encIdUser . '&apos;);">
                     <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
                 </a>
             </div>';
         }
 
-        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
-            $buttons .= '<div class="menu-item px-3 border">
-                <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $enc_id_user . '&apos;);">
-                    <i class="bi bi-trash text-danger mx-2"></i> Delete
-                </a>
-            </div>';
-        } else {
-            $buttons .= '<div class="menu-item px-3 border">
-                <a href="javascript:void(0);" class="menu-link px-3" onclick="restoreData(&apos;' . $enc_id_user . '&apos;);">
-                    <i class="bi bi-recycle text-success mx-2"></i> Activate
-                </a>
-            </div>';
+        if ($canDelete) {
+            if ($row->is_trash == 0) {
+                $buttons .= '<div class="menu-item px-3 border">
+                            <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(\'' . $encIdUser . '\');">
+                                <i class="bi bi-trash text-danger mx-2"></i> Delete
+                            </a>
+                          </div>';
+            } else {
+                $buttons .= '<div class="menu-item px-3 border">
+                            <a href="javascript:void(0);" class="menu-link px-3" onclick="restoreData(\'' . $encIdUser . '\');">
+                                <i class="bi bi-recycle text-success mx-2"></i> Activate
+                            </a>
+                          </div>';
+            }
         }
 
-        if ($this->user_permission()['delete']) {
+        if ($canDelete) {
             $buttons .= '<div class="menu-item px-3 border">
-                <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPassword(&apos;' . $enc_id_user . '&apos;);">
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPassword(&apos;' . $encIdUser . '&apos;);">
                     <i class="bi bi-key text-info mx-2"></i> Reset Password
                 </a>
             </div>';
@@ -118,7 +125,7 @@ class UserController extends Controller {
 
     public function index(Request $request) {
         $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
-        $root_user = Parameter::where('id', 'ROOT')->first();
+        $root_user = $this->root_user();
         $dt_role = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
         $user_access = $this->user_permission();
         return view('users.index', compact('default_password', 'dt_role', 'user_access'));
@@ -159,31 +166,31 @@ class UserController extends Controller {
         if ($request->e_id) {
             $dec_id_user = decrypt($request->e_id);
             $validator = Validator::make($request->all(), [
-                'namatxt2' => 'required|string|max:255',
-                'mailtxt2' => 'required|email|max:255',
-                'leveltxt2' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+                        'namatxt2' => 'required|string|max:255',
+                        'mailtxt2' => 'required|email|max:255',
+                        'leveltxt2' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
             ]);
         } elseif ($request->d_id) {
             $dec_id_user2 = decrypt($request->d_id); // delete id user
             $validator = Validator::make($request->all(), [
-                'd_id' => 'required',
+                        'd_id' => 'required',
             ]);
         } elseif ($request->d_id2) {
             $dec_id_user3 = decrypt($request->d_id2); // delete id user
             $validator = Validator::make($request->all(), [
-                'd_id2' => 'required',
+                        'd_id2' => 'required',
             ]);
         } elseif ($request->d_id3) {
             $dec_id_user4 = decrypt($request->d_id3); // delete id user
             $validator = Validator::make($request->all(), [
-                'd_id3' => 'required',
+                        'd_id3' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'namatxt' => 'required|string|max:255',
-                'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
-                'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
-                'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+                        'namatxt' => 'required|string|max:255',
+                        'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
+                        'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
+                        'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
             ]);
         }
 
