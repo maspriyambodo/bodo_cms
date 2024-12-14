@@ -24,7 +24,7 @@ class User_groups extends Model {
     ];
 
     public function users() {
-        return $this->hasMany(User::class, 'role');
+        return $this->hasMany(User::class, 'role', 'id');
     }
 
     public function permissions() {

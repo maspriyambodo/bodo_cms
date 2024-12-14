@@ -59,7 +59,7 @@ class User extends Authenticatable {
     }
 
     public function group() {
-        return $this->belongsTo(UserGroup::class, 'role');
+        return $this->belongsTo(UserGroup::class, 'role', 'id');
     }
 
     public function hasPermission($role_user) {
