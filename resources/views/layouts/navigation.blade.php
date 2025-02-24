@@ -4,7 +4,7 @@
             @foreach($menus as $key => $menu)
             @if($menu->children->isEmpty())
             <div class="menu-item">
-                <a class="menu-link {{ request()->routeIs($menu->link) ? 'active' : '' }}" href="{{ request()->routeIs($menu->link) ? 'javascript:void(0);' : $menu->link }}">
+                <a class="menu-link{{ request()->routeIs($menu->link) ? ' active' : '' }}" href="{{ request()->routeIs($menu->link) ? 'javascript:void(0);' : $menu->link }}">
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -34,10 +34,17 @@
                     <span class="menu-title">{{ $menu->nama }}</span>
                     <span class="menu-arrow"></span>
                 </span>
-                <div class="menu-sub menu-sub-accordion menu-active-bg" style="display: none; overflow: hidden;" kt-hidden-height="273">
+                <div class="menu-sub menu-sub-accordion menu-active-bg">
                     @foreach($menu->children as $child)
+                    @php
+                    if(request()->route()->getName() == $child->link){
+                    $menu_active = ' active';
+                    } else {
+                    $menu_active = '';
+                    }
+                    @endphp
                     <div class="menu-item">
-                        <a class="menu-link" href="{{ $child->link }}">
+                        <a class="menu-link{{ $menu_active; }}" href="{{ $child->link }}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -46,8 +53,15 @@
                     </div>
                     @if($child->children->isNotEmpty())
                     @foreach($child->children as $subChild)
+                    @php
+                    if(request()->route()->getName() == $subChild->link){
+                    $menu_active2 = ' active';
+                    } else {
+                    $menu_active2 = '';
+                    }
+                    @endphp
                     <div class="menu-item">
-                        <a class="menu-link" href="{{ $subChild->link }}">
+                        <a class="menu-link{{ $menu_active2; }}" href="{{ $subChild->link }}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
