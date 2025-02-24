@@ -47,7 +47,8 @@
                         data: "status_aktif"
                     },
                     {
-                        data: "created_at"
+                        data: "created_at",
+                        className: "text-center"
                     }
                 ],
                 displayStart: 0,

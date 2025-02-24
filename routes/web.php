@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
     Route::get('/menugrup-json', [GroupMenu::class, 'json'])->name('menu-group');
+    Route::post('/menugrup-store', [GroupMenu::class, 'store'])->name('menu-group');
 
     Route::get('/parameter', [Parameter::class, 'index'])->name('parameter');
     Route::get('/parameter-json', [Parameter::class, 'json'])->name('parameter');

@@ -14,7 +14,7 @@
         <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . config('app.name', 'Laravel'); }}">
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
         <link rel="shortcut icon" href=assets/media/logos/favicon.ico>
-        <link href="{{ asset('build/assets/app-DWyhC5Vm.css'); }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
         <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>

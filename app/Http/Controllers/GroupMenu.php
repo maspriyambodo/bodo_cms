@@ -20,8 +20,8 @@ class GroupMenu extends Controller {
 
     public function index(Request $request) {
         $user_access = $this->user_permission();
-        $menu_group = MenuGroup::where('is_trash', 0)->get();
-        return view('grupmenu.index', compact('user_access', 'menu_group'));
+        $order_num = MenuGroup::select('order_no')->get();
+        return view('grupmenu.index', compact('user_access', 'order_num'));
     }
 
     public function json(Request $request) {
@@ -93,5 +93,43 @@ class GroupMenu extends Controller {
         $buttons .= "</div>";
 
         return $buttons;
+    }
+
+    public function store(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'nmatxt' => 'required|string|max:50|unique:sys_menu_group,nama',
+            'desctxt' => 'nullable|string',
+            'ordtxt' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errors' => $validator->errors(),
+                            ], 422);
+        }
+        DB::beginTransaction(); // Start transaction
+        try {
+            MenuGroup::create([
+                'nama' => $request->nmatxt,
+                'description' => $request->desctxt,
+                'order_no' => $request->ordtxt,
+                'created_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true
+            ]);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $exc->getMessage() // Optionally log the error for debugging
+                            ], 500);
+        }
     }
 }
