@@ -89,19 +89,17 @@ class MenuController extends Controller {
         }
 
         if ($canDelete && $row->is_trash == 0) {
-            if ($row->is_trash == 0) {
-                $buttons .= '<div class="menu-item px-3 border">
+            $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
                 </a>
             </div>';
-            } else {
-                $buttons .= '<div class="menu-item px-3 border">
+        } else {
+            $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="restoreData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-recycle text-success mx-2"></i> Activate
                 </a>
             </div>';
-            }
         }
 
         $buttons .= "</div>";
@@ -156,30 +154,30 @@ class MenuController extends Controller {
     public function store(Request $request) {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
-                        'parenttxt' => 'nullable|integer|exists:sys_menu,id',
-                        'namatxt' => 'required|string|max:50|unique:sys_menu,nama',
-                        'linktxt' => 'required|string|max:50|unique:sys_menu,link',
-                        'gruptxt' => 'required|integer|exists:sys_menu_group,id',
-                        'vistxt' => 'required|integer',
-                        'descripttxt' => 'nullable|string|max:255'
+                'parenttxt' => 'nullable|integer|exists:sys_menu,id',
+                'namatxt' => 'required|string|max:50|unique:sys_menu,nama',
+                'linktxt' => 'required|string|max:50|unique:sys_menu,link',
+                'gruptxt' => 'required|integer|exists:sys_menu_group,id',
+                'vistxt' => 'required|integer',
+                'descripttxt' => 'nullable|string|max:255'
             ]);
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
-                        'idtxt2' => 'required|integer|exists:sys_menu,id',
-                        'parenttxt2' => 'nullable|integer|exists:sys_menu,id',
-                        'namatxt2' => 'required|string|max:50',
-                        'linktxt2' => 'required|string|max:50',
-                        'gruptxt2' => 'required|integer|exists:sys_menu_group,id',
-                        'vistxt2' => 'required|integer',
-                        'descripttxt2' => 'nullable|string|max:255'
+                'idtxt2' => 'required|integer|exists:sys_menu,id',
+                'parenttxt2' => 'nullable|integer|exists:sys_menu,id',
+                'namatxt2' => 'required|string|max:50',
+                'linktxt2' => 'required|string|max:50',
+                'gruptxt2' => 'required|integer|exists:sys_menu_group,id',
+                'vistxt2' => 'required|integer',
+                'descripttxt2' => 'nullable|string|max:255'
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
-                        'd_id' => 'required|integer|exists:sys_menu,id'
+                'd_id' => 'required|integer|exists:sys_menu,id'
             ]);
         } elseif ($request->q == 'restore') {
             $validator = Validator::make($request->all(), [
-                        'delidtxt' => 'required|integer|exists:sys_menu,id'
+                'delidtxt' => 'required|integer|exists:sys_menu,id'
             ]);
         }
         if ($validator->fails()) {
@@ -193,14 +191,14 @@ class MenuController extends Controller {
             if ($request->q == 'add') {
                 $order_no = db_menu::where('group_menu', $request->gruptxt)->orderBy('order_no', 'desc')->first();
                 $dt_menu = db_menu::create([
-                            'menu_parent' => $request->parenttxt,
-                            'nama' => $request->namatxt,
-                            'link' => $request->linktxt,
-                            'order_no' => ($order_no->order_no + 1),
-                            'group_menu' => $request->gruptxt,
-                            'description' => $request->descripttxt,
-                            'is_hide' => $request->vistxt,
-                            'created_by' => auth()->user()->id
+                    'menu_parent' => $request->parenttxt,
+                    'nama' => $request->namatxt,
+                    'link' => $request->linktxt,
+                    'order_no' => ($order_no->order_no + 1),
+                    'group_menu' => $request->gruptxt,
+                    'description' => $request->descripttxt,
+                    'is_hide' => $request->vistxt,
+                    'created_by' => auth()->user()->id
                 ]);
                 $lastInsertedId = $dt_menu->id;
                 $this->generate_permission($lastInsertedId);
