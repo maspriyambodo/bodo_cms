@@ -75,19 +75,17 @@ class GroupMenu extends Controller {
         }
 
         if ($canDelete && $row->is_trash == 0) {
-            if ($row->is_trash == 0) {
-                $buttons .= '<div class="menu-item px-3 border">
+            $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
                 </a>
             </div>';
-            } else {
-                $buttons .= '<div class="menu-item px-3 border">
+        } else {
+            $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="restoreData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-recycle text-success mx-2"></i> Activate
                 </a>
             </div>';
-            }
         }
 
         $buttons .= "</div>";
@@ -130,6 +128,14 @@ class GroupMenu extends Controller {
                 'desctxt2' => 'nullable|string',
                 'ordtxt2' => 'required|integer',
             ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                'd_id' => 'required|integer'
+            ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                'delidtxt' => 'required|integer'
+            ]);
         }
 
         if ($validator->fails()) {
@@ -145,6 +151,7 @@ class GroupMenu extends Controller {
                     'nama' => $request->nmatxt,
                     'description' => $request->desctxt,
                     'order_no' => $request->ordtxt,
+                    'is_trash' => 1,
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
@@ -153,6 +160,18 @@ class GroupMenu extends Controller {
                             'nama' => $request->nmatxt2,
                             'description' => $request->desctxt2,
                             'order_no' => $request->ordtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'delete') {
+                MenuGroup::where('id', $request->d_id)
+                        ->update([
+                            'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'restore') {
+                MenuGroup::where('id', $request->delidtxt)
+                        ->update([
+                            'is_trash' => 0,
                             'updated_by' => auth()->user()->id
                 ]);
             }
