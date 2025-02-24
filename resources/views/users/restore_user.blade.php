@@ -29,7 +29,7 @@
 <script>
     function restoreData(id_user) {
         $.ajax({
-            url: 'user-management-edit/' + id_user,
+            url: 'user-management/edit/' + id_user,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -102,7 +102,7 @@
                     actButton.setAttribute('data-kt-indicator', 'on');
                     actButton.disabled = true;
                     const formData = new FormData(formRestore);
-                    fetch('user-management-store', {
+                    fetch('user-management/store', {
                         method: 'POST',
                         body: formData
                     })

@@ -29,7 +29,7 @@
 <script>
     function resetPassword(id_user) {
         $.ajax({
-            url: 'user-management-edit/' + id_user + '?q=reset_password',
+            url: 'user-management/edit/' + id_user + '?q=reset_password',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -103,7 +103,7 @@
                     resetButton.setAttribute('data-kt-indicator', 'on');
                     resetButton.disabled = true;
                     const formData = new FormData(formReset);
-                    fetch('user-management-store', {
+                    fetch('user-management/store', {
                         method: 'POST',
                         body: formData
                     })

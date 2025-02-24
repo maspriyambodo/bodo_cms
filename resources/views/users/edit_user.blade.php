@@ -44,7 +44,7 @@
 <script>
     function editData(val) {
         $.ajax({
-            url: 'user-management-edit/' + val,
+            url: 'user-management/edit/' + val,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -136,7 +136,7 @@
                     updateButton.setAttribute('data-kt-indicator', 'on');
                     updateButton.disabled = true;
                     const formData = new FormData(formEdit);
-                    fetch('user-management-store', {
+                    fetch('user-management/store', {
                         method: 'POST',
                         body: formData
                     })

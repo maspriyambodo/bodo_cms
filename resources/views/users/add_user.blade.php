@@ -101,7 +101,7 @@
                     submitButton.setAttribute('data-kt-indicator', 'on');
                     submitButton.disabled = true;
                     const formData = new FormData(form);
-                    fetch('user-management-store', {
+                    fetch('user-management/store', {
                         method: 'POST',
                         body: formData
                     })

@@ -10,7 +10,7 @@
                 info: true,
                 stateSave: true,
                 ajax: {
-                    url: "user-management-json",
+                    url: "user-management/json",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }
