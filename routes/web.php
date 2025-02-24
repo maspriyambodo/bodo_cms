@@ -8,6 +8,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Usergroups;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SpeedTestController;
+use App\Http\Controllers\Provinsi;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +39,13 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [Parameter::class, 'json'])->name('parameter');
             Route::get('/edit/{id}', [Parameter::class, 'edit'])->name('parameter');
             Route::post('/store', [Parameter::class, 'store'])->name('parameter');
+        });
+
+Route::middleware(['auth', 'verified'])
+        ->prefix('provinsi')
+        ->group(function () {
+            Route::get('/', [Provinsi::class, 'index'])->name('provinsi');
+            Route::get('/json', [Provinsi::class, 'json'])->name('provinsi');
         });
 
 Route::middleware(['auth', 'verified'])
