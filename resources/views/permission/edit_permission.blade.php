@@ -45,7 +45,7 @@
 <script>
     function editData(val) {
         $.ajax({
-            url: 'permission-edit/' + val,
+            url: 'permission/edit/' + val,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -134,7 +134,7 @@
                     updateButton.setAttribute('data-kt-indicator', 'on');
                     updateButton.disabled = true;
                     const formData = new FormData(formEdit);
-                    fetch('permission-store/?q=update', {
+                    fetch('permission/store/?q=update', {
                         method: 'POST',
                         body: formData
                     })

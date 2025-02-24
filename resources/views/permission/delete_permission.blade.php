@@ -32,7 +32,7 @@
 <script>
     function deleteData(id_permission) {
         $.ajax({
-            url: 'permission-edit/' + id_permission,
+            url: 'permission/edit/' + id_permission,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -104,7 +104,7 @@
                     delButton.setAttribute('data-kt-indicator', 'on');
                     delButton.disabled = true;
                     const formData = new FormData(formDelete);
-                    fetch('permission-store/?q=delete', {
+                    fetch('permission/store/?q=delete', {
                         method: 'POST',
                         body: formData
                     })

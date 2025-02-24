@@ -58,7 +58,7 @@
 <script>
     function restoreData(id_permission) {
         $.ajax({
-            url: 'permission-edit/' + id_permission,
+            url: 'permission/edit/' + id_permission,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -133,7 +133,7 @@
                     restoreBtn.setAttribute('data-kt-indicator', 'on');
                     restoreBtn.disabled = true;
                     const restoreformData = new FormData(restoreForm);
-                    fetch('permission-store/?q=restore', {
+                    fetch('permission/store/?q=restore', {
                         method: 'POST',
                         body: restoreformData
                     })

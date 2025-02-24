@@ -10,7 +10,7 @@
                 info: true,
                 stateSave: true,
                 ajax: {
-                    url: "permission-json",
+                    url: "permission/json",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }

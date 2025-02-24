@@ -38,7 +38,7 @@
 <script>
     function configData(id_permission) {
         $.ajax({
-            url: 'permission-edit/' + id_permission,
+            url: 'permission/edit/' + id_permission,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -89,7 +89,7 @@
             stateSave: true,
             ordering: false,
             ajax: {
-                url: "permission-set-json/?role_id=" + role_id,
+                url: "permission/set-json/?role_id=" + role_id,
                 data: function (d) {
                     d.keyword = $("#keyword").val();
                 }
@@ -156,7 +156,7 @@
                     confButton.setAttribute('data-kt-indicator', 'on');
                     confButton.disabled = true;
                     const formData = new FormData(formSetpermisi);
-                    fetch('permission-store/?q=setpermission', {
+                    fetch('permission/store/?q=setpermission', {
                         method: 'POST',
                         body: formData
                     })
