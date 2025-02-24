@@ -54,7 +54,7 @@
 <script>
   function deleteData(id_parameter) {
     $.ajax({
-      url: 'parameter-edit/' + id_parameter,
+      url: 'parameter/edit/' + id_parameter,
       type: 'GET',
       dataType: 'json',
       success: function(data) {
@@ -147,7 +147,7 @@
           delButton.setAttribute('data-kt-indicator', 'on');
           delButton.disabled = true;
           const formData = new FormData(formDelete);
-          fetch('parameter-store/?q=delete', {
+          fetch('parameter/store/?q=delete', {
             method: 'POST',
             body: formData
           }).then(response => response.json()).then(data => {

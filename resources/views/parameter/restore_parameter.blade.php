@@ -55,7 +55,7 @@
 <script>
     function restoreData(id_parameter) {
         $.ajax({
-            url: 'parameter-edit/' + id_parameter,
+            url: 'parameter/edit/' + id_parameter,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -130,7 +130,7 @@
                     actButton.setAttribute('data-kt-indicator', 'on');
                     actButton.disabled = true;
                     const formData = new FormData(formRestore);
-                    fetch('parameter-store/?q=restore', {
+                    fetch('parameter/store/?q=restore', {
                         method: 'POST',
                         body: formData
                     })

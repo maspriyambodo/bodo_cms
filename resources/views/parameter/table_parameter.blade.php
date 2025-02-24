@@ -10,7 +10,7 @@
                 info: true,
                 stateSave: true,
                 ajax: {
-                    url: "parameter-json",
+                    url: "parameter/json",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }

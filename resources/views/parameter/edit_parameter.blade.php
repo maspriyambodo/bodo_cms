@@ -42,7 +42,7 @@
 <script>
     function editData(val) {
         $.ajax({
-            url: 'parameter-edit/' + val,
+            url: 'parameter/edit/' + val,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -135,7 +135,7 @@
           updateButton.setAttribute('data-kt-indicator', 'on');
           updateButton.disabled = true;
           const formData = new FormData(formEdit);
-          fetch('parameter-store/?q=update', {
+          fetch('parameter/store/?q=update', {
             method: 'POST',
             body: formData
           }).then(response => response.json()).then(data => {
