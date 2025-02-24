@@ -12,6 +12,7 @@ class Parameter extends Model {
         Notifiable;
 
     protected $table = 'sys_param';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'id',
         'param_group',
@@ -20,5 +21,10 @@ class Parameter extends Model {
         'is_trash',
         'created_by',
         'updated_by'
+    ];
+    protected $casts = [
+        'is_trash' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }
