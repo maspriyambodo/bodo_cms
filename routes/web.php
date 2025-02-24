@@ -22,15 +22,20 @@ Route::middleware(['auth', 'verified'])
             Route::post('/store', [MenuController::class, 'store'])->name('menu');
             Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('menu');
         });
+        
+Route::middleware(['auth', 'verified'])
+        ->prefix('menugrup')
+        ->group(function () {
+            Route::get('/json', [GroupMenu::class, 'json'])->name('menu-group');
+            Route::post('/store', [GroupMenu::class, 'store'])->name('menu-group');
+            Route::get('/edit/{id}', [GroupMenu::class, 'edit'])->name('menu-group');
+        });
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
-    Route::get('/menugrup-json', [GroupMenu::class, 'json'])->name('menu-group');
-    Route::post('/menugrup-store', [GroupMenu::class, 'store'])->name('menu-group');
-    Route::get('/menugrup-edit/{id}', [GroupMenu::class, 'edit'])->name('menu-group');
 
     Route::get('/parameter', [Parameter::class, 'index'])->name('parameter');
     Route::get('/parameter-json', [Parameter::class, 'json'])->name('parameter');
