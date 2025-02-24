@@ -10,7 +10,7 @@
                 info: true,
                 stateSave: true,
                 ajax: {
-                    url: "menugrup-json",
+                    url: "menugrup/json",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }

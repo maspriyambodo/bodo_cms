@@ -40,7 +40,7 @@
 <script>
     function restoreData(id_menu) {
         $.ajax({
-            url: 'menugrup-edit/' + id_menu,
+            url: 'menugrup/edit/' + id_menu,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -112,7 +112,7 @@
                     restoreBtn.setAttribute('data-kt-indicator', 'on');
                     restoreBtn.disabled = true;
                     const restoreformData = new FormData(restoreForm);
-                    fetch('menugrup-store/?q=restore', {
+                    fetch('menugrup/store/?q=restore', {
                         method: 'POST',
                         body: restoreformData
                     })

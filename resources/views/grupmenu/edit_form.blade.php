@@ -45,7 +45,7 @@
 <script>
     function editData(val) {
         $.ajax({
-            url: 'menugrup-edit/' + val,
+            url: 'menugrup/edit/' + val,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -133,7 +133,7 @@
                     updateButton.setAttribute('data-kt-indicator', 'on');
                     updateButton.disabled = true;
                     const formData = new FormData(formEdit);
-                    fetch('menugrup-store/?q=update', {
+                    fetch('menugrup/store/?q=update', {
                         method: 'POST',
                         body: formData
                     })

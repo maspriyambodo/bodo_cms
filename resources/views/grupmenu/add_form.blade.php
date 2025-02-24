@@ -78,7 +78,7 @@
                     submitButton.setAttribute('data-kt-indicator', 'on');
                     submitButton.disabled = true;
                     const formData = new FormData(form);
-                    fetch('menugrup-store/?q=add', {
+                    fetch('menugrup/store/?q=add', {
                         method: 'POST',
                         body: formData
                     }).then(response => response.json()).then(data => {
