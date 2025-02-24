@@ -95,12 +95,43 @@ class GroupMenu extends Controller {
         return $buttons;
     }
 
+    public function edit(Request $request) {
+        $exec = MenuGroup::where('id', $request->id)->first();
+        if ($exec) {
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'dt_menu' => $exec
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'dt_menu' => $exec
+                ]);
+            }
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+
     public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'nmatxt' => 'required|string|max:50|unique:sys_menu_group,nama',
-            'desctxt' => 'nullable|string',
-            'ordtxt' => 'required|integer',
-        ]);
+        if ($request->q == 'add') {
+            $validator = Validator::make($request->all(), [
+                'nmatxt' => 'required|string|max:50|unique:sys_menu_group,nama',
+                'desctxt' => 'nullable|string',
+                'ordtxt' => 'required|integer',
+            ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                'eid' => 'required|integer',
+                'nmatxt2' => 'required|string|max:50',
+                'desctxt2' => 'nullable|string',
+                'ordtxt2' => 'required|integer',
+            ]);
+        }
+
         if ($validator->fails()) {
             return response()->json([
                         'success' => false,
@@ -109,12 +140,23 @@ class GroupMenu extends Controller {
         }
         DB::beginTransaction(); // Start transaction
         try {
-            MenuGroup::create([
-                'nama' => $request->nmatxt,
-                'description' => $request->desctxt,
-                'order_no' => $request->ordtxt,
-                'created_by' => auth()->user()->id
-            ]);
+            if ($request->q == 'add') {
+                MenuGroup::create([
+                    'nama' => $request->nmatxt,
+                    'description' => $request->desctxt,
+                    'order_no' => $request->ordtxt,
+                    'created_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'update') {
+                MenuGroup::where('id', $request->eid)
+                        ->update([
+                            'nama' => $request->nmatxt2,
+                            'description' => $request->desctxt2,
+                            'order_no' => $request->ordtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            }
+
             DB::commit(); // Commit transaction
             return response()->json([
                         'success' => true
