@@ -45,6 +45,17 @@ class SysParamSeeder extends Seeder {
                 'created_by' => 1,
                 'updated_at' => '2024-11-28 23:25:57',
                 'updated_by' => 1,
+            ],
+            [
+                'id' => 'FAVICON',
+                'param_group' => 'ICON',
+                'param_value' => 'src/media/logos/favicon.ico',
+                'param_desc' => 'icon untuk favicon',
+                'is_trash' => 0,
+                'created_at' => '2024-11-28 23:25:51',
+                'created_by' => 1,
+                'updated_at' => '2024-11-28 23:25:57',
+                'updated_by' => 1,
             ]
         ]);
     }
