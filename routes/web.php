@@ -50,16 +50,20 @@ Route::middleware(['auth', 'verified'])
             Route::get('/set-json', [PermissionController::class, 'json2'])->name('permission');
         });
 
+Route::middleware(['auth', 'verified'])
+        ->prefix('user-management')
+        ->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('user-management');
+            Route::get('/json', [UserController::class, 'json'])->name('user-management');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user-management');
+            Route::post('/store', [UserController::class, 'store'])->name('user-management');
+        });
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
-
-    Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
-    Route::get('/user-management-json', [UserController::class, 'json'])->name('user-management');
-    Route::get('/user-management-edit/{id}', [UserController::class, 'edit'])->name('user-management');
-    Route::post('/user-management-store', [UserController::class, 'store'])->name('user-management');
 
     Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
 
