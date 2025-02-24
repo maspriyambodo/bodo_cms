@@ -40,17 +40,21 @@ Route::middleware(['auth', 'verified'])
             Route::post('/store', [Parameter::class, 'store'])->name('parameter');
         });
 
+Route::middleware(['auth', 'verified'])
+        ->prefix('permission')
+        ->group(function () {
+            Route::get('/', [PermissionController::class, 'index'])->name('permission');
+            Route::get('/json', [PermissionController::class, 'json'])->name('permission');
+            Route::post('/store', [PermissionController::class, 'store'])->name('permission');
+            Route::get('/edit/{id}', [PermissionController::class, 'edit'])->name('permission');
+            Route::get('/set-json', [PermissionController::class, 'json2'])->name('permission');
+        });
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
-    
-    Route::get('/permission', [PermissionController::class, 'index'])->name('permission');
-    Route::get('/permission-json', [PermissionController::class, 'json'])->name('permission');
-    Route::post('/permission-store', [PermissionController::class, 'store'])->name('permission');
-    Route::get('/permission-edit/{id}', [PermissionController::class, 'edit'])->name('permission');
-    Route::get('/permission-set-json', [PermissionController::class, 'json2'])->name('permission');
 
     Route::get('/user-management', [UserController::class, 'index'])->name('user-management');
     Route::get('/user-management-json', [UserController::class, 'json'])->name('user-management');
