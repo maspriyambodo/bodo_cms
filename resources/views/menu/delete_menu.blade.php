@@ -32,7 +32,7 @@
 <script>
     function deleteData(id_menu) {
         $.ajax({
-            url: 'menu-edit/' + id_menu,
+            url: 'menu/edit/' + id_menu,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -104,7 +104,7 @@
                     delButton.setAttribute('data-kt-indicator', 'on');
                     delButton.disabled = true;
                     const formData = new FormData(formDelete);
-                    fetch('menu-store/?q=delete', {
+                    fetch('menu/store/?q=delete', {
                         method: 'POST',
                         body: formData
                     })
