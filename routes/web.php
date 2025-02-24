@@ -22,7 +22,7 @@ Route::middleware(['auth', 'verified'])
             Route::post('/store', [MenuController::class, 'store'])->name('menu');
             Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('menu');
         });
-        
+
 Route::middleware(['auth', 'verified'])
         ->prefix('menugrup')
         ->group(function () {
@@ -31,17 +31,21 @@ Route::middleware(['auth', 'verified'])
             Route::get('/edit/{id}', [GroupMenu::class, 'edit'])->name('menu-group');
         });
 
+Route::middleware(['auth', 'verified'])
+        ->prefix('parameter')
+        ->group(function () {
+            Route::get('/', [Parameter::class, 'index'])->name('parameter');
+            Route::get('/json', [Parameter::class, 'json'])->name('parameter');
+            Route::get('/edit/{id}', [Parameter::class, 'edit'])->name('parameter');
+            Route::post('/store', [Parameter::class, 'store'])->name('parameter');
+        });
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
-
-    Route::get('/parameter', [Parameter::class, 'index'])->name('parameter');
-    Route::get('/parameter-json', [Parameter::class, 'json'])->name('parameter');
-    Route::get('/parameter-edit/{id}', [Parameter::class, 'edit'])->name('parameter');
-    Route::post('/parameter-store', [Parameter::class, 'store'])->name('parameter');
-
+    
     Route::get('/permission', [PermissionController::class, 'index'])->name('permission');
     Route::get('/permission-json', [PermissionController::class, 'json'])->name('permission');
     Route::post('/permission-store', [PermissionController::class, 'store'])->name('permission');
