@@ -13,8 +13,10 @@
         <meta property=og:url content=https://keenthemes.com/metronic>
         <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . config('app.name', 'Laravel'); }}">
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
+        @isset($paramsys['FAVICON'])
         <link rel="shortcut icon" href="{{ $paramsys['FAVICON']; }}">
-        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
+        @endisset
+        <link href="{{ asset('build/assets/app-DWyhC5Vm.css'); }}" rel="stylesheet" type="text/css"/>
         <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>
