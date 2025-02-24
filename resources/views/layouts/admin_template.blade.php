@@ -13,7 +13,7 @@
         <meta property=og:url content=https://keenthemes.com/metronic>
         <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . config('app.name', 'Laravel'); }}">
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
-        <link rel="shortcut icon" href=assets/media/logos/favicon.ico>
+        <link rel="shortcut icon" href="{{ $paramsys['FAVICON']; }}">
         <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
         <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
@@ -45,7 +45,7 @@
                     <div id=kt_header class="header align-items-stretch">
                         <div class=header-brand>
                             <a href="{{ request()->routeIs('dashboard') ? 'javascript:void(0);' : route('dashboard') }}">
-                                <img alt="logo" src="{{ asset('src/media/logos/logo-1-dark.svg'); }}" class="h-25px h-lg-25px">
+                                <img alt="logo" src="{{ $paramsys['LOGO_1']; }}" class="h-25px h-lg-25px">
                             </a>
                             <div id=kt_aside_toggle class="btn btn-icon w-auto px-0 btn-active-color-primary aside-minimize" data-kt-toggle=true data-kt-toggle-state=active data-kt-toggle-target=body data-kt-toggle-name=aside-minimize>
                                 <span class="svg-icon svg-icon-1 me-n1 minimize-default">
