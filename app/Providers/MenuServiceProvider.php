@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User_groups;
 use App\Models\Menu;
-use App\Models\MenuGroup;
+use App\Models\Parameter;
 
 class MenuServiceProvider extends ServiceProvider {
 
@@ -28,7 +28,7 @@ class MenuServiceProvider extends ServiceProvider {
                     $user = Auth::user();
 
                     $role_user = User_groups::find($user->role);
-                    $menus = Menu::with(['children', 'group', 'permissions' => function ($query) use ($user) {
+                    $menus = Menu::with(['children', 'permissions' => function ($query) use ($user) {
                                     $query->where('is_trash', 0)
                                             ->where('v', 1)
                                             ->where('role_id', $user->role);
@@ -38,8 +38,9 @@ class MenuServiceProvider extends ServiceProvider {
                             ->orderBy('order_no', 'asc')
                             ->orderBy('group_menu', 'asc')
                             ->get();
-//                    dd($menus);
-                    $view->with(compact('user', 'role_user', 'menus'));
+                    $sysparam = Parameter::select('id as id_param', 'param_value')->where('is_trash', 0)->get();
+                    $paramsys = $this->dir_parameter($sysparam);
+                    $view->with(compact('user', 'role_user', 'menus', 'paramsys'));
                 } else {
                     $view->with(['user' => null, 'role_user' => null, 'menus' => collect(), 'menugroup' => null]);
                 }
@@ -47,5 +48,13 @@ class MenuServiceProvider extends ServiceProvider {
                 \Log::error('Error in MenuServiceProvider: ' . $e->getMessage());
             }
         });
+    }
+
+    private function dir_parameter($sysparam) {
+        $param = [];
+        foreach ($sysparam as $paramsys) {
+            $param[$paramsys->id_param] = $paramsys->param_value;
+        }
+        return $param;
     }
 }
