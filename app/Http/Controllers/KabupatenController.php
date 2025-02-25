@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use App\Models\ProvinsiModel;
-use App\Models\KabupatenModel;
+use App\Models\MtProvinsi;
+use App\Models\MtKabupaten;
 use Yajra\DataTables\Facades\DataTables;
 
 class KabupatenController extends Controller {
@@ -18,7 +18,7 @@ class KabupatenController extends Controller {
 
     public function index(Request $request) {
         $user_access = $this->user_permission();
-        $provinsi = ProvinsiModel::where('is_trash', 0)->get();
+        $provinsi = MtProvinsi::where('is_trash', 0)->get();
         return view('master.kabupaten.kabupaten_index', compact('user_access', 'provinsi'));
     }
 
@@ -31,7 +31,7 @@ class KabupatenController extends Controller {
                 'data' => []
             ];
         }
-        $exec = KabupatenModel::orderBy('id_kabupaten', 'asc');
+        $exec = MtKabupaten::orderBy('id_kabupaten', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->get();
         return Datatables::of($dt_param)
@@ -88,5 +88,109 @@ class KabupatenController extends Controller {
         $buttons .= "</div>";
 
         return $buttons;
+    }
+
+    public function store(Request $request) {
+        if ($request->q == 'add') {
+            $validator = Validator::make($request->all(), [
+                'provtxt' => 'required|integer',
+                'kdtxt' => 'required|integer|unique:mt_kabupaten,id_kabupaten',
+                'nmatxt' => 'required|string',
+                'lattxt' => 'nullable|double',
+                'longtxt' => 'nullable|double',
+            ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                
+            ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                'd_id' => 'required|integer'
+            ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                'delidtxt' => 'required|integer'
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errors' => $validator->errors(),
+                            ], 422);
+        }
+        DB::beginTransaction(); // Start transaction
+        try {
+            if ($request->q == 'add') {
+                MtKabupaten::create([
+                    'id_kabupaten' => $request->kdtxt,
+                    'id_provinsi' => $request->provtxt,
+                    'nama' => $request->nmatxt,
+                    'is_trash' => 0,
+                    'latitude' => $request->lattxt,
+                    'longitude' => $request->longtxt,
+                    'created_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'update') {
+                MtKabupaten::where('id_kabupaten', $request->eid)
+                        ->update([
+                            'id_kabupaten' => $request->kdtxt,
+                            'id_provinsi' => $request->provtxt,
+                            'nama' => $request->nmatxt2,
+                            'latitude' => $request->lattxt2,
+                            'longitude' => $request->longtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'delete') {
+                MtKabupaten::where('id_kabupaten', $request->d_id)
+                        ->update([
+                            'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'restore') {
+                MtKabupaten::where('id_kabupaten', $request->delidtxt)
+                        ->update([
+                            'is_trash' => 0,
+                            'updated_by' => auth()->user()->id
+                ]);
+            }
+
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true
+            ]);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $exc->getMessage() // Optionally log the error for debugging
+                            ], 500);
+        }
+    }
+
+    public function edit(Request $request) {
+        $exec = MtKabupaten::where('id_kabupaten', $request->id)->first();
+        if ($exec) {
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'dt_kabupaten' => $exec
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'dt_kabupaten' => $exec
+                ]);
+            }
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
     }
 }
