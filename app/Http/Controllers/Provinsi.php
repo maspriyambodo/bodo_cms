@@ -44,6 +44,7 @@ class Provinsi extends Controller {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', "%" . $request->keyword . "%");
+                $q->orWhere('id_provinsi', 'like', "%" . $request->keyword . "%");
             });
         }
     }
