@@ -8,7 +8,7 @@
                 paging: true,
                 deferRender: true,
                 info: true,
-                stateSave: true,
+                stateSave: false,
                 ajax: {
                     url: "provinsi/json",
                     data: function (d) {

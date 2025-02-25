@@ -8,7 +8,7 @@
                 paging: true,
                 deferRender: true,
                 info: true,
-                stateSave: true,
+                stateSave: false,
                 ajax: {
                     url: "kabupaten/json",
                     data: function (d) {

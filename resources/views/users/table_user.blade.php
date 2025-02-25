@@ -8,7 +8,7 @@
                 paging: true,
                 deferRender: true,
                 info: true,
-                stateSave: true,
+                stateSave: false,
                 ajax: {
                     url: "user-management/json",
                     data: function (d) {
@@ -16,7 +16,7 @@
                     }
                 },
                 columnDefs: [
-                    {orderable: false, targets: [0]},
+                    {orderable: false, targets: [0]}
                 ],
                 columns: [
                     {
