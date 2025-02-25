@@ -46,6 +46,8 @@ class KabupatenController extends Controller {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', "%" . $request->keyword . "%");
+                $q->orWhere('id_kabupaten', 'like', "%" . $request->keyword . "%");
+                $q->orWhere('id_provinsi', 'like', "%" . $request->keyword . "%");
             });
         }
     }
@@ -101,7 +103,12 @@ class KabupatenController extends Controller {
             ]);
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
-                
+                'eid' => 'required|integer',
+                'provtxt2' => 'required|integer',
+                'kdtxt2' => 'required|integer',
+                'nmatxt2' => 'required|string',
+                'lattxt2' => 'nullable|double',
+                'longtxt2' => 'nullable|double',
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
@@ -134,8 +141,8 @@ class KabupatenController extends Controller {
             } elseif ($request->q == 'update') {
                 MtKabupaten::where('id_kabupaten', $request->eid)
                         ->update([
-                            'id_kabupaten' => $request->kdtxt,
-                            'id_provinsi' => $request->provtxt,
+                            'id_kabupaten' => $request->kdtxt2,
+                            'id_provinsi' => $request->provtxt2,
                             'nama' => $request->nmatxt2,
                             'latitude' => $request->lattxt2,
                             'longitude' => $request->longtxt2,
