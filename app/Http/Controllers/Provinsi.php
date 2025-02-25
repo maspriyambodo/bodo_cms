@@ -100,9 +100,10 @@ class Provinsi extends Controller {
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
                 'eid' => 'required|integer',
-                'nmatxt2' => 'required|string|max:50',
-                'desctxt2' => 'nullable|string',
-                'ordtxt2' => 'required|integer',
+                'kdtxt2' => 'required|integer',
+                'nmatxt2' => 'required|string',
+                'lattxt2' => 'nullable|double',
+                'longtxt2' => 'nullable|double',
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
@@ -132,11 +133,12 @@ class Provinsi extends Controller {
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
-                ProvinsiModel::where('id', $request->eid)
+                ProvinsiModel::where('id_provinsi', $request->eid)
                         ->update([
+                            'id_provinsi' => $request->kdtxt2,
                             'nama' => $request->nmatxt2,
-                            'description' => $request->desctxt2,
-                            'order_no' => $request->ordtxt2,
+                            'latitude' => $request->lattxt2,
+                            'longitude' => $request->longtxt2,
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {
@@ -168,6 +170,27 @@ class Provinsi extends Controller {
                         'message' => 'Failed to create user.',
                         'error' => $exc->getMessage() // Optionally log the error for debugging
                             ], 500);
+        }
+    }
+
+    public function edit(Request $request) {
+        $exec = ProvinsiModel::where('id_provinsi', $request->id)->first();
+        if ($exec) {
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'dt_provinsi' => $exec
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'dt_provinsi' => $exec
+                ]);
+            }
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
         }
     }
 }

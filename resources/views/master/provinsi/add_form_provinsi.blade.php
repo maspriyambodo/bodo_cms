@@ -130,13 +130,5 @@
             });
         }
     });
-    function isNumber(b) {
-        b = (b) ? b : window.event;
-        var a = (b.which) ? b.which : b.keyCode;
-        if (a > 31 && (a < 48 || a > 57)) {
-            return false;
-        }
-        return true;
-    }
 </script>
 @endpush
