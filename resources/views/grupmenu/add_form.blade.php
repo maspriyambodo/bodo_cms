@@ -97,7 +97,6 @@
                                 submitButton.disabled = false;
                                 $('#table-menu').DataTable().ajax.reload();
                                 $('#btn_close1').click();
-                                change_order_no();
                             });
                         } else {
                             Swal.fire({
@@ -131,8 +130,5 @@
             });
         }
     });
-    function change_order_no() {
-        
-    }
 </script>
 @endpush
