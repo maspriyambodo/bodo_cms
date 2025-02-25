@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use App\Models\ProvinsiModel;
+use App\Models\MtProvinsi;
 use Yajra\DataTables\Facades\DataTables;
 
 class Provinsi extends Controller {
@@ -29,7 +29,7 @@ class Provinsi extends Controller {
                 'data' => []
             ];
         }
-        $exec = ProvinsiModel::orderBy('id_provinsi', 'asc');
+        $exec = MtProvinsi::orderBy('id_provinsi', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->get();
         return Datatables::of($dt_param)
@@ -123,7 +123,7 @@ class Provinsi extends Controller {
         DB::beginTransaction(); // Start transaction
         try {
             if ($request->q == 'add') {
-                ProvinsiModel::create([
+                MtProvinsi::create([
                     'id_provinsi' => $request->kdtxt,
                     'nama' => $request->nmatxt,
                     'is_trash' => 0,
@@ -132,7 +132,7 @@ class Provinsi extends Controller {
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
-                ProvinsiModel::where('id_provinsi', $request->eid)
+                MtProvinsi::where('id_provinsi', $request->eid)
                         ->update([
                             'id_provinsi' => $request->kdtxt2,
                             'nama' => $request->nmatxt2,
@@ -141,13 +141,13 @@ class Provinsi extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {
-                ProvinsiModel::where('id_provinsi', $request->d_id)
+                MtProvinsi::where('id_provinsi', $request->d_id)
                         ->update([
                             'is_trash' => 1,
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'restore') {
-                ProvinsiModel::where('id_provinsi', $request->delidtxt)
+                MtProvinsi::where('id_provinsi', $request->delidtxt)
                         ->update([
                             'is_trash' => 0,
                             'updated_by' => auth()->user()->id
@@ -173,7 +173,7 @@ class Provinsi extends Controller {
     }
 
     public function edit(Request $request) {
-        $exec = ProvinsiModel::where('id_provinsi', $request->id)->first();
+        $exec = MtProvinsi::where('id_provinsi', $request->id)->first();
         if ($exec) {
             if ($request->input('q')) {
                 return response()->json([
