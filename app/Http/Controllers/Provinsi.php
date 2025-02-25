@@ -43,8 +43,7 @@ class Provinsi extends Controller {
     private function applyFilters($query, Request $request) {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                $q->where('nama', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('description', 'like', "%" . $request->keyword . "%");
+                $q->where('nama', 'like', "%" . $request->keyword . "%");
             });
         }
     }
