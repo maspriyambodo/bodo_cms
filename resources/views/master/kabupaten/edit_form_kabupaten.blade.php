@@ -50,7 +50,7 @@
 </div>
 @push('scripts')
 <script>
-    function add_kode2(id_prov){
+    function add_kode2(id_prov) {
         $('#kdtxt2').val(id_prov);
     }
     $('.form-select').select2({
