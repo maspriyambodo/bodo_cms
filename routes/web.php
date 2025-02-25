@@ -9,6 +9,7 @@ use App\Http\Controllers\Usergroups;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\Provinsi;
+use App\Http\Controllers\KabupatenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,6 +49,15 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [Provinsi::class, 'json'])->name('provinsi');
             Route::post('/store', [Provinsi::class, 'store'])->name('provinsi');
             Route::get('/edit/{id}', [Provinsi::class, 'edit'])->name('provinsi');
+        });
+
+Route::middleware(['auth', 'verified'])
+        ->prefix('kabupaten')
+        ->group(function () {
+            Route::get('/', [KabupatenController::class, 'index'])->name('kabupaten');
+            Route::get('/json', [KabupatenController::class, 'json'])->name('kabupaten');
+            Route::post('/store', [KabupatenController::class, 'store'])->name('kabupaten');
+            Route::get('/edit/{id}', [KabupatenController::class, 'edit'])->name('kabupaten');
         });
 
 Route::middleware(['auth', 'verified'])
