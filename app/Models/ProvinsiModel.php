@@ -12,6 +12,7 @@ class ProvinsiModel extends Model {
     protected $table = 'mt_provinsi'; // Specify the table name if it's not pluralized
     protected $primaryKey = 'id_provinsi'; // Specify the primary key
     protected $fillable = [
+        'id_provinsi',
         'nama',
         'is_trash',
         'latitude',

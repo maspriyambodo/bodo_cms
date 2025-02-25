@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified'])
         ->group(function () {
             Route::get('/', [Provinsi::class, 'index'])->name('provinsi');
             Route::get('/json', [Provinsi::class, 'json'])->name('provinsi');
+            Route::post('/store', [Provinsi::class, 'store'])->name('provinsi');
         });
 
 Route::middleware(['auth', 'verified'])

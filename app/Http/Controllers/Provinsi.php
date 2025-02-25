@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProvinsiModel;
@@ -88,5 +87,87 @@ class Provinsi extends Controller {
         $buttons .= "</div>";
 
         return $buttons;
+    }
+
+    public function store(Request $request) {
+        if ($request->q == 'add') {
+            $validator = Validator::make($request->all(), [
+                'kdtxt' => 'required|integer|unique:mt_provinsi,id_provinsi',
+                'nmatxt' => 'required|string',
+                'lattxt' => 'nullable|double',
+                'longtxt' => 'nullable|double',
+            ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                'eid' => 'required|integer',
+                'nmatxt2' => 'required|string|max:50',
+                'desctxt2' => 'nullable|string',
+                'ordtxt2' => 'required|integer',
+            ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                'd_id' => 'required|integer'
+            ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                'delidtxt' => 'required|integer'
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errors' => $validator->errors(),
+                            ], 422);
+        }
+        DB::beginTransaction(); // Start transaction
+        try {
+            if ($request->q == 'add') {
+                ProvinsiModel::create([
+                    'id_provinsi' => $request->kdtxt,
+                    'nama' => $request->nmatxt,
+                    'is_trash' => 0,
+                    'latitude' => $request->lattxt,
+                    'longitude' => $request->longtxt,
+                    'created_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'update') {
+                ProvinsiModel::where('id', $request->eid)
+                        ->update([
+                            'nama' => $request->nmatxt2,
+                            'description' => $request->desctxt2,
+                            'order_no' => $request->ordtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'delete') {
+                ProvinsiModel::where('id', $request->d_id)
+                        ->update([
+                            'is_trash' => 1,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'restore') {
+                ProvinsiModel::where('id', $request->delidtxt)
+                        ->update([
+                            'is_trash' => 0,
+                            'updated_by' => auth()->user()->id
+                ]);
+            }
+
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true
+            ]);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $exc->getMessage() // Optionally log the error for debugging
+                            ], 500);
+        }
     }
 }
