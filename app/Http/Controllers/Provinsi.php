@@ -148,7 +148,7 @@ class Provinsi extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'restore') {
-                ProvinsiModel::where('id', $request->delidtxt)
+                ProvinsiModel::where('id_provinsi', $request->delidtxt)
                         ->update([
                             'is_trash' => 0,
                             'updated_by' => auth()->user()->id
