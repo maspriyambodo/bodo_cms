@@ -96,7 +96,6 @@
                                 submitButton.disabled = false;
                                 $('#table-prov').DataTable().ajax.reload();
                                 $('#btn_close1').click();
-                                change_order_no();
                             });
                         } else {
                             Swal.fire({
