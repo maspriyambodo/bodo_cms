@@ -19,6 +19,11 @@ class MtKecamatan extends Model {
         'created_by',
         'updated_by',
     ];
+    protected $casts = [
+        'latitude' => 'double',
+        'longitude' => 'double',
+        'is_trash' => 'integer',
+    ];
 
     // Define the relationship with MtKabupaten
     public function kabupaten() {
