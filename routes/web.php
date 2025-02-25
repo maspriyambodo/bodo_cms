@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\Provinsi;
 use App\Http\Controllers\KabupatenController;
+use App\Http\Controllers\KecamatanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -58,6 +59,15 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [KabupatenController::class, 'json'])->name('kabupaten');
             Route::post('/store', [KabupatenController::class, 'store'])->name('kabupaten');
             Route::get('/edit/{id}', [KabupatenController::class, 'edit'])->name('kabupaten');
+        });
+
+Route::middleware(['auth', 'verified'])
+        ->prefix('kecamatan')
+        ->group(function () {
+            Route::get('/', [KecamatanController::class, 'index'])->name('kecamatan');
+            Route::get('/json', [KecamatanController::class, 'json'])->name('kecamatan');
+            Route::post('/store', [KecamatanController::class, 'store'])->name('kecamatan');
+            Route::get('/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan');
         });
 
 Route::middleware(['auth', 'verified'])
