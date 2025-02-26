@@ -4,20 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 
 class MtKelurahan extends Model {
 
-    use HasFactory;
+    use HasFactory,
+        HasSpatial;
 
     protected $table = 'mt_kelurahan';
     protected $fillable = [
         'id_kecamatan',
         'nama',
         'is_trash',
-        'latitude',
-        'longitude',
+        'coordinates',
         'created_by',
         'updated_by',
+    ];
+    protected $casts = [
+        'coordinates' => Point::class
     ];
 
     // Define the relationship with MtKecamatan
