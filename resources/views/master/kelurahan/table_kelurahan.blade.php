@@ -10,6 +10,9 @@
                 info: true,
                 stateSave: false,
                 processing: true,
+                initComplete: function () {
+                    Swal.close();
+                },
                 ajax: {
                     url: "kelurahan/json",
                     data: function (d) {

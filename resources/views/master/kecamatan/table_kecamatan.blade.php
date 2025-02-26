@@ -9,6 +9,9 @@
                 deferRender: true,
                 info: true,
                 stateSave: false,
+                initComplete: function () {
+                    Swal.close();
+                },
                 ajax: {
                     url: "kecamatan/json",
                     data: function (d) {

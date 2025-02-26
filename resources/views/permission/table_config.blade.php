@@ -8,7 +8,10 @@
                 paging: true,
                 deferRender: true,
                 info: true,
-                stateSave: true,
+                stateSave: false,
+                initComplete: function () {
+                    Swal.close();
+                },
                 ajax: {
                     url: "permission/json",
                     data: function (d) {

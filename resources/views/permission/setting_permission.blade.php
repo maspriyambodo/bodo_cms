@@ -96,8 +96,11 @@
             paging: false,
             deferRender: false,
             info: false,
-            stateSave: true,
+            stateSave: false,
             ordering: false,
+            initComplete: function () {
+                    Swal.close();
+                },
             ajax: {
                 url: "permission/set-json/?role_id=" + role_id,
                 data: function (d) {
