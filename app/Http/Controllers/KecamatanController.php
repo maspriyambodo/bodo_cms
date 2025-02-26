@@ -149,13 +149,13 @@ class KecamatanController extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {
-                MtKecamatan::where('id_kabupaten', $request->d_id)
+                MtKecamatan::where('id_kecamatan', $request->d_id)
                         ->update([
                             'is_trash' => 1,
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'restore') {
-                MtKecamatan::where('id_kabupaten', $request->delidtxt)
+                MtKecamatan::where('id_kecamatan', $request->delidtxt)
                         ->update([
                             'is_trash' => 0,
                             'updated_by' => auth()->user()->id
