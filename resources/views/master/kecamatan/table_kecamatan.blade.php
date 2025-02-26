@@ -3,7 +3,7 @@
     var KTDatatablesServerSide = function () {
         var initDatatable = function () {
             var dt = $('#table-kec').DataTable({
-                searchDelay: 500,
+                searchDelay: 3000,
                 serverSide: true,
                 paging: true,
                 deferRender: true,

@@ -98,12 +98,17 @@ class KecamatanController extends Controller {
                 'kabtxt' => 'required|integer',
                 'kdtxt' => 'required|integer|unique:mt_kecamatan,id_kecamatan',
                 'nmatxt' => 'required|string',
-                'lattxt' => 'nullable|double',
-                'longtxt' => 'nullable|double',
+                'lattxt' => 'nullable|string',
+                'longtxt' => 'nullable|string',
             ]);
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
                 'eid' => 'required|integer',
+                'provtxt2' => 'required|integer',
+                'kdtxt2' => 'required|integer',
+                'nmatxt2' => 'required|string',
+                'lattxt2' => 'nullable|string',
+                'longtxt2' => 'nullable|string',
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
@@ -134,10 +139,10 @@ class KecamatanController extends Controller {
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
-                MtKecamatan::where('id_kabupaten', $request->eid)
+                MtKecamatan::where('id_kecamatan', $request->eid)
                         ->update([
-                            'id_kabupaten' => $request->kdtxt2,
-                            'id_provinsi' => $request->provtxt2,
+                            'id_kecamatan' => $request->kdtxt2,
+                            'id_kabupaten' => $request->provtxt2,
                             'nama' => $request->nmatxt2,
                             'latitude' => $request->lattxt2,
                             'longitude' => $request->longtxt2,
