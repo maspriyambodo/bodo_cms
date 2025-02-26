@@ -119,7 +119,7 @@ class KelurahanController extends Controller {
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
                 'eid' => 'required|integer',
-                'provtxt2' => 'required|integer',
+                'kectxt2' => 'required|integer',
                 'kdtxt2' => 'required|integer',
                 'nmatxt2' => 'required|string',
                 'lattxt2' => 'nullable|string',
@@ -153,14 +153,24 @@ class KelurahanController extends Controller {
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
-                MtKelurahan::where('id_kecamatan', $request->eid)
-                        ->update([
-                            'id_kecamatan' => $request->kdtxt2,
-                            'id_kabupaten' => $request->provtxt2,
-                            'nama' => $request->nmatxt2,
-                            'coordinates' => new Point($request->lattxt2, $request->longtxt2),
-                            'updated_by' => auth()->user()->id
-                ]);
+                if (($request->longtxt2 == 0 || empty($request->longtxt2)) && ($request->lattxt2 == 0 || empty($request->lattxt2))) {
+                    MtKelurahan::where('id_kelurahan', $request->eid)
+                            ->update([
+                                'id_kelurahan' => $request->kdtxt2,
+                                'id_kecamatan' => $request->kectxt2,
+                                'nama' => $request->nmatxt2,
+                                'updated_by' => auth()->user()->id
+                    ]);
+                } else {
+                    MtKelurahan::where('id_kelurahan', $request->eid)
+                            ->update([
+                                'id_kelurahan' => $request->kdtxt2,
+                                'id_kecamatan' => $request->kectxt2,
+                                'nama' => $request->nmatxt2,
+                                'coordinates' => new Point($request->longtxt2, $request->lattxt2),
+                                'updated_by' => auth()->user()->id
+                    ]);
+                }
             } elseif ($request->q == 'delete') {
                 MtKelurahan::where('id_kecamatan', $request->d_id)
                         ->update([
@@ -194,7 +204,7 @@ class KelurahanController extends Controller {
     }
 
     public function edit(Request $request) {
-        $exec = MtKelurahan::where('id_kelurahan', $request->id)->first();
+        $exec = MtKelurahan::with('kecamatan')->where('id_kelurahan', $request->id)->first();
         if ($exec) {
             if ($request->input('q')) {
                 return response()->json([
