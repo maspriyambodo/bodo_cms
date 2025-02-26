@@ -30,16 +30,23 @@ class Provinsi extends Controller {
                 'data' => []
             ];
         }
+        $offset = $request->start;
+        $limit = $request->length;
+        $TotalRecords = MtProvinsi::where('is_trash', 0)->count();
         $exec = MtProvinsi::orderBy('id_provinsi', 'asc');
         $this->applyFilters($exec, $request);
-        $dt_param = $exec->get();
+        $dt_param = $exec->offset($offset)->limit($limit)->get();
         return Datatables::of($dt_param)
+                        ->addIndexColumn()
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
                         ->addColumn('longitude', fn($row) => $row->coordinates->longitude)
                         ->addColumn('latitude', fn($row) => $row->coordinates->latitude)
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
                         ->rawColumns(['status_aktif', 'button'])
+                        ->skipPaging()
+                        ->setTotalRecords($TotalRecords)
+                        ->setFilteredRecords($TotalRecords)
                         ->make(true);
     }
 

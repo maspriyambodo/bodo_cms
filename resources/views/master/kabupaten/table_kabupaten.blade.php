@@ -23,10 +23,11 @@
                 ],
                 columns: [
                     {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
                         className: "text-center",
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: "button",
@@ -92,7 +93,12 @@
                 $('#table-kab').DataTable().ajax.reload();
             });
             $('#keyword').on('keyup', function () {
-                dt.search(this.value).draw();
+                var keyword = $('#keyword').val();
+                if (keyword.length >= 3) {
+                    dt.search(this.value).draw();
+                } else if (keyword == '') {
+                    dt.search(this.value).draw();
+                }
             });
             dt.on('draw', function () {
                 KTMenu.createInstances();

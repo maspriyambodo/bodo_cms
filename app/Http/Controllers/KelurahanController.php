@@ -32,17 +32,28 @@ class KelurahanController extends Controller {
                 'data' => []
             ];
         }
-        $exec = MtKelurahan::orderBy('id_kecamatan', 'asc');
+        $offset = $request->start;
+        $limit = $request->length;
+        $TotalRecords = MtKelurahan::where('is_trash', 0)->count();
+        DB::enableQueryLog();
+        $exec = MtKelurahan::orderBy('id_kelurahan', 'asc');
         $this->applyFilters($exec, $request);
-        $dt_param = $exec->get();
+        $dt_param = $exec->offset($offset)->limit($limit)->get();
+        $query = DB::getQueryLog();
+        $query = end($query);
+//        dd($query);
         return Datatables::of($dt_param)
+                        ->addIndexColumn()
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
                         ->addColumn('longitude', fn($row) => $row->coordinates->longitude)
                         ->addColumn('latitude', fn($row) => $row->coordinates->latitude)
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
                         ->rawColumns(['status_aktif', 'button'])
-                        ->make(true);
+                        ->skipPaging()
+                        ->setTotalRecords($TotalRecords)
+                        ->setFilteredRecords($TotalRecords)
+                        ->toJson();
     }
 
     private function applyFilters($query, Request $request) {
@@ -50,7 +61,7 @@ class KelurahanController extends Controller {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', "%" . $request->keyword . "%");
                 $q->orWhere('id_kecamatan', 'like', "%" . $request->keyword . "%");
-                $q->orWhere('id_kabupaten', 'like', "%" . $request->keyword . "%");
+                $q->orWhere('id_kelurahan', 'like', "%" . $request->keyword . "%");
             });
         }
     }

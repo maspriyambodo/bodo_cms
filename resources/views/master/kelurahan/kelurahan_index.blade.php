@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table id="table-kec" class="table table-rounded table-hover border my-5">
+            <table id="table-kel" class="table table-rounded table-hover border my-5">
                 <thead>
                     <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
                         <th class="text-center">No</th>
