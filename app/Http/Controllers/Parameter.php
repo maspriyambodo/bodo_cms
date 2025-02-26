@@ -23,12 +23,12 @@ class Parameter extends Controller {
 
     public function json(Request $request) {
         if (!$this->user_permission()['read']) {
-            return [
-                'draw' => 0,
-                'recordsTotal' => 0,
-                'recordsFiltered' => 0,
-                'data' => []
-            ];
+            return response()->json([
+                        'draw' => 0,
+                        'recordsTotal' => 0,
+                        'recordsFiltered' => 0,
+                        'data' => []
+            ]);
         }
         $exec = db_param::select('id AS id_param', 'param_group', 'param_value', 'param_desc', 'is_trash', 'created_at');
         $this->applyFilters($exec, $request);

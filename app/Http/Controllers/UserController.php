@@ -25,12 +25,12 @@ class UserController extends Controller {
     public function json(Request $request) {
         $root_user = $this->root_user();
         if (!$this->user_permission()['read']) {
-            return [
-                'draw' => 0,
-                'recordsTotal' => 0,
-                'recordsFiltered' => 0,
-                'data' => []
-            ];
+            return response()->json([
+                        'draw' => 0,
+                        'recordsTotal' => 0,
+                        'recordsFiltered' => 0,
+                        'data' => []
+            ]);
         }
         $offset = $request->start;
         $limit = $request->length;

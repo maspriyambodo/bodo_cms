@@ -34,12 +34,12 @@ class MenuController extends Controller {
         $root_user = $this->root_user();
         $role_user = auth()->user()->role;
         if (!$this->user_permission()['read']) {
-            return [
-                'draw' => 0,
-                'recordsTotal' => 0,
-                'recordsFiltered' => 0,
-                'data' => []
-            ];
+            return response()->json([
+                        'draw' => 0,
+                        'recordsTotal' => 0,
+                        'recordsFiltered' => 0,
+                        'data' => []
+            ]);
         }
         $exec = db_menu::with('parent', 'children', 'group');
         $this->applyFilters($exec, $request);

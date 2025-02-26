@@ -73,12 +73,12 @@ class PermissionController extends Controller {
         $root_user = $this->root_user();
         $role_user = auth()->user()->role;
         if (!$this->user_permission()['read']) {
-            return [
-                'draw' => 0,
-                'recordsTotal' => 0,
-                'recordsFiltered' => 0,
-                'data' => []
-            ];
+            return response()->json([
+                        'draw' => 0,
+                        'recordsTotal' => 0,
+                        'recordsFiltered' => 0,
+                        'data' => []
+            ]);
         }
         $exec = User_groups::with('children', 'parent');
         $this->applyFilters($exec, $request);
