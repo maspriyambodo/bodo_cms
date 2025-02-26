@@ -32,28 +32,35 @@ class UserController extends Controller {
                 'data' => []
             ];
         }
+        $offset = $request->start;
+        $limit = $request->length;
+        $TotalRecords = User::count();
         $exec = User::with('group');
         if (auth()->user()->role <> $root_user->param_value) {
             $exec->where('is_trash', 0);
         }
         $this->applyFilters($exec, $request);
         $exec->orderBy('users.name', 'asc');
-        $users = $exec->get();
+        $users = $exec->offset($offset)->limit($limit)->get();
         return Datatables::of($users)
+                        ->addIndexColumn()
                         ->editColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d/M/Y'))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
                         ->addColumn('picture', fn($row) => $this->getPictUser($row))
                         ->rawColumns(['status_aktif', 'button', 'picture'])
+                        ->skipPaging()
+                        ->setTotalRecords($TotalRecords)
+                        ->setFilteredRecords($TotalRecords)
                         ->make(true);
     }
 
     private function applyFilters($query, Request $request) {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                        $q->where('users.name', 'like', "%" . $request->keyword . "%")
+                $q->where('users.name', 'like', "%" . $request->keyword . "%")
                         ->orWhere('users.email', 'like', "%" . $request->keyword . "%");
-                    });
+            });
         }
     }
 
@@ -166,31 +173,31 @@ class UserController extends Controller {
         if ($request->e_id) {
             $dec_id_user = decrypt($request->e_id);
             $validator = Validator::make($request->all(), [
-                        'namatxt2' => 'required|string|max:255',
-                        'mailtxt2' => 'required|email|max:255',
-                        'leveltxt2' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+                'namatxt2' => 'required|string|max:255',
+                'mailtxt2' => 'required|email|max:255',
+                'leveltxt2' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
             ]);
         } elseif ($request->d_id) {
             $dec_id_user2 = decrypt($request->d_id); // delete id user
             $validator = Validator::make($request->all(), [
-                        'd_id' => 'required',
+                'd_id' => 'required',
             ]);
         } elseif ($request->d_id2) {
             $dec_id_user3 = decrypt($request->d_id2); // delete id user
             $validator = Validator::make($request->all(), [
-                        'd_id2' => 'required',
+                'd_id2' => 'required',
             ]);
         } elseif ($request->d_id3) {
             $dec_id_user4 = decrypt($request->d_id3); // delete id user
             $validator = Validator::make($request->all(), [
-                        'd_id3' => 'required',
+                'd_id3' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                        'namatxt' => 'required|string|max:255',
-                        'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
-                        'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
-                        'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
+                'namatxt' => 'required|string|max:255',
+                'mailtxt' => 'required|email|max:255|unique:users,email', // Ensure the email is unique
+                'pwtxt' => 'required|string|min:6', // Adjust the validation rules as needed
+                'leveltxt' => 'required|integer|exists:user_groups,id', // Assuming 'roles' is your roles table
             ]);
         }
 
