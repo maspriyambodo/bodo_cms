@@ -12,6 +12,7 @@ class MtKecamatan extends Model {
     protected $table = 'mt_kecamatan';
     protected $fillable = [
         'id_kabupaten',
+        'id_kecamatan',
         'nama',
         'is_trash',
         'latitude',

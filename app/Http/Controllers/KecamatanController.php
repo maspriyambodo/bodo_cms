@@ -95,8 +95,8 @@ class KecamatanController extends Controller {
     public function store(Request $request) {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
-                'provtxt' => 'required|integer',
-                'kdtxt' => 'required|integer|unique:mt_kabupaten,id_kabupaten',
+                'kabtxt' => 'required|integer',
+                'kdtxt' => 'required|integer|unique:mt_kecamatan,id_kecamatan',
                 'nmatxt' => 'required|string',
                 'lattxt' => 'nullable|double',
                 'longtxt' => 'nullable|double',
@@ -124,9 +124,9 @@ class KecamatanController extends Controller {
         DB::beginTransaction(); // Start transaction
         try {
             if ($request->q == 'add') {
-                MtKabupaten::create([
-                    'id_kabupaten' => $request->kdtxt,
-                    'id_provinsi' => $request->provtxt,
+                MtKecamatan::create([
+                    'id_kecamatan' => $request->kdtxt,
+                    'id_kabupaten' => $request->kabtxt,
                     'nama' => $request->nmatxt,
                     'is_trash' => 0,
                     'latitude' => $request->lattxt,
@@ -134,7 +134,7 @@ class KecamatanController extends Controller {
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
-                MtKabupaten::where('id_kabupaten', $request->eid)
+                MtKecamatan::where('id_kabupaten', $request->eid)
                         ->update([
                             'id_kabupaten' => $request->kdtxt2,
                             'id_provinsi' => $request->provtxt2,
@@ -144,13 +144,13 @@ class KecamatanController extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {
-                MtKabupaten::where('id_kabupaten', $request->d_id)
+                MtKecamatan::where('id_kabupaten', $request->d_id)
                         ->update([
                             'is_trash' => 1,
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'restore') {
-                MtKabupaten::where('id_kabupaten', $request->delidtxt)
+                MtKecamatan::where('id_kabupaten', $request->delidtxt)
                         ->update([
                             'is_trash' => 0,
                             'updated_by' => auth()->user()->id
