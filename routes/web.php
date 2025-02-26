@@ -78,6 +78,7 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [KelurahanController::class, 'json'])->name('kelurahan');
             Route::post('/store', [KelurahanController::class, 'store'])->name('kelurahan');
             Route::get('/edit/{id}', [KelurahanController::class, 'edit'])->name('kelurahan');
+            Route::get('/search', [KelurahanController::class, 'search'])->name('kelurahan');
         });
 
 Route::middleware(['auth', 'verified'])
