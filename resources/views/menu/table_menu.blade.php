@@ -68,9 +68,21 @@
                 ],
                 displayStart: 0,
                 pageLength: 10,
+                preDrawCallback: function () {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
+                },
                 rowCallback: function (row, data) {
                     $('.dataTables_length').remove();
                     $(row).addClass('border');
+                    Swal.close();
                 }
             });
             $('#_10').on('click', function () {
