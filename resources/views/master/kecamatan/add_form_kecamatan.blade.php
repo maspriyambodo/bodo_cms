@@ -142,7 +142,7 @@
                             }).then(function () {
                                 submitButton.setAttribute('data-kt-indicator', 'off');
                                 submitButton.disabled = false;
-                                $('#table-kab').DataTable().ajax.reload();
+                                $('#table-kec').DataTable().ajax.reload();
                                 $('#btn_close1').click();
                             });
                         } else {
