@@ -38,14 +38,14 @@
 <script>
     function configData(id_permission) {
         Swal.fire({
-                        title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        onOpen: function () {
-                            Swal.showLoading();
-                        }
-                    });
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'permission/edit/' + id_permission,
             type: 'GET',
@@ -120,16 +120,16 @@
             displayStart: 0,
             pageLength: 10,
             preDrawCallback: function () {
-                    Swal.fire({
-                        title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        onOpen: function () {
-                            Swal.showLoading();
-                        }
-                    });
-                },
+                Swal.fire({
+                    title: 'memuat data...',
+                    html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    onOpen: function () {
+                        Swal.showLoading();
+                    }
+                });
+            },
             rowCallback: function (row, data) {
                 $('.dataTables_length').remove();
                 $(row).addClass('border');
@@ -140,7 +140,12 @@
             dt.destroy();
         });
         $('#keyword').on('keyup', function () {
-            dt.search(this.value).draw();
+            var keyword = $('#keyword').val();
+            if (keyword.length >= 3) {
+                dt.search(this.value).draw();
+            } else if (keyword == '') {
+                dt.search(this.value).draw();
+            }
         });
     }
 </script>

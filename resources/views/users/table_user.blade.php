@@ -9,6 +9,9 @@
                 deferRender: true,
                 info: true,
                 stateSave: false,
+                initComplete: function () {
+                    Swal.close();
+                },
                 ajax: {
                     url: "user-management/json",
                     data: function (d) {
@@ -20,10 +23,11 @@
                 ],
                 columns: [
                     {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
                         className: "text-center",
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
+                        orderable: false,
+                        searchable: false
                     },
                     {data: "button", className: "text-center", orderable: false},
                     {data: "picture", className: "text-center", orderable: false},
@@ -72,7 +76,12 @@
                 $('#table-user').DataTable().ajax.reload();
             });
             $('#keyword').on('keyup', function () {
-                dt.search(this.value).draw();
+                var keyword = $('#keyword').val();
+                if (keyword.length >= 3) {
+                    dt.search(this.value).draw();
+                } else if (keyword == '') {
+                    dt.search(this.value).draw();
+                }
             });
             dt.on('draw', function () {
                 KTMenu.createInstances();

@@ -86,7 +86,12 @@
                 $('#table-permission').DataTable().ajax.reload();
             });
             $('#keyword').on('keyup', function () {
-                dt.search(this.value).draw();
+                var keyword = $('#keyword').val();
+                if (keyword.length >= 3) {
+                    dt.search(this.value).draw();
+                } else if (keyword == '') {
+                    dt.search(this.value).draw();
+                }
             });
             dt.on('draw', function () {
                 KTMenu.createInstances();

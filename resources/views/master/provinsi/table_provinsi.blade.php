@@ -10,9 +10,6 @@
                 info: true,
                 stateSave: false,
                 processing: true,
-                initComplete: function () {
-                    Swal.close();
-                },
                 ajax: {
                     url: "provinsi/json",
                     data: function (d) {
