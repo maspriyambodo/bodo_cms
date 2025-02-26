@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\MtProvinsi;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 use Yajra\DataTables\Facades\DataTables;
 
 class Provinsi extends Controller {
@@ -34,6 +35,8 @@ class Provinsi extends Controller {
         $dt_param = $exec->get();
         return Datatables::of($dt_param)
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
+                        ->addColumn('longitude', fn($row) => $row->coordinates->longitude)
+                        ->addColumn('latitude', fn($row) => $row->coordinates->latitude)
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
                         ->rawColumns(['status_aktif', 'button'])
@@ -94,16 +97,16 @@ class Provinsi extends Controller {
             $validator = Validator::make($request->all(), [
                 'kdtxt' => 'required|integer|unique:mt_provinsi,id_provinsi',
                 'nmatxt' => 'required|string',
-                'lattxt' => 'nullable|double',
-                'longtxt' => 'nullable|double',
+                'lattxt' => 'nullable|string',
+                'longtxt' => 'nullable|string',
             ]);
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
                 'eid' => 'required|integer',
                 'kdtxt2' => 'required|integer',
                 'nmatxt2' => 'required|string',
-                'lattxt2' => 'nullable|double',
-                'longtxt2' => 'nullable|double',
+                'lattxt2' => 'nullable|string',
+                'longtxt2' => 'nullable|string',
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
@@ -127,9 +130,8 @@ class Provinsi extends Controller {
                 MtProvinsi::create([
                     'id_provinsi' => $request->kdtxt,
                     'nama' => $request->nmatxt,
+                    'coordinates' => new Point($request->longtxt, $request->lattxt),
                     'is_trash' => 0,
-                    'latitude' => $request->lattxt,
-                    'longitude' => $request->longtxt,
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
@@ -137,8 +139,7 @@ class Provinsi extends Controller {
                         ->update([
                             'id_provinsi' => $request->kdtxt2,
                             'nama' => $request->nmatxt2,
-                            'latitude' => $request->lattxt2,
-                            'longitude' => $request->longtxt2,
+                            'coordinates' => new Point($request->lattxt2, $request->longtxt2),
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {

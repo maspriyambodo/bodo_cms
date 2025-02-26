@@ -29,11 +29,11 @@
                     </div>
                     <div class="fv-row mb-10">
                         <label for="lattxt2" class="form-label">Latitude</label>
-                        <input type="text" id="lattxt2" name="lattxt2" class="form-control form-control-solid" required=""/>
+                        <input type="text" id="lattxt2" name="lattxt2" class="form-control form-control-solid" maxlength="11" required=""/>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="longtxt2" class="form-label">Longitude</label>
-                        <input type="text" id="longtxt2" name="longtxt2" class="form-control form-control-solid" required=""/>
+                        <input type="text" id="longtxt2" name="longtxt2" class="form-control form-control-solid" maxlength="11" required=""/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -79,8 +79,8 @@
                     $('#eid').val(data.dt_kecamatan['id_kecamatan']);
                     $('#kdtxt2').val(data.dt_kecamatan['id_kecamatan']);
                     $('#nmatxt2').val(data.dt_kecamatan['nama']);
-                    $('#lattxt2').val(data.dt_kecamatan['latitude']);
-                    $('#longtxt2').val(data.dt_kecamatan['longitude']);
+                    $('#lattxt2').val(data.dt_provinsi['coordinates']['coordinates'][1]);
+                    $('#longtxt2').val(data.dt_provinsi['coordinates']['coordinates'][0]);
                     $("#editModal").modal('show');
                     Swal.close();
                 } else {
@@ -139,12 +139,32 @@
                             notEmpty: {
                                 message: 'The Kode is required'
                             }
-                        }
+                        },
+                        stringLength: {
+                                max: 6,
+                                message: 'The kode must be less than 6 characters long'
+                            }
                     },
                     nmatxt2: {
                         validators: {
                             notEmpty: {
                                 message: 'The Provinsi Name is required'
+                            }
+                        }
+                    },
+                    lattxt2: {
+                        validators: {
+                            stringLength: {
+                                max: 11,
+                                message: 'The latitude must be 11 characters long'
+                            }
+                        }
+                    },
+                    longtxt2: {
+                        validators: {
+                            stringLength: {
+                                max: 11,
+                                message: 'The longitude must be 11 characters long'
                             }
                         }
                     }

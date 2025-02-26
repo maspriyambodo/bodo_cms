@@ -28,11 +28,11 @@
                     </div>
                     <div class="fv-row mb-10">
                         <label for="lattxt" class="form-label">Latitude</label>
-                        <input type="text" id="lattxt" name="lattxt" class="form-control form-control-solid" required=""/>
+                        <input type="text" id="lattxt" name="lattxt" class="form-control form-control-solid" maxlength="11" required=""/>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="longtxt" class="form-label">Longitude</label>
-                        <input type="text" id="longtxt" name="longtxt" class="form-control form-control-solid" required=""/>
+                        <input type="text" id="longtxt" name="longtxt" class="form-control form-control-solid" maxlength="11" required=""/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -79,6 +79,22 @@
                 validators: {
                     notEmpty: {
                         message: 'The Name is required'
+                    }
+                }
+            },
+            lattxt: {
+                validators: {
+                    stringLength: {
+                        max: 11,
+                        message: 'The latitude must be 11 characters long'
+                    }
+                }
+            },
+            longtxt: {
+                validators: {
+                    stringLength: {
+                        max: 11,
+                        message: 'The longitude must be 11 characters long'
                     }
                 }
             }
