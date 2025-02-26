@@ -28,6 +28,15 @@
 @push('scripts')
 <script>
     function resetPassword(id_user) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'user-management/edit/' + id_user + '?q=reset_password',
             type: 'GET',
@@ -38,6 +47,7 @@
                     $('#resettxt').html('you will reset the password of user <strong>' + data.dt_user['name'] + '</strong>?');
                     $('#resettxt2').html('The new user password is: <strong>' + data.default_password + '</strong>');
                     $("#resetModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -100,6 +110,15 @@
         if (validator5) {
             validator5.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     resetButton.setAttribute('data-kt-indicator', 'on');
                     resetButton.disabled = true;
                     const formData = new FormData(formReset);

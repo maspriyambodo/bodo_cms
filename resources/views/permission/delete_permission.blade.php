@@ -7,7 +7,7 @@
             </div>
             <form id="delete_form" class="form" action="#" autocomplete="off">
                 @csrf
-                
+
                 <div class="modal-body">
                     <div class="fv-row">
                         <input id="d_id" name="d_id" type="hidden" value=""/>
@@ -31,6 +31,15 @@
 @push('scripts')
 <script>
     function deleteData(id_permission) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'permission/edit/' + id_permission,
             type: 'GET',
@@ -40,6 +49,7 @@
                     $('input[name="d_id"]').val(data.dt_permission.id);
                     $('#deltxt').html('Are you sure you want to delete role <strong>' + data.dt_permission['name'] + '</strong>?');
                     $("#deleteModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -101,6 +111,15 @@
         if (validator3) {
             validator3.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     delButton.setAttribute('data-kt-indicator', 'on');
                     delButton.disabled = true;
                     const formData = new FormData(formDelete);

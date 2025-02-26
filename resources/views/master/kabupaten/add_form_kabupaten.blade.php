@@ -49,7 +49,7 @@
 </div>
 @push('scripts')
 <script>
-    function add_kode(id_prov){
+    function add_kode(id_prov) {
         $('#kdtxt').val(id_prov);
     }
     $('.form-select').select2({
@@ -95,6 +95,15 @@
         if (validator) {
             validator.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     submitButton.setAttribute('data-kt-indicator', 'on');
                     submitButton.disabled = true;
                     const formData = new FormData(form);

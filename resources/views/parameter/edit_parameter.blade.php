@@ -41,6 +41,15 @@
 @push('scripts')
 <script>
     function editData(val) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'parameter/edit/' + val,
             type: 'GET',
@@ -52,6 +61,7 @@
                     $('input[name="valtxt2"]').val(data.dt_param['param_value']);
                     $('textarea[name="desctxt2"]').val(data.dt_param['param_desc']);
                     $("#editModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -85,107 +95,116 @@
     }
 </script>
 <script>
-  const formEdit = document.getElementById('edit_form');
-  const updateButton = document.getElementById('editbtn_submit');
-  var validator1 = FormValidation.formValidation(formEdit, {
-    fields: {
-      idtxt2: {
-        validators: {
-          notEmpty: {
-            message: 'The ID is required'
-          }
-        }
-      },
-      gruptxt2: {
-        validators: {
-          notEmpty: {
-            message: 'The Group is required'
-          }
-        }
-      },
-      valtxt2: {
-        validators: {
-          notEmpty: {
-            message: 'The Value is required'
-          }
-        }
-      },
-      desctxt2: {
-        validators: {
-          notEmpty: {
-            message: 'The Description is required'
-          }
-        }
-      }
-    },
-    plugins: {
-      trigger: new FormValidation.plugins.Trigger(),
-      bootstrap: new FormValidation.plugins.Bootstrap5({
-        rowSelector: '.fv-row',
-        eleInvalidClass: '',
-        eleValidClass: ''
-      })
-    }
-  });
-  updateButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    if (validator1) {
-      validator1.validate().then(function(status) {
-        if (status == 'Valid') {
-          updateButton.setAttribute('data-kt-indicator', 'on');
-          updateButton.disabled = true;
-          const formData = new FormData(formEdit);
-          fetch('parameter/store/?q=update', {
-            method: 'POST',
-            body: formData
-          }).then(response => response.json()).then(data => {
-            if (data.success) {
-              Swal.fire({
-                text: "data has been updated",
-                icon: "success",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                  confirmButton: "btn btn-primary"
+    const formEdit = document.getElementById('edit_form');
+    const updateButton = document.getElementById('editbtn_submit');
+    var validator1 = FormValidation.formValidation(formEdit, {
+        fields: {
+            idtxt2: {
+                validators: {
+                    notEmpty: {
+                        message: 'The ID is required'
+                    }
                 }
-              }).then(function() {
-                updateButton.setAttribute('data-kt-indicator', 'off');
-                updateButton.disabled = false;
-                $('#table-parameter').DataTable().ajax.reload();
-                $('#btn_close2').click();
-              });
-            } else {
-              Swal.fire({
-                text: "error while insert data, errcode: 04121113",
-                icon: "error",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                  confirmButton: "btn btn-primary"
+            },
+            gruptxt2: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Group is required'
+                    }
                 }
-              }).then(function() {
-                window.location.reload();
-              });
+            },
+            valtxt2: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Value is required'
+                    }
+                }
+            },
+            desctxt2: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Description is required'
+                    }
+                }
             }
-          }).catch((error) => {
-            Swal.fire({
-              text: error,
-              icon: "error",
-              buttonsStyling: !1,
-              confirmButtonText: "OK",
-              allowOutsideClick: false,
-              customClass: {
-                confirmButton: "btn btn-primary"
-              }
-            }).then(function() {
-              window.location.reload();
-            });
-          });
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap: new FormValidation.plugins.Bootstrap5({
+                rowSelector: '.fv-row',
+                eleInvalidClass: '',
+                eleValidClass: ''
+            })
         }
-      });
-    }
-  });
+    });
+    updateButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (validator1) {
+            validator1.validate().then(function (status) {
+                if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
+                    updateButton.setAttribute('data-kt-indicator', 'on');
+                    updateButton.disabled = true;
+                    const formData = new FormData(formEdit);
+                    fetch('parameter/store/?q=update', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json()).then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                text: "data has been updated",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                updateButton.setAttribute('data-kt-indicator', 'off');
+                                updateButton.disabled = false;
+                                $('#table-parameter').DataTable().ajax.reload();
+                                $('#btn_close2').click();
+                            });
+                        } else {
+                            Swal.fire({
+                                text: "error while insert data, errcode: 04121113",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                    }).catch((error) => {
+                        Swal.fire({
+                            text: error,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        }).then(function () {
+                            window.location.reload();
+                        });
+                    });
+                }
+            });
+        }
+    });
 </script>
 @endpush

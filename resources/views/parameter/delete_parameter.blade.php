@@ -52,152 +52,171 @@
 </div>
 @push('scripts')
 <script>
-  function deleteData(id_parameter) {
-    $.ajax({
-      url: 'parameter/edit/' + id_parameter,
-      type: 'GET',
-      dataType: 'json',
-      success: function(data) {
-        if (data.success) {
-          $('input[name="idtxt3"]').val(data.dt_param['id_param']);
-          $('input[name="gruptxt3"]').val(data.dt_param['param_group']);
-          $('input[name="valtxt3"]').val(data.dt_param['param_value']);
-          $('textarea[name="desctxt3"]').val(data.dt_param['param_desc']);
-          $("#deleteModal").modal('show');
-        } else {
-          Swal.fire({
-            text: 'error while get data!',
-            icon: "error",
-            buttonsStyling: !1,
-            confirmButtonText: "OK",
-            allowOutsideClick: false,
-            customClass: {
-              confirmButton: "btn btn-primary"
-            }
-          }).then(function() {
-            window.location.reload();
-          });
-        }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
+    function deleteData(id_parameter) {
         Swal.fire({
-          text: textStatus,
-          icon: "error",
-          buttonsStyling: !1,
-          confirmButtonText: "OK",
-          allowOutsideClick: false,
-          customClass: {
-            confirmButton: "btn btn-primary"
-          }
-        }).then(function() {
-          window.location.reload();
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
         });
-      }
-    });
-  }
+        $.ajax({
+            url: 'parameter/edit/' + id_parameter,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.success) {
+                    $('input[name="idtxt3"]').val(data.dt_param['id_param']);
+                    $('input[name="gruptxt3"]').val(data.dt_param['param_group']);
+                    $('input[name="valtxt3"]').val(data.dt_param['param_value']);
+                    $('textarea[name="desctxt3"]').val(data.dt_param['param_desc']);
+                    $("#deleteModal").modal('show');
+                    Swal.close();
+                } else {
+                    Swal.fire({
+                        text: 'error while get data!',
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function () {
+                    window.location.reload();
+                });
+            }
+        });
+    }
 </script>
 <script>
-  const formDelete = document.getElementById('delete_form');
-  const delButton = document.getElementById('delbtn_submit');
-  var validator3 = FormValidation.formValidation(formEdit, {
-    fields: {
-      idtxt3: {
-        validators: {
-          notEmpty: {
-            message: 'The ID is required'
-          }
-        }
-      },
-      gruptxt3: {
-        validators: {
-          notEmpty: {
-            message: 'The Group is required'
-          }
-        }
-      },
-      valtxt3: {
-        validators: {
-          notEmpty: {
-            message: 'The Value is required'
-          }
-        }
-      },
-      desctxt3: {
-        validators: {
-          notEmpty: {
-            message: 'The Description is required'
-          }
-        }
-      }
-    },
-    plugins: {
-      trigger: new FormValidation.plugins.Trigger(),
-      bootstrap: new FormValidation.plugins.Bootstrap5({
-        rowSelector: '.fv-row',
-        eleInvalidClass: '',
-        eleValidClass: ''
-      })
-    }
-  });
-  delButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    if (validator3) {
-      validator3.validate().then(function(status) {
-        if (status == 'Valid') {
-          delButton.setAttribute('data-kt-indicator', 'on');
-          delButton.disabled = true;
-          const formData = new FormData(formDelete);
-          fetch('parameter/store/?q=delete', {
-            method: 'POST',
-            body: formData
-          }).then(response => response.json()).then(data => {
-            if (data.success) {
-              Swal.fire({
-                text: "data has been deleted",
-                icon: "success",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                  confirmButton: "btn btn-primary"
+    const formDelete = document.getElementById('delete_form');
+    const delButton = document.getElementById('delbtn_submit');
+    var validator3 = FormValidation.formValidation(formEdit, {
+        fields: {
+            idtxt3: {
+                validators: {
+                    notEmpty: {
+                        message: 'The ID is required'
+                    }
                 }
-              }).then(function() {
-                delButton.setAttribute('data-kt-indicator', 'off');
-                delButton.disabled = false;
-                $('#table-parameter').DataTable().ajax.reload();
-                $("#btn_close3").click();
-              });
-            } else {
-              Swal.fire({
-                text: "error while insert data, errcode: 04121113",
-                icon: "error",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                  confirmButton: "btn btn-primary"
+            },
+            gruptxt3: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Group is required'
+                    }
                 }
-              }).then(function() {
-                window.location.reload();
-              });
+            },
+            valtxt3: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Value is required'
+                    }
+                }
+            },
+            desctxt3: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Description is required'
+                    }
+                }
             }
-          }).catch((error) => {
-            Swal.fire({
-              text: error,
-              icon: "error",
-              buttonsStyling: !1,
-              confirmButtonText: "OK",
-              allowOutsideClick: false,
-              customClass: {
-                confirmButton: "btn btn-primary"
-              }
-            }).then(function() {
-              window.location.reload();
-            });
-          });
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap: new FormValidation.plugins.Bootstrap5({
+                rowSelector: '.fv-row',
+                eleInvalidClass: '',
+                eleValidClass: ''
+            })
         }
-      });
-    }
-  });
+    });
+    delButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (validator3) {
+            validator3.validate().then(function (status) {
+                if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
+                    delButton.setAttribute('data-kt-indicator', 'on');
+                    delButton.disabled = true;
+                    const formData = new FormData(formDelete);
+                    fetch('parameter/store/?q=delete', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json()).then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                text: "data has been deleted",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                delButton.setAttribute('data-kt-indicator', 'off');
+                                delButton.disabled = false;
+                                $('#table-parameter').DataTable().ajax.reload();
+                                $("#btn_close3").click();
+                            });
+                        } else {
+                            Swal.fire({
+                                text: "error while insert data, errcode: 04121113",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                    }).catch((error) => {
+                        Swal.fire({
+                            text: error,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        }).then(function () {
+                            window.location.reload();
+                        });
+                    });
+                }
+            });
+        }
+    });
 </script>
 @endpush

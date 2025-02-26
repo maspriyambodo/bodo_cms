@@ -57,6 +57,15 @@
 @push('scripts')
 <script>
     function restoreData(id_permission) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'permission/edit/' + id_permission,
             type: 'GET',
@@ -69,6 +78,7 @@
                     $("#parenttxt3").val(data.dt_permission['parent_id']);
                     $('#restoreModalLabel').html('Restore Permission <strong>' + data.dt_permission.name + '</strong>');
                     $("#restoreModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -130,6 +140,15 @@
         if (validator_resotre) {
             validator_resotre.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     restoreBtn.setAttribute('data-kt-indicator', 'on');
                     restoreBtn.disabled = true;
                     const restoreformData = new FormData(restoreForm);

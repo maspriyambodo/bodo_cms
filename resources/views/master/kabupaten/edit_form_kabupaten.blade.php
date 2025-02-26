@@ -57,6 +57,15 @@
         dropdownParent: $('#editModal')
     });
     function editData(val) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'kabupaten/edit/' + val,
             type: 'GET',
@@ -71,6 +80,7 @@
                     $('#lattxt2').val(data.dt_kabupaten['latitude']);
                     $('#longtxt2').val(data.dt_kabupaten['longitude']);
                     $("#editModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -153,6 +163,15 @@
         if (validator2) {
             validator2.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     updateButton.setAttribute('data-kt-indicator', 'on');
                     updateButton.disabled = true;
                     const formData = new FormData(formEdit);

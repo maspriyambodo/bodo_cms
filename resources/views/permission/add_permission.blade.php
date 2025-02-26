@@ -42,100 +42,109 @@
 </div>
 @push('scripts')
 <script>
-  const form = document.getElementById('add_form');
-  const submitButton = document.getElementById('addbtn_submit');
-  var validator = FormValidation.formValidation(form, {
-    fields: {
-      parenttxt: {
-        validators: {
-          notEmpty: {
-            message: 'The Parent is required'
-          }
-        }
-      },
-      nametxt: {
-        validators: {
-          notEmpty: {
-            message: 'The Name is required'
-          }
-        }
-      },
-      descriptontxt: {
-        validators: {
-          notEmpty: {
-            message: 'The Description is required'
-          }
-        }
-      }
-    },
-    plugins: {
-      trigger: new FormValidation.plugins.Trigger(),
-      bootstrap: new FormValidation.plugins.Bootstrap5({
-        rowSelector: '.fv-row',
-        eleInvalidClass: '',
-        eleValidClass: ''
-      })
-    }
-  });
-  submitButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    if (validator) {
-      validator.validate().then(function(status) {
-        if (status == 'Valid') {
-          submitButton.setAttribute('data-kt-indicator', 'on');
-          submitButton.disabled = true;
-          const formData = new FormData(form);
-          fetch('permission/store/?q=add', {
-            method: 'POST',
-            body: formData
-          }).then(response => response.json()).then(data => {
-            if (data.success) {
-              Swal.fire({
-                text: "data has been saved",
-                icon: "success",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                  confirmButton: "btn btn-primary"
+    const form = document.getElementById('add_form');
+    const submitButton = document.getElementById('addbtn_submit');
+    var validator = FormValidation.formValidation(form, {
+        fields: {
+            parenttxt: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Parent is required'
+                    }
                 }
-              }).then(function() {
-                submitButton.setAttribute('data-kt-indicator', 'off');
-                submitButton.disabled = false;
-                $('#table-permission').DataTable().ajax.reload();
-                $('#btn_close1').click();
-              });
-            } else {
-              Swal.fire({
-                text: "error while insert data, errcode: 20050512",
-                icon: "error",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                  confirmButton: "btn btn-primary"
+            },
+            nametxt: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Name is required'
+                    }
                 }
-              }).then(function() {
-                window.location.reload();
-              });
+            },
+            descriptontxt: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Description is required'
+                    }
+                }
             }
-          }).catch((error) => {
-            Swal.fire({
-              text: error,
-              icon: "error",
-              buttonsStyling: !1,
-              confirmButtonText: "OK",
-              allowOutsideClick: false,
-              customClass: {
-                confirmButton: "btn btn-primary"
-              }
-            }).then(function() {
-              window.location.reload();
-            });
-          });
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap: new FormValidation.plugins.Bootstrap5({
+                rowSelector: '.fv-row',
+                eleInvalidClass: '',
+                eleValidClass: ''
+            })
         }
-      });
-    }
-  });
+    });
+    submitButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (validator) {
+            validator.validate().then(function (status) {
+                if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
+                    submitButton.setAttribute('data-kt-indicator', 'on');
+                    submitButton.disabled = true;
+                    const formData = new FormData(form);
+                    fetch('permission/store/?q=add', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json()).then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                text: "data has been saved",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                submitButton.setAttribute('data-kt-indicator', 'off');
+                                submitButton.disabled = false;
+                                $('#table-permission').DataTable().ajax.reload();
+                                $('#btn_close1').click();
+                            });
+                        } else {
+                            Swal.fire({
+                                text: "error while insert data, errcode: 20050512",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                    }).catch((error) => {
+                        Swal.fire({
+                            text: error,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        }).then(function () {
+                            window.location.reload();
+                        });
+                    });
+                }
+            });
+        }
+    });
 </script>
 @endpush

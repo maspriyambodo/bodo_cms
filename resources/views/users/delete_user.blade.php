@@ -28,6 +28,15 @@
 @push('scripts')
 <script>
     function deleteData(id_user) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'user-management/edit/' + id_user,
             type: 'GET',
@@ -37,6 +46,7 @@
                     $('input[name="d_id"]').val(data.new_id);
                     $('#deltxt').html('Are you sure you want to delete <strong>' + data.dt_user['name'] + '</strong>?');
                     $("#deleteModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -99,6 +109,15 @@
         if (validator3) {
             validator3.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     delButton.setAttribute('data-kt-indicator', 'on');
                     delButton.disabled = true;
                     const formData = new FormData(formDelete);

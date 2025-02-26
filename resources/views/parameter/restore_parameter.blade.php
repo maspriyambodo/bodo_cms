@@ -54,6 +54,15 @@
 @push('scripts')
 <script>
     function restoreData(id_parameter) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'parameter/edit/' + id_parameter,
             type: 'GET',
@@ -65,6 +74,7 @@
                     $('input[name="valtxt4"]').val(data.dt_param['param_value']);
                     $('textarea[name="desctxt4"]').val(data.dt_param['param_desc']);
                     $("#restoreModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -127,6 +137,15 @@
         if (validator4) {
             validator4.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     actButton.setAttribute('data-kt-indicator', 'on');
                     actButton.disabled = true;
                     const formData = new FormData(formRestore);

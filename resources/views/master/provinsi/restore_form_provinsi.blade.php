@@ -39,6 +39,15 @@
 @push('scripts')
 <script>
     function restoreData(id_menu) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'provinsi/edit/' + id_menu,
             type: 'GET',
@@ -48,6 +57,7 @@
                     $('input[name="delidtxt"]').val(data.dt_provinsi['id_provinsi']);
                     $('#restoreModalLabel').html('Restore provinsi <strong>' + data.dt_provinsi.nama + '</strong>');
                     $("#restoreModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -109,6 +119,15 @@
         if (validator_resotre) {
             validator_resotre.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     restoreBtn.setAttribute('data-kt-indicator', 'on');
                     restoreBtn.disabled = true;
                     const restoreformData = new FormData(restoreForm);

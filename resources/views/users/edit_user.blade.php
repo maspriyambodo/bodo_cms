@@ -43,6 +43,15 @@
 @push('scripts')
 <script>
     function editData(val) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
             url: 'user-management/edit/' + val,
             type: 'GET',
@@ -54,6 +63,7 @@
                     $('input[name="mailtxt2"]').val(data.dt_user['email']);
                     $("#leveltxt2").val(data.dt_user['role']);
                     $("#editModal").modal('show');
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
@@ -133,6 +143,15 @@
         if (validator2) {
             validator2.validate().then(function (status) {
                 if (status == 'Valid') {
+                    Swal.fire({
+                        title: 'memuat data...',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onOpen: function () {
+                            Swal.showLoading();
+                        }
+                    });
                     updateButton.setAttribute('data-kt-indicator', 'on');
                     updateButton.disabled = true;
                     const formData = new FormData(formEdit);
