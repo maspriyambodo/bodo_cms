@@ -11,6 +11,7 @@ use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\Provinsi;
 use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\KelurahanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -68,6 +69,15 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [KecamatanController::class, 'json'])->name('kecamatan');
             Route::post('/store', [KecamatanController::class, 'store'])->name('kecamatan');
             Route::get('/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan');
+        });
+        
+Route::middleware(['auth', 'verified'])
+        ->prefix('kelurahan')
+        ->group(function () {
+            Route::get('/', [KelurahanController::class, 'index'])->name('kelurahan');
+            Route::get('/json', [KelurahanController::class, 'json'])->name('kelurahan');
+            Route::post('/store', [KelurahanController::class, 'store'])->name('kelurahan');
+            Route::get('/edit/{id}', [KelurahanController::class, 'edit'])->name('kelurahan');
         });
 
 Route::middleware(['auth', 'verified'])
