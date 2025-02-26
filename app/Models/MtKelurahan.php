@@ -14,6 +14,7 @@ class MtKelurahan extends Model {
 
     protected $table = 'mt_kelurahan';
     protected $fillable = [
+        'id_kelurahan',
         'id_kecamatan',
         'nama',
         'is_trash',

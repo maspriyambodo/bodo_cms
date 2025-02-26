@@ -111,7 +111,7 @@ class KelurahanController extends Controller {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
                 'kabtxt' => 'required|integer',
-                'kdtxt' => 'required|integer|unique:mt_kecamatan,id_kelurahan',
+                'kdtxt' => 'required|integer|unique:mt_kelurahan,id_kelurahan',
                 'nmatxt' => 'required|string',
                 'lattxt' => 'nullable|string',
                 'longtxt' => 'nullable|string',
@@ -145,8 +145,8 @@ class KelurahanController extends Controller {
         try {
             if ($request->q == 'add') {
                 MtKelurahan::create([
-                    'id_kecamatan' => $request->kdtxt,
-                    'id_kabupaten' => $request->kabtxt,
+                    'id_kelurahan' => $request->kdtxt,
+                    'id_kecamatan' => $request->kabtxt,
                     'nama' => $request->nmatxt,
                     'is_trash' => 0,
                     'coordinates' => new Point($request->longtxt, $request->lattxt),
@@ -210,6 +210,17 @@ class KelurahanController extends Controller {
         } else {
             return response()->json([
                         'success' => false
+            ]);
+        }
+    }
+
+    public function search(Request $request) {
+        if ($request->search) {
+            $exec = MtKecamatan::select('id_kecamatan as id', 'nama as text')->where('is_trash', 0)
+                    ->where('nama', 'like', "%" . $request->search . "%")
+                    ->get();
+            return response()->json([
+                        'results' => $exec
             ]);
         }
     }
