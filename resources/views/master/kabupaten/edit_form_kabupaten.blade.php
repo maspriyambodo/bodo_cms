@@ -12,6 +12,7 @@
                     <div class="fv-row mb-10">
                         <label for="provtxt2" class="required form-label">Provinsi</label>
                         <select id="provtxt2" name="provtxt2" class="form-control form-control-solid form-select" onchange="add_kode2(this.value);">
+                            <option value=""></option>
                             @foreach($provinsi as $dt_provinsi2)
                             <option value="{{ $dt_provinsi2->id_provinsi; }}">{{ $dt_provinsi2->nama; }}</option>
                             @endforeach
@@ -54,7 +55,8 @@
         $('#kdtxt2').val(id_prov);
     }
     $('.form-select').select2({
-        dropdownParent: $('#editModal')
+        dropdownParent: $('#editModal'),
+        placeholder: "Select..."
     });
     function editData(val) {
         Swal.fire({

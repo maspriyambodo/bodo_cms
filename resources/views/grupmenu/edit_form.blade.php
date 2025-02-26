@@ -21,6 +21,7 @@
                     <div class="fv-row mb-10">
                         <label for="ordtxt2" class="required form-label">Order Number</label>
                         <select id="ordtxt2" name="ordtxt2" class="form-control form-control-solid form-select">
+                            <option value=""></option>
                             @foreach($order_num as $order_nums)
                             <option value="{{ $order_nums->order_no }}">{{ $order_nums->order_no }}</option>
                             @endforeach
