@@ -16,7 +16,7 @@
         @isset($paramsys['FAVICON'])
         <link rel="shortcut icon" href="{{ $paramsys['FAVICON']; }}">
         @endisset
-        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('build/assets/app-DWyhC5Vm.css'); }}" rel="stylesheet" type="text/css"/>
         <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>
@@ -128,23 +128,26 @@
         <script src="{{ asset('src/plugins/global/plugins.bundle.js'); }}"></script>
         <script src="{{ asset('src/js/scripts.bundle.js'); }}"></script>
         <script>
-            $(document).ready(function () {
-                function updateClock() {
-                    var now = new Date();
-                    var hours = now.getHours();
-                    var minutes = now.getMinutes();
-                    var seconds = now.getSeconds();
-                    hours = (hours < 10 ? "0" : "") + hours;
-                    minutes = (minutes < 10 ? "0" : "") + minutes;
-                    seconds = (seconds < 10 ? "0" : "") + seconds;
-                    var timeString = hours + ":" + minutes + ":" + seconds;
-                    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                    var dayName = days[now.getDay()];
-                    $('#clock').text(timeString + ' ' + dayName);
-                }
-                updateClock();
-                setInterval(updateClock, 1000);
-            });
+$(document).ready(function () {
+    var menu_active = $('#active').parent().parent();
+    menu_active.addClass('hover show');
+    function updateClock() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        hours = (hours < 10 ? "0" : "") + hours;
+        minutes = (minutes < 10 ? "0" : "") + minutes;
+        seconds = (seconds < 10 ? "0" : "") + seconds;
+        var timeString = hours + ":" + minutes + ":" + seconds;
+        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var dayName = days[now.getDay()];
+        $('#clock').text(timeString + ' ' + dayName);
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+});
         </script>
         @stack('scripts')
     </body>
