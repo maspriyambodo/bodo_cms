@@ -16,8 +16,7 @@ return new class extends Migration
             $table->integer('id_kecamatan')->index(); // Foreign key to mt_kecamatan
             $table->tinyText('nama')->charset('utf8mb4')->collation('utf8mb4_general_ci');
             $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted'); // Kolom `is_trash`
-            $table->double('latitude')->default(0)->nullable();
-            $table->double('longitude')->default(0)->nullable();
+            $table->geometry('coordinates')->nullable()->comment('longitude, latitude');
             $table->timestamps(); // Membuat kolom `created_at` dan `updated_at`
             $table->integer('created_by')->nullable(); // Kolom `created_by`
             $table->integer('updated_by')->nullable(); // Kolom `updated_by`
