@@ -35,13 +35,14 @@ class KelurahanController extends Controller {
         $offset = $request->start;
         $limit = $request->length;
         $TotalRecords = MtKelurahan::where('is_trash', 0)->count();
-        DB::enableQueryLog();
         $exec = MtKelurahan::orderBy('id_kelurahan', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->offset($offset)->limit($limit)->get();
-        $query = DB::getQueryLog();
-        $query = end($query);
-//        dd($query);
+        if($request->keyword) {
+            $FilteredRecords = count($dt_param);
+        } else {
+            $FilteredRecords = $TotalRecords;
+        }
         return Datatables::of($dt_param)
                         ->addIndexColumn()
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
@@ -52,7 +53,7 @@ class KelurahanController extends Controller {
                         ->rawColumns(['status_aktif', 'button'])
                         ->skipPaging()
                         ->setTotalRecords($TotalRecords)
-                        ->setFilteredRecords($TotalRecords)
+                        ->setFilteredRecords($FilteredRecords)
                         ->toJson();
     }
 

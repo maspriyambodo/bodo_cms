@@ -38,6 +38,11 @@ class KabupatenController extends Controller {
         $exec = MtKabupaten::orderBy('id_kabupaten', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->offset($offset)->limit($limit)->get();
+        if($request->keyword) {
+            $FilteredRecords = count($dt_param);
+        } else {
+            $FilteredRecords = $TotalRecords;
+        }
         return Datatables::of($dt_param)
                         ->addIndexColumn()
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
@@ -48,7 +53,7 @@ class KabupatenController extends Controller {
                         ->rawColumns(['status_aktif', 'button'])
                         ->skipPaging()
                         ->setTotalRecords($TotalRecords)
-                        ->setFilteredRecords($TotalRecords)
+                        ->setFilteredRecords($FilteredRecords)
                         ->make(true);
     }
 

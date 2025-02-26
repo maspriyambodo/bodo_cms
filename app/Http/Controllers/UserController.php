@@ -42,6 +42,11 @@ class UserController extends Controller {
         $this->applyFilters($exec, $request);
         $exec->orderBy('users.name', 'asc');
         $users = $exec->offset($offset)->limit($limit)->get();
+        if($request->keyword) {
+            $FilteredRecords = count($users);
+        } else {
+            $FilteredRecords = $TotalRecords;
+        }
         return Datatables::of($users)
                         ->addIndexColumn()
                         ->editColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d/M/Y'))
@@ -51,7 +56,7 @@ class UserController extends Controller {
                         ->rawColumns(['status_aktif', 'button', 'picture'])
                         ->skipPaging()
                         ->setTotalRecords($TotalRecords)
-                        ->setFilteredRecords($TotalRecords)
+                        ->setFilteredRecords($FilteredRecords)
                         ->make(true);
     }
 
