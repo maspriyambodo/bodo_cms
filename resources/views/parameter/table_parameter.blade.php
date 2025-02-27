@@ -72,7 +72,7 @@
                 dt.page.len(100).draw();
             });
             $('#dt_reload').on('click', function () {
-                $('#table-permission').DataTable().ajax.reload();
+                $('#table-parameter').DataTable().ajax.reload();
             });
             $('#keyword').on('keyup', function () {
                 var keyword = $('#keyword').val();
