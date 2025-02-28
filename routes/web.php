@@ -69,6 +69,7 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [KecamatanController::class, 'json'])->name('kecamatan');
             Route::post('/store', [KecamatanController::class, 'store'])->name('kecamatan');
             Route::get('/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan');
+            Route::get('/search', [KecamatanController::class, 'search'])->name('kelurahan');
         });
         
 Route::middleware(['auth', 'verified'])
