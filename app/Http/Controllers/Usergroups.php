@@ -31,8 +31,8 @@ class Usergroups extends Controller {
         }
         $offset = $request->start;
         $limit = $request->length;
-        $TotalRecords = UsergroupsModels::where('is_trash', 0)->count();
-        $exec = UsergroupsModels::orderBy('id', 'asc');
+        $TotalRecords = UsergroupsModels::count();
+        $exec = UsergroupsModels::with('parent')->orderBy('id', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->offset($offset)->limit($limit)->get();
         if ($request->keyword) {
@@ -113,28 +113,23 @@ class Usergroups extends Controller {
 
         DB::beginTransaction(); // Start transaction
         try {
-            $longtxt = $request->longtxt ?? 0;
-            $lattxt = $request->lattxt ?? 0;
-            $longtxt2 = $request->longtxt2 ?? 0;
-            $lattxt2 = $request->lattxt2 ?? 0;
-
             switch ($request->q) {
                 case 'add':
                     UsergroupsModels::create([
-                        'parent_id' => $request->nmatxt,
-                        'nama' => $request->nmatxt,
-                        'description' => $request->nmatxt,
+                        'parent_id' => $request->parenttxt,
+                        'name' => $request->nametxt,
+                        'description' => $request->descrptiontxt,
                         'is_trash' => 0,
                         'created_by' => auth()->user()->id
                     ]);
                     break;
 
                 case 'update':
-                    UsergroupsModels::where('id_kelurahan', $request->eid)
+                    UsergroupsModels::where('id', $request->eid)
                             ->update([
-                                'parent_id' => $request->nmatxt,
-                                'nama' => $request->nmatxt,
-                                'description' => $request->nmatxt,
+                                'parent_id' => $request->parenttxt2,
+                                'name' => $request->nametxt2,
+                                'description' => $request->descrptiontxt2,
                                 'updated_by' => auth()->user()->id
                     ]);
                     break;
@@ -176,19 +171,16 @@ class Usergroups extends Controller {
         switch ($request->q) {
             case 'add':
                 return Validator::make($request->all(), [
-                            'kabtxt' => 'required|integer',
-                            'nmatxt' => 'required|string',
-                            'lattxt' => 'nullable|string',
-                            'longtxt' => 'nullable|string',
+                            'parenttxt' => 'required|integer|exists:user_groups,id',
+                            'nametxt' => 'required|string',
+                            'descrptiontxt' => 'nullable|string'
                 ]);
             case 'update':
                 return Validator::make($request->all(), [
                             'eid' => 'required|integer',
-                            'kectxt2' => 'required|integer',
-                            'kdtxt2' => 'required|integer',
-                            'nmatxt2' => 'required|string',
-                            'lattxt2' => 'nullable|string',
-                            'longtxt2' => 'nullable|string',
+                            'parenttxt' => 'required|integer',
+                            'nametxt' => 'required|string',
+                            'descrptiontxt' => 'nullable|string'
                 ]);
             case 'delete':
                 return Validator::make($request->all(), [
@@ -226,7 +218,7 @@ class Usergroups extends Controller {
 
     public function search(Request $request) {
         if ($request->search) {
-            $exec = MtKecamatan::select('id', 'name as text')->where('is_trash', 0)
+            $exec = UsergroupsModels::select('id', 'name as text')->where('is_trash', 0)
                     ->where('name', 'like', "%" . $request->search . "%")
                     ->get();
             return response()->json([

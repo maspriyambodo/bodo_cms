@@ -14,7 +14,7 @@
                     Swal.close();
                 },
                 ajax: {
-                    url: "kelurahan/json",
+                    url: "user-groups/json",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }
@@ -38,13 +38,6 @@
 
                     },
                     {
-                        data: "name"
-                    },
-                    {
-                        data: "description",
-                        className: "text-center"
-                    },
-                    {
                         render: function (data, type, row, meta) {
                             var nama_parent = '';
                             if (row.parent) {
@@ -52,6 +45,13 @@
                             }
                             return nama_parent;
                         }
+                    },
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "description",
+                        className: "text-center"
                     },
                     {
                         data: "status_aktif",
@@ -94,7 +94,7 @@
                 dt.page.len(100).draw();
             });
             $('#dt_reload').on('click', function () {
-                $('#table-kel').DataTable().ajax.reload();
+                $('#table-usergrup').DataTable().ajax.reload();
             });
             $('#keyword').on('keyup', function () {
                 var keyword = $('#keyword').val();
@@ -117,12 +117,4 @@
     KTUtil.onDOMContentLoaded(function () {
         KTDatatablesServerSide.init();
     });
-    function isNumber(b) {
-        b = (b) ? b : window.event;
-        var a = (b.which) ? b.which : b.keyCode;
-        if (a > 31 && (a < 48 || a > 57)) {
-            return false;
-        }
-        return true;
-    }
 </script>
