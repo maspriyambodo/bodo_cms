@@ -109,6 +109,7 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [Usergroups::class, 'json'])->name('user-groups');
             Route::get('/edit/{id}', [Usergroups::class, 'edit'])->name('user-groups');
             Route::post('/store', [Usergroups::class, 'store'])->name('user-groups');
+            Route::get('/search', [Usergroups::class, 'search'])->name('user-groups');
         });
 
 Route::middleware(['auth', 'verified'])->group(function () {
