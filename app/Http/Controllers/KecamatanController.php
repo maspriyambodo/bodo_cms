@@ -38,7 +38,7 @@ class KecamatanController extends Controller {
         $exec = MtKecamatan::orderBy('id_kecamatan', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->offset($offset)->limit($limit)->get();
-        if($request->keyword) {
+        if ($request->keyword) {
             $FilteredRecords = count($dt_param);
         } else {
             $FilteredRecords = $TotalRecords;
@@ -108,32 +108,7 @@ class KecamatanController extends Controller {
     }
 
     public function store(Request $request) {
-        if ($request->q == 'add') {
-            $validator = Validator::make($request->all(), [
-                'kabtxt' => 'required|integer',
-                'kdtxt' => 'required|integer|unique:mt_kecamatan,id_kecamatan',
-                'nmatxt' => 'required|string',
-                'lattxt' => 'nullable|string',
-                'longtxt' => 'nullable|string',
-            ]);
-        } elseif ($request->q == 'update') {
-            $validator = Validator::make($request->all(), [
-                'eid' => 'required|integer',
-                'provtxt2' => 'required|integer',
-                'kdtxt2' => 'required|integer',
-                'nmatxt2' => 'required|string',
-                'lattxt2' => 'nullable|string',
-                'longtxt2' => 'nullable|string',
-            ]);
-        } elseif ($request->q == 'delete') {
-            $validator = Validator::make($request->all(), [
-                'd_id' => 'required|integer'
-            ]);
-        } elseif ($request->q == 'restore') {
-            $validator = Validator::make($request->all(), [
-                'delidtxt' => 'required|integer'
-            ]);
-        }
+        $validator = $this->validateRequest($request);
 
         if ($validator->fails()) {
             return response()->json([
@@ -141,44 +116,56 @@ class KecamatanController extends Controller {
                         'errors' => $validator->errors(),
                             ], 422);
         }
+
         DB::beginTransaction(); // Start transaction
         try {
-            if ($request->q == 'add') {
-                MtKecamatan::create([
-                    'id_kecamatan' => $request->kdtxt,
-                    'id_kabupaten' => $request->kabtxt,
-                    'nama' => $request->nmatxt,
-                    'is_trash' => 0,
-                    'coordinates' => new Point($request->longtxt, $request->lattxt),
-                    'created_by' => auth()->user()->id
-                ]);
-            } elseif ($request->q == 'update') {
-                MtKecamatan::where('id_kecamatan', $request->eid)
-                        ->update([
-                            'id_kecamatan' => $request->kdtxt2,
-                            'id_kabupaten' => $request->provtxt2,
-                            'nama' => $request->nmatxt2,
-                            'coordinates' => DB::raw(new Point($request->longtxt2, $request->lattxt2)),
-                            'updated_by' => auth()->user()->id
-                ]);
-            } elseif ($request->q == 'delete') {
-                MtKecamatan::where('id_kecamatan', $request->d_id)
-                        ->update([
-                            'is_trash' => 1,
-                            'updated_by' => auth()->user()->id
-                ]);
-            } elseif ($request->q == 'restore') {
-                MtKecamatan::where('id_kecamatan', $request->delidtxt)
-                        ->update([
-                            'is_trash' => 0,
-                            'updated_by' => auth()->user()->id
-                ]);
+            $longtxt = $request->longtxt ?? 0;
+            $lattxt = $request->lattxt ?? 0;
+            $longtxt2 = $request->longtxt2 ?? 0;
+            $lattxt2 = $request->lattxt2 ?? 0;
+
+            switch ($request->q) {
+                case 'add':
+                    MtKecamatan::create([
+                        'id_kecamatan' => $request->kdtxt,
+                        'id_kabupaten' => $request->kabtxt,
+                        'nama' => $request->nmatxt,
+                        'is_trash' => 0,
+                        'coordinates' => new Point($longtxt, $lattxt),
+                        'created_by' => auth()->user()->id
+                    ]);
+                    break;
+
+                case 'update':
+                    MtKecamatan::where('id_kecamatan', $request->eid)
+                            ->update([
+                                'id_kecamatan' => $request->kdtxt2,
+                                'id_kabupaten' => $request->provtxt2,
+                                'nama' => $request->nmatxt2,
+                                'coordinates' => new Point($longtxt2, $lattxt2),
+                                'updated_by' => auth()->user()->id
+                    ]);
+                    break;
+
+                case 'delete':
+                    MtKecamatan::where('id_kecamatan', $request->d_id)
+                            ->update([
+                                'is_trash' => 1,
+                                'updated_by' => auth()->user()->id
+                    ]);
+                    break;
+
+                case 'restore':
+                    MtKecamatan::where('id_kecamatan', $request->delidtxt)
+                            ->update([
+                                'is_trash' => 0,
+                                'updated_by' => auth()->user()->id
+                    ]);
+                    break;
             }
 
             DB::commit(); // Commit transaction
-            return response()->json([
-                        'success' => true
-            ]);
+            return response()->json(['success' => true]);
         } catch (Exception $exc) {
             DB::rollBack(); // Rollback transaction
             Log::error('Failed to create or update user: ' . $exc->getMessage(), [
@@ -187,14 +174,57 @@ class KecamatanController extends Controller {
             ]);
             return response()->json([
                         'success' => false,
-                        'message' => 'Failed to create user.',
-                        'error' => $exc->getMessage() // Optionally log the error for debugging
+                        'message' => 'Failed to process request.',
+                        'error' => $exc->getMessage()
                             ], 500);
         }
     }
 
+    private function validateRequest(Request $request) {
+        switch ($request->q) {
+            case 'add':
+                return Validator::make($request->all(), [
+                            'kabtxt' => 'required|integer',
+                            'kdtxt' => 'required|integer|unique:mt_kecamatan,id_kecamatan',
+                            'nmatxt' => 'required|string',
+                            'lattxt' => 'nullable|string',
+                            'longtxt' => 'nullable|string',
+                ]);
+            case 'update':
+                return Validator::make($request->all(), [
+                            'eid' => 'required|integer',
+                            'provtxt2' => 'required|integer',
+                            'kdtxt2' => 'required|integer',
+                            'nmatxt2' => 'required|string',
+                            'lattxt2' => 'nullable|string',
+                            'longtxt2' => 'nullable|string',
+                ]);
+            case 'delete':
+                return Validator::make($request->all(), [
+                            'd_id' => 'required|integer'
+                ]);
+            case 'restore':
+                return Validator::make($request->all(), [
+                            'delidtxt' => 'required|integer'
+                ]);
+            default:
+                return Validator::make([], []); // No validation needed
+        }
+    }
+    
+    public function search(Request $request) {
+        if ($request->search) {
+            $exec = MtKabupaten::select('id_kabupaten as id', 'nama as text')->where('is_trash', 0)
+                    ->where('nama', 'like', "%" . $request->search . "%")
+                    ->get();
+            return response()->json([
+                        'results' => $exec
+            ]);
+        }
+    }
+
     public function edit(Request $request) {
-        $exec = MtKecamatan::where('id_kecamatan', $request->id)->first();
+        $exec = MtKecamatan::with('kabupaten')->where('id_kecamatan', $request->id)->first();
         if ($exec) {
             if ($request->input('q')) {
                 return response()->json([
