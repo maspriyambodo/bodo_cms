@@ -148,7 +148,7 @@ class KelurahanController extends Controller {
                     break;
 
                 case 'delete':
-                    MtKelurahan::where('id_kecamatan', $request->d_id)
+                    MtKelurahan::where('id_kelurahan', $request->d_id)
                             ->update([
                                 'is_trash' => 1,
                                 'updated_by' => auth()->user()->id
@@ -156,7 +156,7 @@ class KelurahanController extends Controller {
                     break;
 
                 case 'restore':
-                    MtKelurahan::where('id_kecamatan', $request->delidtxt)
+                    MtKelurahan::where('id_kelurahan', $request->delidtxt)
                             ->update([
                                 'is_trash' => 0,
                                 'updated_by' => auth()->user()->id
