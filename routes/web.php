@@ -72,7 +72,7 @@ Route::middleware(['auth', 'verified'])
             Route::get('/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan');
             Route::get('/search', [KecamatanController::class, 'search'])->name('kelurahan');
         });
-        
+
 Route::middleware(['auth', 'verified'])
         ->prefix('kelurahan')
         ->group(function () {
@@ -102,13 +102,20 @@ Route::middleware(['auth', 'verified'])
             Route::post('/store', [UserController::class, 'store'])->name('user-management');
         });
 
+Route::middleware(['auth', 'verified'])
+        ->prefix('user-groups')
+        ->group(function () {
+            Route::get('/', [Usergroups::class, 'index'])->name('user-groups');
+            Route::get('/json', [Usergroups::class, 'json'])->name('user-groups');
+            Route::get('/edit/{id}', [Usergroups::class, 'edit'])->name('user-groups');
+            Route::post('/store', [Usergroups::class, 'store'])->name('user-groups');
+        });
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
-
-    Route::get('/user-groups', [Usergroups::class, 'index'])->name('user-groups');
 
     Route::get('/speed-test', [SpeedTestController::class, 'index'])->name('speed-test');
     Route::get('/speed-test-json', [SpeedTestController::class, 'json'])->name('speed-test');
