@@ -26,7 +26,7 @@ class PermissionController extends Controller {
     public function index(Request $request) {
         $user_access = $this->user_permission();
         $root_user = $this->root_user();
-        $user_groups = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
+        $user_groups = UsergroupsModels::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
         return view('permission.index', compact('user_access', 'user_groups'));
     }
 
@@ -80,7 +80,7 @@ class PermissionController extends Controller {
                         'data' => []
             ]);
         }
-        $exec = User_groups::with('children', 'parent');
+        $exec = UsergroupsModels::with('children', 'parent');
         $this->applyFilters($exec, $request);
         if ($role_user <> $root_user->param_value) {
             $exec->where('id', $root_user->param_value);
@@ -151,7 +151,7 @@ class PermissionController extends Controller {
     }
 
     public function edit(Request $request) {
-        $exec = User_groups::where('id', $request->id)->first();
+        $exec = UsergroupsModels::where('id', $request->id)->first();
         if ($exec) {
             if ($request->input('q')) {
                 return response()->json([
@@ -206,7 +206,7 @@ class PermissionController extends Controller {
         DB::beginTransaction(); // Start transaction
         try {
             if ($request->q == 'add') {
-                $User_groups = User_groups::create([
+                $User_groups = UsergroupsModels::create([
                     'parent_id' => $request->parenttxt,
                     'name' => $request->nametxt,
                     'description' => $request->descriptontxt,
@@ -215,7 +215,7 @@ class PermissionController extends Controller {
                 $lastInsertedId = $User_groups->id;
                 $this->insert_permission($lastInsertedId);
             } elseif ($request->q == 'update') {
-                User_groups::where('id', $request->idtxt2)
+                UsergroupsModels::where('id', $request->idtxt2)
                         ->update([
                             'parent_id' => $request->parenttxt2,
                             'name' => $request->nametxt2,
@@ -223,7 +223,7 @@ class PermissionController extends Controller {
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {
-                User_groups::where('id', $request->d_id)
+                UsergroupsModels::where('id', $request->d_id)
                         ->update([
                             'is_trash' => 1,
                             'updated_by' => auth()->user()->id
@@ -232,7 +232,7 @@ class PermissionController extends Controller {
             } elseif ($request->q == 'setpermission') {
                 $setpermission = $this->set_permission($request);
             } elseif ($request->q == 'restore') {
-                User_groups::where('id', $request->delidtxt)
+                UsergroupsModels::where('id', $request->delidtxt)
                         ->update([
                             'is_trash' => 0,
                             'updated_by' => auth()->user()->id

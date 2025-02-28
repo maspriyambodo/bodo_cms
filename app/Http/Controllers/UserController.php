@@ -138,7 +138,7 @@ class UserController extends Controller {
     public function index(Request $request) {
         $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
         $root_user = $this->root_user();
-        $dt_role = User_groups::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
+        $dt_role = UsergroupsModels::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
         $user_access = $this->user_permission();
         return view('users.index', compact('default_password', 'dt_role', 'user_access'));
     }

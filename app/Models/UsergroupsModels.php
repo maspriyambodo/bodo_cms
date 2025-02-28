@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\User;
 use App\Models\Permission as SysPermission;
 
-class User_groups extends Model {
+class UsergroupsModels extends Model {
 
     use HasFactory,
         Notifiable;
@@ -32,11 +32,11 @@ class User_groups extends Model {
     }
 
     public function parent() {
-        return $this->belongsTo(User_groups::class, 'parent_id');
+        return $this->belongsTo(UsergroupsModels::class, 'parent_id');
     }
 
     // Define the relationship with the child groups
     public function children() {
-        return $this->hasMany(User_groups::class, 'parent_id', 'id');
+        return $this->hasMany(UsergroupsModels::class, 'parent_id', 'id');
     }
 }

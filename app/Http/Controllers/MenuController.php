@@ -110,7 +110,7 @@ class MenuController extends Controller {
     private function generate_permission($id_menu) {
         $root_user = $this->root_user();
         $userId = auth()->user()->id;
-        $roleIds = User_groups::where('is_trash', 0)->pluck('id')->toArray();
+        $roleIds = UsergroupsModels::where('is_trash', 0)->pluck('id')->toArray();
 
         $form_data = [];
 

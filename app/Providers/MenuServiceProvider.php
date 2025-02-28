@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User_groups;
+use App\Models\UsergroupsModels;
 use App\Models\Menu;
 use App\Models\Parameter;
 
@@ -27,7 +27,7 @@ class MenuServiceProvider extends ServiceProvider {
                 if (Auth::check()) {
                     $user = Auth::user();
 
-                    $role_user = User_groups::find($user->role);
+                    $role_user = UsergroupsModels::find($user->role);
                     $menus = Menu::with(['children', 'permissions' => function ($query) use ($user) {
                                     $query->where('is_trash', 0)
                                             ->where('v', 1)

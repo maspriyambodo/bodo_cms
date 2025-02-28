@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Menu as SysMenu;
-use App\Models\User_groups as UserGroup;
+use App\Models\UsergroupsModels as UserGroup;
 
 class Permission extends Model {
 

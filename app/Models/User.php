@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Permission as SysPermission;
-use App\Models\User_groups as UserGroup;
+use App\Models\UsergroupsModels as UserGroup;
 
 class User extends Authenticatable {
 
