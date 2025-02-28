@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Permission as db_permission;
 use App\Models\Parameter as ParameterModel;
-use App\Models\User_groups;
+use App\Models\UsergroupsModels;
 use App\Models\Menu as db_menu;
 
 class PermissionController extends Controller {

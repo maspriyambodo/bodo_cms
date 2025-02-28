@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\Permission as db_permission;
 use App\Models\Parameter as ParameterModel;
-use App\Models\User_groups;
+use App\Models\UsergroupsModels;
 use App\Models\MenuGroup;
 use Yajra\DataTables\Facades\DataTables;
 
