@@ -2,7 +2,9 @@
 <html lang=en>
     <head>
         <base href="{{route('dashboard');}}">
-        <title>{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . config('app.name', 'Laravel'); }}</title>
+        @isset($paramsys['APP_NAME'])
+        <title>{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . $paramsys['APP_NAME']; }}</title>
+        @endisset
         <meta name=description content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free.">
         <meta name=keywords content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon">
         <meta name=viewport content="width=device-width,initial-scale=1">
@@ -11,12 +13,14 @@
         <meta property=og:type content=article>
         <meta property=og:title content="Metronic - Bootstrap 5 HTML, VueJS, React, Angular &amp; Laravel Admin Dashboard Theme">
         <meta property=og:url content=https://keenthemes.com/metronic>
-        <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . config('app.name', 'Laravel'); }}">
+        @isset($paramsys['APP_NAME'])
+        <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . $paramsys['APP_NAME']; }}">
+        @endisset
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
         @isset($paramsys['FAVICON'])
         <link rel="shortcut icon" href="{{ $paramsys['FAVICON']; }}">
         @endisset
-        <link href="{{ asset('build/assets/app-DWyhC5Vm.css'); }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
         <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>
@@ -108,7 +112,13 @@
                         <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                             <div class="text-dark order-2 order-md-1">
                                 <span class="text-muted fw-bold me-1">@php echo date('Y'); @endphp &copy;</span>
-                                <a href=https://keenthemes.com target=_blank class="text-gray-800 text-hover-primary">{{ config('app.name', 'Laravel') }}</a>
+                                <a href=https://keenthemes.com target=_blank class="text-gray-800 text-hover-primary">
+                                    @isset($paramsys['APP_NAME'])
+                                    {{ $paramsys['APP_NAME']; }}
+                                    @else
+                                    {{ config('app.name', 'Laravel') }}
+                                    @endisset
+                                </a>
                             </div>
                         </div>
                     </div>
