@@ -11,12 +11,7 @@
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="provtxt2" class="required form-label">Provinsi</label>
-                        <select id="provtxt2" name="provtxt2" class="form-control form-control-solid form-select" onchange="add_kode2(this.value);">
-                            <option value=""></option>
-                            @foreach($provinsi as $dt_provinsi2)
-                            <option value="{{ $dt_provinsi2->id_provinsi; }}">{{ $dt_provinsi2->nama; }}</option>
-                            @endforeach
-                        </select>
+                        <select id="provtxt2" name="provtxt2" class="form-control form-control-solid form-select provtxt2" onchange="add_kode2(this.value);"></select>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="kdtxt2" class="required form-label">Kode</label>
@@ -54,7 +49,7 @@
     function add_kode2(id_prov) {
         $('#kdtxt2').val(id_prov);
     }
-    $('.form-select').select2({
+    $('.provtxt2').select2({
         dropdownParent: $('#editModal'),
         placeholder: "Select..."
     });
@@ -74,6 +69,7 @@
             dataType: 'json',
             success: function (data) {
                 if (data.success) {
+                    $('#provtxt2').append(new Option(data.dt_kabupaten['provinsi']['nama'], data.dt_kabupaten['id_provinsi'], false, false));
                     $('#provtxt2').val(data.dt_kabupaten['id_provinsi']);
                     $('#provtxt2').trigger('change');
                     $('#eid').val(data.dt_kabupaten['id_kabupaten']);

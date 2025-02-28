@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])
             Route::get('/json', [KabupatenController::class, 'json'])->name('kabupaten');
             Route::post('/store', [KabupatenController::class, 'store'])->name('kabupaten');
             Route::get('/edit/{id}', [KabupatenController::class, 'edit'])->name('kabupaten');
+            Route::get('/search', [KabupatenController::class, 'search'])->name('kelurahan');
         });
 
 Route::middleware(['auth', 'verified'])

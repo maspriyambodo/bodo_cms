@@ -11,11 +11,7 @@
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="provtxt" class="required form-label">Provinsi</label>
-                        <select id="provtxt" name="provtxt" class="form-control form-control-solid form-select" onchange="add_kode(this.value);">
-                            @foreach($provinsi as $dt_provinsi)
-                            <option value="{{ $dt_provinsi->id_provinsi; }}">{{ $dt_provinsi->nama; }}</option>
-                            @endforeach
-                        </select>
+                        <select id="provtxt" name="provtxt" class="form-control form-control-solid form-select provtxt" onchange="add_kode(this.value);"></select>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="kdtxt" class="required form-label">Kode</label>
@@ -52,8 +48,20 @@
     function add_kode(id_prov) {
         $('#kdtxt').val(id_prov);
     }
-    $('.form-select').select2({
-        dropdownParent: $('#addModal')
+    $('.provtxt').select2({
+        dropdownParent: $('#addModal'),
+        placeholder: "Select...",
+        ajax: {
+            url: 'kabupaten/search/',
+            data: function (params) {
+                var query = {
+                    search: params.term
+                };
+
+                // Query parameters will be ?search=[term]
+                return query;
+            }
+        }
     });
     const form = document.getElementById('add_form');
     const submitButton = document.getElementById('addbtn_submit');

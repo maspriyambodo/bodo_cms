@@ -38,7 +38,7 @@ class KabupatenController extends Controller {
         $exec = MtKabupaten::orderBy('id_kabupaten', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->offset($offset)->limit($limit)->get();
-        if($request->keyword) {
+        if ($request->keyword) {
             $FilteredRecords = count($dt_param);
         } else {
             $FilteredRecords = $TotalRecords;
@@ -193,8 +193,19 @@ class KabupatenController extends Controller {
         }
     }
 
+    public function search(Request $request) {
+        if ($request->search) {
+            $exec = MtProvinsi::select('id_provinsi as id', 'nama as text')->where('is_trash', 0)
+                    ->where('nama', 'like', "%" . $request->search . "%")
+                    ->get();
+            return response()->json([
+                        'results' => $exec
+            ]);
+        }
+    }
+
     public function edit(Request $request) {
-        $exec = MtKabupaten::where('id_kabupaten', $request->id)->first();
+        $exec = MtKabupaten::with('provinsi')->where('id_kabupaten', $request->id)->first();
         if ($exec) {
             if ($request->input('q')) {
                 return response()->json([
