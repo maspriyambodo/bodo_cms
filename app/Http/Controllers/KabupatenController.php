@@ -158,7 +158,7 @@ class KabupatenController extends Controller {
                             'id_kabupaten' => $request->kdtxt2,
                             'id_provinsi' => $request->provtxt2,
                             'nama' => $request->nmatxt2,
-                            'coordinates' => new Point($request->lattxt2, $request->longtxt2),
+                            'coordinates' => DB::raw(new Point($request->longtxt2, $request->lattxt2)),
                             'updated_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'delete') {

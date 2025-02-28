@@ -167,7 +167,7 @@ class KelurahanController extends Controller {
                                 'id_kelurahan' => $request->kdtxt2,
                                 'id_kecamatan' => $request->kectxt2,
                                 'nama' => $request->nmatxt2,
-                                'coordinates' => new Point($request->longtxt2, $request->lattxt2),
+                                'coordinates' => DB::raw(new Point($request->longtxt2, $request->lattxt2)),
                                 'updated_by' => auth()->user()->id
                     ]);
                 }
