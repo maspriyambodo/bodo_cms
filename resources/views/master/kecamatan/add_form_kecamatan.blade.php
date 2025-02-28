@@ -11,12 +11,7 @@
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="kabtxt" class="required form-label">Kabupaten/Kota</label>
-                        <select id="kabtxt" name="kabtxt" class="form-control form-control-solid form-select" onchange="add_kode(this.value);">
-                            <option value=""></option>
-                            @foreach($kabupaten as $dt_kabupaten)
-                            <option value="{{ $dt_kabupaten->id_kabupaten; }}">{{ $dt_kabupaten->nama; }}</option>
-                            @endforeach
-                        </select>
+                        <select id="kabtxt" name="kabtxt" class="form-control form-control-solid form-select kabtxt" onchange="add_kode(this.value);"></select>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="kdtxt" class="required form-label">Kode</label>
@@ -50,13 +45,24 @@
 </div>
 @push('scripts')
 <script>
+    $('.kabtxt').select2({
+        dropdownParent: $('#addModal'),
+        placeholder: "Select...",
+        ajax: {
+            url: 'kecamatan/search/',
+            data: function (params) {
+                var query = {
+                    search: params.term
+                };
+
+                // Query parameters will be ?search=[term]
+                return query;
+            }
+        }
+    });
     function add_kode(id_kab) {
         $('#kdtxt').val(id_kab);
     }
-    $('.form-select').select2({
-        dropdownParent: $('#addModal'),
-        placeholder: "Select..."
-    });
     const form = document.getElementById('add_form');
     const submitButton = document.getElementById('addbtn_submit');
     var validator = FormValidation.formValidation(form, {

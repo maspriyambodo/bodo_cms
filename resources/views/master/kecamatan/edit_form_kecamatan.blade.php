@@ -11,12 +11,7 @@
                 <div class="modal-body">
                     <div class="fv-row mb-10">
                         <label for="provtxt2" class="required form-label">Kabupaten/Kota</label>
-                        <select id="provtxt2" name="provtxt2" class="form-control form-control-solid form-select" onchange="add_kode2(this.value);">
-                            <option value=""></option>
-                            @foreach($kabupaten as $dt_kabupaten2)
-                            <option value="{{ $dt_kabupaten2->id_kabupaten; }}">{{ $dt_kabupaten2->nama; }}</option>
-                            @endforeach
-                        </select>
+                        <select id="provtxt2" name="provtxt2" class="form-control form-control-solid form-select provtxt2" onchange="add_kode2(this.value);"></select>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="kdtxt2" class="required form-label">Kode</label>
@@ -54,9 +49,20 @@
     function add_kode2(id_prov) {
         $('#kdtxt2').val(id_prov);
     }
-    $('.form-select').select2({
-        dropdownParent: $('#editModal'),
-        placeholder: "Select..."
+    $('.provtxt2').select2({
+        dropdownParent: $('#addModal'),
+        placeholder: "Select...",
+        ajax: {
+            url: 'kecamatan/search/',
+            data: function (params) {
+                var query = {
+                    search: params.term
+                };
+
+                // Query parameters will be ?search=[term]
+                return query;
+            }
+        }
     });
     function editData(val) {
         Swal.fire({
@@ -74,13 +80,13 @@
             dataType: 'json',
             success: function (data) {
                 if (data.success) {
-                    $('#provtxt2').val(data.dt_kecamatan['id_kabupaten']);
+                    $('#provtxt2').append(new Option(data.dt_kecamatan['kabupaten']['nama'], data.dt_kecamatan['id_kabupaten'], false, false));
                     $('#provtxt2').trigger('change');
                     $('#eid').val(data.dt_kecamatan['id_kecamatan']);
                     $('#kdtxt2').val(data.dt_kecamatan['id_kecamatan']);
                     $('#nmatxt2').val(data.dt_kecamatan['nama']);
-                    $('#lattxt2').val(data.dt_provinsi['coordinates']['coordinates'][1]);
-                    $('#longtxt2').val(data.dt_provinsi['coordinates']['coordinates'][0]);
+                    $('#lattxt2').val(data.dt_kecamatan['coordinates']['coordinates'][1]);
+                    $('#longtxt2').val(data.dt_kecamatan['coordinates']['coordinates'][0]);
                     $("#editModal").modal('show');
                     Swal.close();
                 } else {
