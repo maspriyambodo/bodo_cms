@@ -178,9 +178,9 @@ class Usergroups extends Controller {
             case 'update':
                 return Validator::make($request->all(), [
                             'eid' => 'required|integer',
-                            'parenttxt' => 'required|integer',
-                            'nametxt' => 'required|string',
-                            'descrptiontxt' => 'nullable|string'
+                            'parenttxt2' => 'required|integer',
+                            'nametxt2' => 'required|string',
+                            'descrptiontxt2' => 'nullable|string'
                 ]);
             case 'delete':
                 return Validator::make($request->all(), [
