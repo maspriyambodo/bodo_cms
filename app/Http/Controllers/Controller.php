@@ -7,6 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Permission as user_permission;
+use App\Models\Parameter as sys_param;
 
 class Controller extends BaseController {
 
@@ -31,5 +32,14 @@ class Controller extends BaseController {
         }
 
         return $data;
+    }
+    
+    public function Sistem_parameter() {
+        $sysparam = sys_param::select('id as id_param', 'param_value')->where('is_trash', 0)->get();
+        $param = [];
+        foreach ($sysparam as $paramsys) {
+            $param[$paramsys->id_param] = $paramsys->param_value;
+        }
+        return $param;
     }
 }
