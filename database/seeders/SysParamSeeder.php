@@ -82,7 +82,7 @@ class SysParamSeeder extends Seeder {
             [
                 'id' => 'TEXT1',
                 'param_group' => 'LOGIN_ASSETS',
-                'param_value' => ' Your Social Campaigns',
+                'param_value' => 'Your Social Campaigns',
                 'param_desc' => 'Text on login page',
                 'is_trash' => 0,
                 'created_at' => '2024-11-28 23:25:51',
@@ -93,7 +93,7 @@ class SysParamSeeder extends Seeder {
             [
                 'id' => 'TEXT2',
                 'param_group' => 'LOGIN_ASSETS',
-                'param_value' => ' Branding tools designed for your',
+                'param_value' => 'Branding tools designed for your',
                 'param_desc' => 'Text on login page',
                 'is_trash' => 0,
                 'created_at' => '2024-11-28 23:25:51',
