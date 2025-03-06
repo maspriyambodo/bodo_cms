@@ -7,10 +7,31 @@ var KTSigninGeneral = (function () {
                     (e = document.querySelector("#kt_sign_in_submit")),
                     (r = FormValidation.formValidation(t, {
                         fields: {
-                            email: {validators: {regexp: {regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "The value is not a valid email address"}, notEmpty: {message: "Email address is required"}}},
-                            password: {validators: {notEmpty: {message: "The password is required"}}},
+                            email: {
+                                validators: {
+                                    regexp: {regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message: "The value is not a valid email address"},
+                                    notEmpty: {
+                                        message: "Email address is required"
+                                    }
+                                }
+                            },
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "The password is required"
+                                    }
+                                }
+                            }
                         },
-                        plugins: {trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: ""})},
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger(),
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".fv-row",
+                                eleInvalidClass: "",
+                                eleValidClass: ""
+                            })
+                        }
                     })),
                     !(function (t) {
                         try {
@@ -28,7 +49,15 @@ var KTSigninGeneral = (function () {
                                             setTimeout(function () {
                                                 e.removeAttribute("data-kt-indicator"),
                                                         (e.disabled = !1),
-                                                        Swal.fire({text: "You have successfully logged in!", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: {confirmButton: "btn btn-primary"}}).then(
+                                                        Swal.fire({
+                                                            text: "You have successfully logged in!",
+                                                            icon: "success", buttonsStyling: !1,
+                                                            confirmButtonText: "Ok, got it!",
+                                                            allowOutsideClick: false,
+                                                            customClass: {
+                                                                confirmButton: "btn btn-primary"
+                                                            }
+                                                        }).then(
                                                         function (e) {
                                                             if (e.isConfirmed) {
                                                                 (t.querySelector('[name="email"]').value = ""), (t.querySelector('[name="password"]').value = "");
@@ -39,14 +68,17 @@ var KTSigninGeneral = (function () {
                                                 );
                                             }, 2e3))
                                     : Swal.fire({
-                                        text: "Sorry, looks like there are some errors detected, please try again.",
+                                        text: "Sorry, looks like there are some errors detected, please try again. 1",
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
-                                        customClass: {confirmButton: "btn btn-primary"},
+                                        allowOutsideClick: false,
+                                        customClass: {
+                                            confirmButton : "btn btn-primary"
+                                        }
                                     }).then(function () {
-                                                location.reload();
-                                            });
+                                window.location.reload();
+                            });
                         });
                     })
                     : e.addEventListener("click", function (i) {
@@ -60,34 +92,52 @@ var KTSigninGeneral = (function () {
                                             .then(function (e) {
                                                 if (e) {
                                                     t.reset(),
-                                                            Swal.fire({text: "You have successfully logged in!", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: {confirmButton: "btn btn-primary"}});
+                                                            Swal.fire({
+                                                                text: "You have successfully logged in!",
+                                                                icon: "success",
+                                                                buttonsStyling: !1,
+                                                                confirmButtonText: "Ok, got it!",
+                                                                allowOutsideClick: false,
+                                                                customClass: {
+                                                                    confirmButton: "btn btn-primary"
+                                                                }
+                                                            });
                                                     const e = t.getAttribute("data-kt-redirect-url");
                                                     e && (location.href = e);
                                                 } else
-                                                    Swal.fire({text: "Sorry, the email or password is incorrect, please try again.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: {confirmButton: "btn btn-primary"}});
+                                                    Swal.fire({
+                                                        text: "Sorry, the email or password is incorrect, please try again.",
+                                                        icon: "error", buttonsStyling: !1,
+                                                        confirmButtonText: "Ok, got it!",
+                                                        customClass: {
+                                                            confirmButton: "btn btn-primary"
+                                                        }
+                                                    });
                                             })
-                                            .catch(function (t) {
-                                                console.log(t.message);
+                                            .catch(function (err) {
+                                                console.log(err);
                                                 Swal.fire({
                                                     text: "Sorry, looks like there are some errors detected, please try again.",
                                                     icon: "error",
                                                     buttonsStyling: !1,
                                                     confirmButtonText: "Ok, got it!",
-                                                    customClass: {confirmButton: "btn btn-primary"},
+                                                    allowOutsideClick: false,
+                                                    customClass: {
+                                                        confirmButton: "btn btn-primary"
+                                                    },
+                                                }).then(function () {
+                                                    window.location.reload();
                                                 });
-                                            })
-                                            .then(() => {
-                                                location.reload();
                                             }))
                                     : Swal.fire({
                                         text: "Sorry, looks like there are some errors detected, please try again.",
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
-                                        customClass: {confirmButton: "btn btn-primary"},
+                                        customClass: {confirmButton : "btn btn-primary"},
                                     }).then(function () {
-                                                location.reload();
-                                            });
+                                window.location.reload();
+                            });
                         });
                     });
         },
