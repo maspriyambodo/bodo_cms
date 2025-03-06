@@ -53,7 +53,7 @@ Sign In
 <input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent">
 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
 <div class="d-grid mb-10">
-<button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
+    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
 <span class="indicator-label">
 Sign In</span>
 <span class="indicator-progress">
