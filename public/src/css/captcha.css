@@ -16,6 +16,19 @@
     border-radius: 5px;
     text-align: center;
 }
+
+.closeButton {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background-color: red; /* Color of the button */
+    color: white; /* Text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
 .block {
     position: absolute;
     left: 0;
