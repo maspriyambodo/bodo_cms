@@ -24,7 +24,7 @@
 <body id="kt_body" class="app-blank bgi-size-cover bgi-attachment-fixed bgi-position-center bgi-no-repeat">
 <script>var defaultThemeMode="light";var themeMode;if(document.documentElement){if(document.documentElement.hasAttribute("data-bs-theme-mode")){themeMode=document.documentElement.getAttribute("data-bs-theme-mode")}else{if(localStorage.getItem("data-bs-theme")!==null){themeMode=localStorage.getItem("data-bs-theme")}else{themeMode=defaultThemeMode}}if(themeMode==="system"){themeMode=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.setAttribute("data-bs-theme",themeMode)}</script>
 <div class="d-flex flex-column flex-root" id="kt_app_root">
-<style>body{background-image:url("{{ $paramsys['BACKGROUND_LOGIN']; }}")}[data-bs-theme="dark"] body{background-image:url('/metronic8/demo1/assets/media/auth/bg4-dark.jpg')}</style>
+<style>body{background-image:url("{{ $paramsys['BACKGROUND_LOGIN']; }}")}[data-bs-theme="dark"] body{background-image:url("{{ $paramsys['BACKGROUND_LOGIN']; }}")}</style>
 <div class="d-flex flex-column flex-column-fluid flex-lg-row">
 <div class="d-flex flex-center w-lg-50 pt-15 pt-lg-0 px-10">
 <div class="d-flex flex-center flex-lg-start flex-column">
@@ -71,6 +71,18 @@ Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2">
 </div>
 </div>
 </div>
+<style>
+    .closeButton {
+        top: 0px !important;
+        right: 0px !important;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        position: static;
+    }
+    .sliderContainer {
+        
+    }
+</style>
 <div class="overlay" id="overlay">
     <div class="overlay-content" id="captcha"></div>
 </div>
