@@ -2,14 +2,14 @@
 <html lang="en" data-bs-theme="light">
     <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . $paramsys['APP_NAME']; }}</title>
+<title>LOGIN SYSTEM | {{ $paramsys['APP_NAME'];  }}</title>
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . $paramsys['APP_NAME']; }}">
+<meta property="og:title" content="LOGIN SYSTEM | {{ $paramsys['APP_NAME'];  }}">
 <meta property="og:url" content="{{ route('login'); }}">
 <meta property="og:site_name" content="">
 <link rel="canonical" href="{{ route('login'); }}">
