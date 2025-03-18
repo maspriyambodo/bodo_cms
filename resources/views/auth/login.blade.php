@@ -83,7 +83,7 @@ Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2">
         
     }
 </style>
-<div class="overlay" id="overlay">
+<div class="overlay card" id="overlay">
     <div class="overlay-content" id="captcha"></div>
 </div>
 <script src="{{ asset('src/js/auth/plugins.bundle.js'); }}" type="text/javascript"></script>
