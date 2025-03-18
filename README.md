@@ -22,7 +22,7 @@ This is an advanced **Admin CMS** built with **Laravel 11**, featuring **DataTab
 ## 🔧 Installation
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/admin-cms-laravel11.git
+   git clone https://github.com/maspriyambodo/bodo_cms.git
    cd admin-cms-laravel11
    ```
 2. **Install dependencies:**
@@ -52,9 +52,9 @@ This is an advanced **Admin CMS** built with **Laravel 11**, featuring **DataTab
 
 ## 📱 Social Media
 Stay updated with the latest developments:
-- **Instagram:** [@maspriyamm](https://instagram.com/maspriyamm)
-- **Facebook:** [No Hacker On](https://facebook.com/no.hacker.on)
-- **YouTube:** [@maspriyambodo](https://youtube.com/@maspriyambodo)
+- **Instagram:** [maspriyamm](https://instagram.com/maspriyamm)
+- **Facebook:** [no.hacker.on](https://facebook.com/no.hacker.on)
+- **YouTube:** [maspriyambodo](https://youtube.com/@maspriyambodo)
 
 ## 📝 License
 This project is licensed under the **MIT License** – feel free to modify and distribute!
