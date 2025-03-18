@@ -339,6 +339,7 @@ var captcha = sliderCaptcha({
     barText: 'Slide right to fill',
 
     onSuccess: function() {
+        var submitButton = document.querySelector("#kt_sign_in_submit");
         form = document.querySelector("#kt_sign_in_form");
 
         var formAction = form.getAttribute("action");
