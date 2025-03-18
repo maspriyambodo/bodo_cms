@@ -12,11 +12,10 @@ use App\Http\Controllers\Provinsi;
 use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\KelurahanController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('Login');
 
 Route::middleware(['auth', 'verified'])
         ->prefix('menu')
