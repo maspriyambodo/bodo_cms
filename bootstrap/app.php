@@ -22,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     $middleware->append(ForceHttps::class);
                     $middleware->append(ActivityLogger::class);
                     $middleware->append(PreventBackAfterLogout::class);
-                    $middleware->append(RateLimitMiddleware::class);
+//                    $middleware->append(RateLimitMiddleware::class);
                 })
                 ->withExceptions(function (Exceptions $exceptions) {
                     //
