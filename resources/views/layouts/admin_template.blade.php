@@ -21,7 +21,7 @@
         @isset($paramsys['FAVICON'])
         <link rel="shortcut icon" href="{{ $paramsys['FAVICON']; }}">
         @endisset
-        <link href="{{ asset('build/assets/app-DWyhC5Vm.css'); }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
         <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>
