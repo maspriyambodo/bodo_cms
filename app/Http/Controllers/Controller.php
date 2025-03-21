@@ -9,6 +9,25 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Permission as user_permission;
 use App\Models\Parameter as sys_param;
 
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Dokumentasi API",
+ *      description="Lorem Ipsum",
+ *      @OA\Contact(
+ *          email="hi.wasissubekti02@gmail.com"
+ *      ),
+ *      @OA\License(
+ *          name="Apache 2.0",
+ *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *      )
+ * )
+ *
+ * @OA\Server(
+ *      url=L5_SWAGGER_CONST_HOST,
+ *      description="Demo API Server"
+ * )
+ */
 class Controller extends BaseController {
 
     use AuthorizesRequests,
@@ -33,7 +52,7 @@ class Controller extends BaseController {
 
         return $data;
     }
-    
+
     public function Sistem_parameter() {
         $sysparam = sys_param::select('id as id_param', 'param_value')->where('is_trash', 0)->get();
         $param = [];

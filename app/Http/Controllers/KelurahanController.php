@@ -13,18 +13,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class KelurahanController extends Controller {
 
-    private function user_permission() {
-        return Controller::permission_user();
-    }
-
     public function index(Request $request) {
-        $user_access = $this->user_permission();
+        $user_access = $this->permission_user();
         $kecamatan = MtKecamatan::where('is_trash', 0)->get();
         return view('master.kelurahan.kelurahan_index', compact('user_access', 'kecamatan'));
     }
 
     public function json(Request $request) {
-        if (!$this->user_permission()['read']) {
+        if (!$this->permission_user()['read']) {
             return response()->json([
                         'draw' => 0,
                         'recordsTotal' => 0,
@@ -68,7 +64,7 @@ class KelurahanController extends Controller {
     }
 
     private function getActionButtons($row) {
-        $permissions = $this->user_permission();
+        $permissions = $this->permission_user();
         $canUpdate = $permissions['update'];
         $canDelete = $permissions['delete'];
         if (!$canUpdate && !$canDelete) {

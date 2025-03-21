@@ -11,17 +11,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class Usergroups extends Controller {
 
-    private function user_permission() {
-        return Controller::permission_user();
-    }
-
     public function index(Request $request) {
-        $user_access = $this->user_permission();
+        $user_access = $this->permission_user();
         return view('usergroups.index', compact('user_access'));
     }
 
     public function json(Request $request) {
-        if (!$this->user_permission()['read']) {
+        if (!$this->permission_user()['read']) {
             return response()->json([
                         'draw' => 0,
                         'recordsTotal' => 0,
@@ -62,7 +58,7 @@ class Usergroups extends Controller {
     }
 
     private function getActionButtons($row) {
-        $permissions = $this->user_permission();
+        $permissions = $this->permission_user();
         $canUpdate = $permissions['update'];
         $canDelete = $permissions['delete'];
         if (!$canUpdate && !$canDelete) {

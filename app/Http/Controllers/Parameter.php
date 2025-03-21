@@ -13,16 +13,12 @@ use App\Models\Parameter as db_param;
 class Parameter extends Controller {
 
     public function index(Request $request) {
-        $user_access = $this->user_permission();
+        $user_access = $this->permission_user();
         return view('parameter.index', compact('user_access'));
     }
 
-    private function user_permission() {
-        return Controller::permission_user();
-    }
-
     public function json(Request $request) {
-        if (!$this->user_permission()['read']) {
+        if (!$this->permission_user()['read']) {
             return response()->json([
                         'draw' => 0,
                         'recordsTotal' => 0,
@@ -54,7 +50,7 @@ class Parameter extends Controller {
     }
 
     private function getActionButtons($row) {
-        if (!$this->user_permission()['update'] && !$this->user_permission()['delete']) {
+        if (!$this->permission_user()['update'] && !$this->permission_user()['delete']) {
             return '';
         }
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
@@ -63,7 +59,7 @@ class Parameter extends Controller {
                 <span class="text-center text-muted py-3">Menu Action</span>
             </div>';
 
-        if ($this->user_permission()['update']) {
+        if ($this->permission_user()['update']) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $row->id_param . '&apos;);">
                     <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
@@ -71,7 +67,7 @@ class Parameter extends Controller {
             </div>';
         }
 
-        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
+        if ($this->permission_user()['delete'] && $row->is_trash == 0) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $row->id_param . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete

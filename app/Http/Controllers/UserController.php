@@ -14,17 +14,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller {
 
-    private function user_permission() {
-        return Controller::permission_user();
-    }
-
     private function root_user() {
         return Parameter::where('id', 'ROOT')->first();
     }
 
     public function json(Request $request) {
         $root_user = $this->root_user();
-        if (!$this->user_permission()['read']) {
+        if (!$this->permission_user()['read']) {
             return response()->json([
                         'draw' => 0,
                         'recordsTotal' => 0,
@@ -86,7 +82,7 @@ class UserController extends Controller {
 
     private function getActionButtons($row) {
         $encIdUser = encrypt($row->id);
-        $permissions = $this->user_permission();
+        $permissions = $this->permission_user();
         $canUpdate = $permissions['update'];
         $canDelete = $permissions['delete'];
         if (!$canUpdate && !$canDelete) {
@@ -139,7 +135,7 @@ class UserController extends Controller {
         $default_password = Parameter::where('id', 'DEFAULT_PASSWORD')->first();
         $root_user = $this->root_user();
         $dt_role = UsergroupsModels::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
-        $user_access = $this->user_permission();
+        $user_access = $this->permission_user();
         return view('users.index', compact('default_password', 'dt_role', 'user_access'));
     }
 

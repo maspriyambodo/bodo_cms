@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\User;
 use App\Models\Parameter;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ use Illuminate\Validation\Rule;
  *     )
  * )
  */
-class UserController extends Controller {
+class UserController extends BaseController {
 
     private function root_user() {
         return Parameter::where('id', 'ROOT')->first();
@@ -30,6 +30,7 @@ class UserController extends Controller {
     // Get All Users
     public function index() {
         $root_user = $this->root_user();
+        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
         return response()->json(User::where('is_trash', 0)
                                 ->where('role', '<>', $root_user->param_value)
                                 ->orderBy('id', 'asc')

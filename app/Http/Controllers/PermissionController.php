@@ -15,16 +15,12 @@ use App\Models\Menu as db_menu;
 
 class PermissionController extends Controller {
 
-    private function user_permission() {
-        return Controller::permission_user();
-    }
-    
     private function root_user() {
         return ParameterModel::where('id', 'ROOT')->first();
     }
 
     public function index(Request $request) {
-        $user_access = $this->user_permission();
+        $user_access = $this->permission_user();
         $root_user = $this->root_user();
         $user_groups = UsergroupsModels::where('is_trash', 0)->where('id', '!=', $root_user->param_value)->get();
         return view('permission.index', compact('user_access', 'user_groups'));
@@ -72,7 +68,7 @@ class PermissionController extends Controller {
     public function json(Request $request) {
         $root_user = $this->root_user();
         $role_user = auth()->user()->role;
-        if (!$this->user_permission()['read']) {
+        if (!$this->permission_user()['read']) {
             return response()->json([
                         'draw' => 0,
                         'recordsTotal' => 0,
@@ -106,7 +102,7 @@ class PermissionController extends Controller {
     }
 
     private function getActionButtons($row) {
-        if (!$this->user_permission()['update'] && !$this->user_permission()['delete']) {
+        if (!$this->permission_user()['update'] && !$this->permission_user()['delete']) {
             return '';
         }
         $buttons = '<a type="button" class="btn btn-secondary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
@@ -115,7 +111,7 @@ class PermissionController extends Controller {
                 <span class="text-center text-muted py-3 mb-2">' . $row->name . ' Action</span>
             </div>';
 
-        if ($this->user_permission()['update']) {
+        if ($this->permission_user()['update']) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="editData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
@@ -123,7 +119,7 @@ class PermissionController extends Controller {
             </div>';
         }
 
-        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
+        if ($this->permission_user()['delete'] && $row->is_trash == 0) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="deleteData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-trash text-danger mx-2"></i> Delete
@@ -137,7 +133,7 @@ class PermissionController extends Controller {
             </div>';
         }
 
-        if ($this->user_permission()['delete'] && $row->is_trash == 0) {
+        if ($this->permission_user()['delete'] && $row->is_trash == 0) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" onclick="configData(&apos;' . $row->id . '&apos;);">
                     <i class="bi bi-gear text-warning mx-2"></i> Config
