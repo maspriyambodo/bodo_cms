@@ -8,12 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Permission as SysPermission;
 use App\Models\UsergroupsModels as UserGroup;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable {
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory,
-        Notifiable;
+        Notifiable,
+        HasApiTokens;
 
     protected $primaryKey = 'id';
     protected $keyType = 'int';
