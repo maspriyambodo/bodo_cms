@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penyuluh extends Model
+class PenyuluhModels extends Model
 {
     use HasFactory;
 
@@ -42,7 +42,7 @@ class Penyuluh extends Model
         'spesialisasi',
         'photo',
         'swafoto',
-        'status',
+        'is_trash',
         'aktivasi',
         'verifikator',
         'created_date',
@@ -77,5 +77,13 @@ class Penyuluh extends Model
     public function kecamatan()
     {
         return $this->belongsTo(MtKecamatan::class, 'tugas_kecamatan', 'id_kecamatan');
+    }
+
+    /**
+     * Get the tugas_kua related to the penyuluh.
+     */
+    public function tugas_kua()
+    {
+        return $this->belongsTo(KuaModels::class, 'tugas_kua', 'kode_kua');
     }
 }

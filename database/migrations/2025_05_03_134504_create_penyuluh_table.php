@@ -39,7 +39,7 @@ class CreatePenyuluhTable extends Migration
             $table->text('spesialisasi')->nullable();
             $table->string('photo', 255)->nullable();
             $table->string('swafoto', 255)->nullable();
-            $table->integer('status')->nullable();
+            $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted'); // Kolom `is_trash`
             $table->string('aktivasi', 255)->nullable();
             $table->string('verifikator', 20)->nullable();
             $table->dateTime('created_date')->nullable();
