@@ -9,6 +9,12 @@
                 deferRender: true,
                 info: true,
                 stateSave: false,
+                scrollCollapse: true,
+                scrollX: true,
+                scrollY: '400px',
+                fixedColumns: {
+                    leftColumns: 2
+                },
                 initComplete: function () {
                     Swal.close();
                 },
@@ -19,7 +25,9 @@
                     }
                 },
                 columnDefs: [
-                    {orderable: false, targets: [0]}
+                    {
+                        orderable: false, targets: [0]
+                    }
                 ],
                 columns: [
                     {
@@ -27,13 +35,20 @@
                         name: 'DT_RowIndex',
                         className: "text-center",
                         orderable: false,
+                        searchable: false,
+                        className: "text-center"
+                    },
+                    {
+                        data: "button", 
+                        className: "text-center", 
+                        orderable: false, 
                         searchable: false
                     },
-                    {data: "button", className: "text-center", orderable: false},
                     {data: "nama"},
                     {data: "nik"},
                     {data: "tempat_lahir"},
                     {data: "tanggal_lahir"},
+                    {data: "alamat"},
                     {data: "nip"},
                     {data: "nipa"},
                     {data: "provinsi.nama"},

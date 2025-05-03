@@ -3,6 +3,13 @@
 <link href="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.css'); }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('src/plugins/custom/datatables/datatables.bundle.css'); }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('src/plugins/custom/lightbox2-2.11.4/css/lightbox.min.css'); }}" rel="stylesheet" type="text/css" />
+<style>
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+</style>
 @endpush
 @section('content')
 <div class="card">
@@ -56,16 +63,16 @@
                 </div>
             </div>
         </div>
-        <div class="table-responsive">
-            <table id="table-user" class="table table-rounded table-hover border">
+        <table id="table-user" class="bg-white table table-rounded table-hover border order-column nowrap" cellspacing="0" width="100%">
                 <thead>
-                    <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border text-uppercase">
+                    <tr class="fw-bold fs-6 border-bottom-2 border-gray-200 text-center text-uppercase">
                         <th class="text-center">No</th>
                         <th class="text-center">#</th>
                         <th class="text-center">nama</th>
                         <th class="text-center">nik</th>
                         <th class="text-center">tempat lahir</th>
                         <th class="text-center">tanggal lahir</th>
+                        <th class="text-center">alamat</th>
                         <th class="text-center">nip</th>
                         <th class="text-center">nipa</th>
                         <th class="text-center">tugas provinsi</th>
@@ -78,7 +85,6 @@
                     </tr>
                 </thead>
             </table>
-        </div>
     </div>
 </div>
 @if($user_access['create'])
