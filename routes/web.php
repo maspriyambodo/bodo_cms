@@ -13,6 +13,7 @@ use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\KelurahanController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Penyuluh\PenyuluhController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('Login');
@@ -120,6 +121,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/speed-test', [SpeedTestController::class, 'index'])->name('speed-test');
     Route::get('/speed-test-json', [SpeedTestController::class, 'json'])->name('speed-test');
 });
+
+Route::middleware(['auth', 'verified'])
+        ->prefix('penyuluh')
+        ->group(function () {
+            Route::get('/', [PenyuluhController::class, 'index'])->name('penyuluh');
+            Route::get('/json', [PenyuluhController::class, 'json'])->name('penyuluh');
+            Route::post('/store', [PenyuluhController::class, 'store'])->name('penyuluh');
+            Route::get('/edit/{id}', [PenyuluhController::class, 'edit'])->name('penyuluh');
+            Route::get('/search', [PenyuluhController::class, 'search'])->name('penyuluh');
+        });
 
 require __DIR__ . '/auth.php';
 
