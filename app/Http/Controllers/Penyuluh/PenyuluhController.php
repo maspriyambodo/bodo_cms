@@ -119,8 +119,8 @@ class PenyuluhController extends Controller {
 
         if ($canDelete) {
             $buttons .= '<div class="menu-item px-3 border">
-                <a href="javascript:void(0);" class="menu-link px-3" onclick="resetPassword(&apos;' . $encIdUser . '&apos;);">
-                    <i class="bi bi-key text-info mx-2"></i> Reset Password
+                <a href="javascript:void(0);" class="menu-link px-3" onclick="detailPenyuluh(&apos;' . $encIdUser . '&apos;);">
+                    <i class="fas fa-eye text-info mx-2"></i> Detail
                 </a>
             </div>';
         }
@@ -135,29 +135,16 @@ class PenyuluhController extends Controller {
         return view('penyuluh.index', compact('user_access'));
     }
 
-    public function create() {
-        return view('penyuluh.add_user');
-    }
-
     public function edit(Request $request) {
         $dec_id_user = decrypt($request->id);
         $exec = PenyuluhModels::where('id', $dec_id_user)->first();
         if ($exec) {
             $enc_id_user = encrypt($exec->id); // generate new id encryption
-            if ($request->input('q')) {
-                return response()->json([
-                            'success' => true,
-                            'new_id' => $enc_id_user,
-                            'dt_user' => $exec,
-                            'default_password' => $default_password->param_value
-                ]);
-            } else {
-                return response()->json([
-                            'success' => true,
-                            'new_id' => $enc_id_user,
-                            'dt_user' => $exec,
-                ]);
-            }
+            return response()->json([
+                'success' => true,
+                'new_id' => $enc_id_user,
+                'dt_user' => $exec,
+            ]);
         } else {
             return response()->json([
                         'success' => false
