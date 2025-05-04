@@ -15,7 +15,6 @@ class CreatePenyuluhTable extends Migration
     {
         Schema::create('dt_penyuluh', function (Blueprint $table) {
             $table->id(); // This will create an auto-incrementing 'id' column
-            $table->integer('urut')->nullable();
             $table->string('nip', 20)->nullable();
             $table->string('nipa', 20)->nullable();
             $table->string('password', 255)->nullable();
