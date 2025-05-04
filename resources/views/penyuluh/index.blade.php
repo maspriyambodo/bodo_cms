@@ -63,12 +63,13 @@
                 </div>
             </div>
         </div>
-        <table id="table-user" class="bg-white table table-rounded table-hover border order-column nowrap" cellspacing="0" width="100%">
+        <table id="table-user" class="bg-white table table-rounded table-hover table-bordered nowrap" cellspacing="0" width="100%">
                 <thead>
                     <tr class="fw-bold fs-6 border-bottom-2 border-gray-200 text-center text-uppercase">
                         <th class="text-center">No</th>
                         <th class="text-center">#</th>
                         <th class="text-center">nama</th>
+                        <th class="text-center">jenis kelamin</th>
                         <th class="text-center">nik</th>
                         <th class="text-center">tempat lahir</th>
                         <th class="text-center">tanggal lahir</th>
@@ -81,7 +82,6 @@
                         <th class="text-center">tugas kua</th>
                         <th class="text-center">email</th>
                         <th class="text-center">Status</th>
-                        <th class="text-center">Register Date</th>
                     </tr>
                 </thead>
             </table>

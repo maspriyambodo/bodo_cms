@@ -13,7 +13,7 @@
                 scrollX: true,
                 scrollY: '400px',
                 fixedColumns: {
-                    leftColumns: 2
+                    leftColumns: 1
                 },
                 initComplete: function () {
                     Swal.close();
@@ -27,7 +27,7 @@
                 columnDefs: [
                     {
                         orderable: false, targets: [0]
-                    }
+                    },
                 ],
                 columns: [
                     {
@@ -45,6 +45,7 @@
                         searchable: false
                     },
                     {data: "nama"},
+                    {data: "jenis_kelamin"},
                     {data: "nik"},
                     {data: "tempat_lahir"},
                     {data: "tanggal_lahir"},
@@ -57,7 +58,6 @@
                     {data: "tugas_kua.nama_kua"},
                     {data: "email"},
                     {data: "status_aktif"},
-                    {data: "created_at", className: 'text-center'}
                 ],
                 displayStart: 0,
                 pageLength: 10,
