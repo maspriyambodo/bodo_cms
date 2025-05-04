@@ -3,37 +3,41 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Cache\RateLimiter;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
-class LoginController extends Controller {
-
+class LoginController extends Controller
+{
     use AuthenticatesUsers;
 
-    private function parameter_sistem() {
+    private function parameter_sistem()
+    {
         return Controller::Sistem_parameter();
     }
 
     protected $redirectTo = '/dashboard';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
 
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         $paramsys = $this->parameter_sistem();
         return view('auth.login', compact('paramsys'));
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -70,7 +74,8 @@ class LoginController extends Controller {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function validateLogin(Request $request) {
+    protected function validateLogin(Request $request)
+    {
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
@@ -83,10 +88,11 @@ class LoginController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
-    protected function attemptLogin(Request $request) {
+    protected function attemptLogin(Request $request)
+    {
         return $this->guard()->attempt(
-                        $this->credentials($request), $request->boolean('remember')
-                );
+            $this->credentials($request), $request->boolean('remember')
+        );
     }
 
     /**
@@ -95,7 +101,8 @@ class LoginController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function credentials(Request $request) {
+    protected function credentials(Request $request)
+    {
         return $request->only($this->username(), 'password');
     }
 
@@ -105,7 +112,8 @@ class LoginController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    protected function sendLoginResponse(Request $request) {
+    protected function sendLoginResponse(Request $request)
+    {
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
@@ -124,7 +132,8 @@ class LoginController extends Controller {
      * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticated(Request $request, $user) {
+    protected function authenticated(Request $request, $user)
+    {
         //
     }
 
@@ -136,9 +145,10 @@ class LoginController extends Controller {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function sendFailedLoginResponse(Request $request) {
+    protected function sendFailedLoginResponse(Request $request)
+    {
         throw ValidationException::withMessages([
-                    $this->username() => [trans('auth.failed')],
+            $this->username() => [trans('auth.failed')],
         ]);
     }
 
@@ -147,7 +157,8 @@ class LoginController extends Controller {
      *
      * @return string
      */
-    public function username() {
+    public function username()
+    {
         return 'email';
     }
 
@@ -157,7 +168,8 @@ class LoginController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $this->guard()->logout();
 
         $request->session()->invalidate();
@@ -177,7 +189,8 @@ class LoginController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    protected function loggedOut(Request $request) {
+    protected function loggedOut(Request $request)
+    {
         //
     }
 
@@ -186,10 +199,11 @@ class LoginController extends Controller {
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard() {
+    protected function guard()
+    {
         return Auth::guard();
     }
-    
+
     public function redirectPath()
     {
         if (method_exists($this, 'redirectTo')) {
@@ -198,7 +212,7 @@ class LoginController extends Controller {
 
         return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
-    
+
     protected function hasTooManyLoginAttempts(Request $request)
     {
         return $this->limiter()->tooManyAttempts(
@@ -271,7 +285,7 @@ class LoginController extends Controller {
      */
     protected function throttleKey(Request $request)
     {
-        return Str::transliterate(Str::lower($request->input($this->username())).'|'.$request->ip());
+        return Str::transliterate(Str::lower($request->input($this->username())) . '|' . $request->ip());
     }
 
     /**
