@@ -14,6 +14,7 @@ use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\KelurahanController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::middleware('rate.limit')->get('/', [LoginController::class, 'showLoginForm'])->name('Login');
 
