@@ -15,7 +15,7 @@ use App\Http\Controllers\KelurahanController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [LoginController::class, 'showLoginForm'])->name('Login');
+Route::middleware('rate.limit')->get('/', [LoginController::class, 'showLoginForm'])->name('Login');
 
 Route::middleware(['auth', 'verified'])
         ->prefix('menu')
