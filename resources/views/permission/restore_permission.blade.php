@@ -28,7 +28,7 @@
                             <option value=""></option>
                             <option value="0">parent</option>
                             @foreach($user_groups as $dt_grup3)
-                            <option value="{{ $dt_grup3->id; }}">{{ $dt_grup3->name; }}</option>
+                            <option value="{{ $dt_grup3->id }}">{{ $dt_grup3->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -59,7 +59,7 @@
     function restoreData(id_permission) {
         Swal.fire({
             title: 'memuat data...',
-            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
             allowOutsideClick: false,
             showConfirmButton: false,
             onOpen: function () {
@@ -142,7 +142,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

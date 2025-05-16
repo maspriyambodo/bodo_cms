@@ -33,7 +33,7 @@
     function deleteData(id_menu) {
         Swal.fire({
             title: 'memuat data...',
-            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
             allowOutsideClick: false,
             showConfirmButton: false,
             onOpen: function () {
@@ -113,7 +113,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

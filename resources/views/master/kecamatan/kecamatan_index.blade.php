@@ -1,6 +1,6 @@
 @extends('layouts.admin_template')
 @push('stylesheet')
-<link href="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.css'); }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('content')
 <div class="card">
@@ -79,7 +79,7 @@
 @endif
 @endsection
 @push('scripts')
-<script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js'); }}"></script>
-<script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js'); }}"></script>
+<script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
+<script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 @include('master.kecamatan.table_kecamatan')
 @endpush

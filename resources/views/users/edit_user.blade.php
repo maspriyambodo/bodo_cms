@@ -22,7 +22,7 @@
                         <select id="leveltxt2" name="leveltxt2" class="form-control" required="">
                             <option value="">select level</option>
                             @foreach($dt_role as $role)
-                            <option value="{{ $role->id; }}">{{ $role->name; }}</option>
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -45,7 +45,7 @@
     function editData(val) {
         Swal.fire({
             title: 'memuat data...',
-            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
             allowOutsideClick: false,
             showConfirmButton: false,
             onOpen: function () {
@@ -145,7 +145,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

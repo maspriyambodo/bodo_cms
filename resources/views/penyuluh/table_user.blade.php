@@ -2,27 +2,32 @@
     var dt;
     var KTDatatablesServerSide = function () {
         var initDatatable = function () {
-            var dt = $('#table-kec').DataTable({
-                searchDelay: 3000,
+            var dt = $('#table-user').DataTable({
+                searchDelay: 500,
                 serverSide: true,
                 paging: true,
                 deferRender: true,
                 info: true,
                 stateSave: false,
+                scrollCollapse: true,
+                scrollX: true,
+                scrollY: '400px',
+                fixedColumns: {
+                    leftColumns: 1
+                },
                 initComplete: function () {
                     Swal.close();
                 },
                 ajax: {
-                    url: "kecamatan/json",
+                    url: "penyuluh/json",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }
                 },
                 columnDefs: [
                     {
-                        orderable: false, targets: [1, 4, 5]
-
-                    }
+                        orderable: false, targets: [0]
+                    },
                 ],
                 columns: [
                     {
@@ -30,36 +35,29 @@
                         name: 'DT_RowIndex',
                         className: "text-center",
                         orderable: false,
+                        searchable: false,
+                        className: "text-center"
+                    },
+                    {
+                        data: "button", 
+                        className: "text-center", 
+                        orderable: false, 
                         searchable: false
                     },
-                    {
-                        data: "button",
-                        className: "text-center"
-
-                    },
-                    {
-                        data: "id_kecamatan",
-                        className: "text-center"
-                    },
-                    {
-                        data: "nama"
-                    },
-                    {
-                        data: "latitude",
-                        className: "text-center"
-                    },
-                    {
-                        data: "longitude",
-                        className: "text-center"
-                    },
-                    {
-                        data: "status_aktif",
-                        className: "text-center"
-                    },
-                    {
-                        data: "created_at",
-                        className: "text-center"
-                    }
+                    {data: "nama"},
+                    {data: "jenis_kelamin"},
+                    {data: "nik"},
+                    {data: "tempat_lahir"},
+                    {data: "tanggal_lahir"},
+                    {data: "alamat"},
+                    {data: "nip"},
+                    {data: "nipa"},
+                    {data: "provinsi.nama"},
+                    {data: "kabupaten.nama"},
+                    {data: "kecamatan.nama"},
+                    {data: "tugas_kua.nama_kua"},
+                    {data: "email"},
+                    {data: "status_aktif"},
                 ],
                 displayStart: 0,
                 pageLength: 10,
@@ -75,8 +73,8 @@
                     });
                 },
                 rowCallback: function (row, data) {
-                    $('.dataTables_length').remove();
                     $(row).addClass('border');
+                    $('.dataTables_length').remove();
                     Swal.close();
                 }
             });
@@ -93,7 +91,7 @@
                 dt.page.len(100).draw();
             });
             $('#dt_reload').on('click', function () {
-                $('#table-kec').DataTable().ajax.reload();
+                $('#table-user').DataTable().ajax.reload();
             });
             $('#keyword').on('keyup', function () {
                 var keyword = $('#keyword').val();
@@ -116,12 +114,4 @@
     KTUtil.onDOMContentLoaded(function () {
         KTDatatablesServerSide.init();
     });
-    function isNumber(b) {
-        b = (b) ? b : window.event;
-        var a = (b.which) ? b.which : b.keyCode;
-        if (a > 31 && (a < 48 || a > 57)) {
-            return false;
-        }
-        return true;
-    }
 </script>

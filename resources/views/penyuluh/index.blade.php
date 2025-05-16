@@ -1,16 +1,26 @@
 @extends('layouts.admin_template')
 @push('stylesheet')
-<link href="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('src/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+<style>
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+</style>
 @endpush
 @section('content')
 <div class="card">
     <div class="card-body">
         <div class="row clearfix">
+            @if($user_access['read'])
             <div class="col-md-4 my-2">
                 <input id="keyword" name="keyword" type="text" class="form-control" placeholder="search data..."/>
             </div>
+            @endif
             <div class="col-md-8 text-end my-2">
                 <div class="btn-group" role="group" aria-label="action button">
+                    @if($user_access['read'])
                     <div>
                         <button type="button" class="btn btn-secondary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
                             show data
@@ -44,41 +54,52 @@
                         </div>
                     </div>
                     <button id="dt_reload" type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="reload data" data-kt-initialized="1"><i class="bi bi-arrow-clockwise"></i></button>
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-plus-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="add new data" data-kt-initialized="1"></i></button>
+                    @endif
+                    @if($user_access['create'])
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal"><i data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="add new data" data-kt-initialized="1" class="bi bi-plus-lg"></i></button>
+                    @endif
                 </div>
             </div>
         </div>
-        <div class="table-responsive">
-            <table id="table-usergrup" class="table table-rounded table-hover border my-5">
+        <table id="table-user" class="bg-white table table-rounded table-hover table-bordered nowrap" cellspacing="0" width="100%">
                 <thead>
-                    <tr class="bg-light fw-bold fs-6 border-bottom-2 border-gray-200 text-center border">
+                    <tr class="fw-bold fs-6 border-bottom-2 border-gray-200 text-center text-uppercase">
                         <th class="text-center">No</th>
                         <th class="text-center">#</th>
-                        <th class="text-center">Parent</th>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Description</th>
+                        <th class="text-center">nama</th>
+                        <th class="text-center">jenis kelamin</th>
+                        <th class="text-center">nik</th>
+                        <th class="text-center">tempat lahir</th>
+                        <th class="text-center">tanggal lahir</th>
+                        <th class="text-center">alamat</th>
+                        <th class="text-center">nip</th>
+                        <th class="text-center">nipa</th>
+                        <th class="text-center">tugas provinsi</th>
+                        <th class="text-center">tugas kabupaten</th>
+                        <th class="text-center">tugas kecamatan</th>
+                        <th class="text-center">tugas kua</th>
+                        <th class="text-center">email</th>
                         <th class="text-center">Status</th>
-                        <th class="text-center">Register Date</th>
                     </tr>
                 </thead>
             </table>
-            <div class="clearfix my-5"></div>
-        </div>
     </div>
 </div>
 @if($user_access['create'])
-@include('usergroups.add_form_usergroups')
+@include('penyuluh.add_user')
 @endif
 @if($user_access['update'])
-@include('usergroups.edit_form_usergroups')
+@include('penyuluh.edit_user')
 @endif
 @if($user_access['delete'])
-@include('usergroups.delete_form_usergroups')
-@include('usergroups.restore_form_usergroups')
+@include('penyuluh.delete_user')
+@include('penyuluh.restore_user')
+@include('penyuluh.resetpass_user')
 @endif
 @endsection
 @push('scripts')
-<script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
 <script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-@include('usergroups.table_usergroups')
+@if($user_access['read'])
+@include('penyuluh.table_user')
+@endif
 @endpush

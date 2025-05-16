@@ -30,11 +30,11 @@ class UserController extends BaseController {
     // Get All Users
     public function index() {
         $root_user = $this->root_user();
-        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
-        return response()->json(User::where('is_trash', 0)
-                                ->where('role', '<>', $root_user->param_value)
-                                ->orderBy('id', 'asc')
-                                ->paginate(), 200);
+        $user = User::where('is_trash', 0)
+                ->where('role', '<>', $root_user->param_value)
+                ->orderBy('id', 'asc')
+                ->paginate();
+        return $this->sendResponse($user, 'load data users success');
     }
 
     // Get Single User
