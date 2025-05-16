@@ -44,7 +44,7 @@
                     }
                     @endphp
                     <div class="menu-item">
-                        <a id="{{ $menu_active; }}" class="menu-link {{ $menu_active; }}" href="{{ $child->link }}">
+                        <a id="{{ $menu_active }}" class="menu-link {{ $menu_active }}" href="{{ $child->link }}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -61,7 +61,7 @@
                     }
                     @endphp
                     <div class="menu-item">
-                        <a id="{{ $menu_active2; }}" class="menu-link {{ $menu_active2; }}" href="{{ $subChild->link }}">
+                        <a id="{{ $menu_active2 }}" class="menu-link {{ $menu_active2 }}" href="{{ $subChild->link }}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>

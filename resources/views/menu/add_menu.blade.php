@@ -14,7 +14,7 @@
                         <select id="parenttxt" name="parenttxt" class="form-control form-control-solid form-select">
                             <option value="">parent</option>
                             @foreach($menu_parent as $dt_parent)
-                            <option value="{{ $dt_parent->id; }}">{{ $dt_parent->nama; }}</option>
+                            <option value="{{ $dt_parent->id }}">{{ $dt_parent->nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -118,7 +118,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

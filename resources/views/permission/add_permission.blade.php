@@ -14,7 +14,7 @@
                             <option value=""></option>
                             <option value="0">parent</option>
                             @foreach($user_groups as $dt_grup)
-                            <option value="{{ $dt_grup->id; }}">{{ $dt_grup->name; }}</option>
+                            <option value="{{ $dt_grup->id }}">{{ $dt_grup->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -84,7 +84,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

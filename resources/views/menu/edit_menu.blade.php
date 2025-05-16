@@ -14,7 +14,7 @@
                         <select id="parenttxt2" name="parenttxt2" class="form-control form-control-solid form-select">
                             <option value="">parent</option>
                             @foreach($menu_parent as $dt_parent2)
-                            <option value="{{ $dt_parent2->id; }}">{{ $dt_parent2->nama; }}</option>
+                            <option value="{{ $dt_parent2->id }}">{{ $dt_parent2->nama }}</option>
                             @endforeach
                         </select>
                         <input type="hidden" name="idtxt2"/>
@@ -67,7 +67,7 @@
     function editData(val) {
         Swal.fire({
             title: 'memuat data...',
-            html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+            html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
             allowOutsideClick: false,
             showConfirmButton: false,
             onOpen: function () {
@@ -173,7 +173,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

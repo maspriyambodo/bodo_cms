@@ -18,14 +18,14 @@
                     </div>
                     <div class="fv-row mb-10">
                         <label for="pwtxt" class="required form-label">Password</label>
-                        <input id="pwtxt" name="pwtxt" type="text" class="form-control form-control-solid" value="{{ $default_password->param_value; }}" readonly=""/>
+                        <input id="pwtxt" name="pwtxt" type="text" class="form-control form-control-solid" value="{{ $default_password->param_value }}" readonly=""/>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="leveltxt" class="required form-label">Level</label>
                         <select id="leveltxt" name="leveltxt" class="form-control" required="">
                             <option value="">select level</option>
                             @foreach($dt_role as $role)
-                            <option value="{{ $role->id; }}">{{ $role->name; }}</option>
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -100,7 +100,7 @@
                 if (status == 'Valid') {
                     Swal.fire({
                         title: 'memuat data...',
-                        html: '<img src="{{ asset("src/media/misc/loading.gif"); }}" title="Sedang Diverifikasi">',
+                        html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         onOpen: function () {

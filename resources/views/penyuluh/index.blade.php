@@ -1,6 +1,6 @@
 @extends('layouts.admin_template')
 @push('stylesheet')
-<link href="{{ asset('src/plugins/custom/datatables/datatables.bundle.css'); }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('src/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 <style>
     th, td { white-space: nowrap; }
     div.dataTables_wrapper {
@@ -98,7 +98,7 @@
 @endif
 @endsection
 @push('scripts')
-<script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js'); }}"></script>
+<script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 @if($user_access['read'])
 @include('penyuluh.table_user')
 @endif

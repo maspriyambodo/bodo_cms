@@ -12,8 +12,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link href="{{ asset('build/assets/app-Cg2KXSQ8.css'); }}" rel="stylesheet">
-    <script src="{{ asset('build/assets/assets/app-hWoCFExK.js'); }}" type="text/javascript"></script>
+    <link href="{{ asset('build/assets/app-Cg2KXSQ8.css') }}" rel="stylesheet">
+    <script src="{{ asset('build/assets/assets/app-hWoCFExK.js') }}" type="text/javascript"></script>
     
 </head>
 <body>
