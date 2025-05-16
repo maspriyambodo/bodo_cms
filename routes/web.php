@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupMenu;
 use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\KecamatanController;
@@ -16,7 +17,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::middleware('rate.limit')->get('/', [LoginController::class, 'showLoginForm'])->name('Login');
-
+Route::middleware(['auth', 'verified'])
+    ->prefix('dashboard')
+    ->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chart-data');
+        Route::get('/chart-data2', [DashboardController::class, 'chartData2'])->name('dashboard.chart-data2');
+        Route::get('/chart-data3', [DashboardController::class, 'chartData3'])->name('dashboard.chart-data3');
+    });
 Route::middleware(['auth', 'verified'])
     ->prefix('menu')
     ->group(function () {
