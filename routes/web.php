@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Penyuluh\PenyuluhController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupMenu;
 use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\KecamatanController;
@@ -113,31 +111,12 @@ Route::middleware(['auth', 'verified'])
         Route::get('/search', [Usergroups::class, 'search'])->name('user-groups');
     });
 
-Route::middleware(['auth', 'verified'])
-    ->prefix('dashboard')
-    ->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chart-data');
-        Route::get('/chart-data2', [DashboardController::class, 'chartData2'])->name('dashboard.chart-data2');
-        Route::get('/chart-data3', [DashboardController::class, 'chartData3'])->name('dashboard.chart-data3');
-    });
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/menu-group', [GroupMenu::class, 'index'])->name('menu-group');
 
     Route::get('/speed-test', [SpeedTestController::class, 'index'])->name('speed-test');
     Route::get('/speed-test-json', [SpeedTestController::class, 'json'])->name('speed-test');
 });
-
-Route::middleware(['auth', 'verified'])
-    ->prefix('penyuluh')
-    ->group(function () {
-        Route::get('/', [PenyuluhController::class, 'index'])->name('penyuluh');
-        Route::get('/json', [PenyuluhController::class, 'json'])->name('penyuluh');
-        Route::post('/store', [PenyuluhController::class, 'store'])->name('penyuluh');
-        Route::get('/edit/{id}', [PenyuluhController::class, 'edit'])->name('penyuluh');
-        Route::get('/search', [PenyuluhController::class, 'search'])->name('penyuluh');
-    });
 
 require __DIR__ . '/auth.php';
 
