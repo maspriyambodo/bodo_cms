@@ -15,10 +15,10 @@ return new class extends Migration {
             $table->integer('role')->nullable(false); // Kolom `role`
             $table->string('name')->nullable(false); // Kolom `name` tidak boleh NULL
             $table->string('email')->unique(); // Kolom `email` dengan UNIQUE constraint
-            $table->integer('id_provinsi')->nullable(); // Kolom `is_trash`
-            $table->integer('id_kabupaten')->nullable(); // Kolom `is_trash`
-            $table->integer('id_kecamatan')->nullable(); // Kolom `is_trash`
-            $table->bigInteger('id_kelurahan')->nullable(); // Kolom `is_trash`
+            $table->integer('id_provinsi')->nullable();
+            $table->integer('id_kabupaten')->nullable();
+            $table->integer('id_kecamatan')->nullable();
+            $table->bigInteger('id_kelurahan')->nullable();
             $table->string('pict')->default('src/media/avatars/blank.png')->nullable();
             $table->timestamp('email_verified_at')->nullable(); // Kolom `email_verified_at`
             $table->string('password'); // Kolom `password`
