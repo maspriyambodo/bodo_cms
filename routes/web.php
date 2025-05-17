@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [Provinsi::class, 'json'])->name('provinsi');
         Route::post('/store', [Provinsi::class, 'store'])->name('provinsi');
         Route::get('/edit/{id}', [Provinsi::class, 'edit'])->name('provinsi');
+        Route::post('/get-kabupaten', [Provinsi::class, 'get_kabupaten'])->name('get_kabupaten');
     });
 
 Route::middleware(['auth', 'verified'])
@@ -68,6 +69,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/store', [KabupatenController::class, 'store'])->name('kabupaten');
         Route::get('/edit/{id}', [KabupatenController::class, 'edit'])->name('kabupaten');
         Route::get('/search', [KabupatenController::class, 'search'])->name('kelurahan');
+        Route::post('/get-kecamatan', [KabupatenController::class, 'get_kecamatan'])->name('get_kecamatan');
     });
 
 Route::middleware(['auth', 'verified'])
@@ -78,6 +80,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/store', [KecamatanController::class, 'store'])->name('kecamatan');
         Route::get('/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan');
         Route::get('/search', [KecamatanController::class, 'search'])->name('kelurahan');
+        Route::post('/get-kelurahan', [KecamatanController::class, 'get_kelurahan'])->name('get_kelurahan');
     });
 
 Route::middleware(['auth', 'verified'])
