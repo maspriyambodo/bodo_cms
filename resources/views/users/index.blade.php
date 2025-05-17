@@ -65,6 +65,10 @@
                         <th>Pict</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Provinsi</th>
+                        <th>Kabupaten</th>
+                        <th>Kecamatan</th>
+                        <th>Kelurahan</th>
                         <th>Level</th>
                         <th>Status</th>
                         <th>Register Date</th>
@@ -90,6 +94,7 @@
 <script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
 <script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ asset('src/plugins/custom/lightbox2-2.11.4/js/lightbox.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 lightbox.option({
     'resizeDuration': 200,
