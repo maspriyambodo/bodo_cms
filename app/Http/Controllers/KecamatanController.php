@@ -10,6 +10,8 @@ use App\Models\MtKecamatan;
 use App\Models\MtKabupaten;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\MtKelurahan;
+use Exeption;
 
 class KecamatanController extends Controller {
 
@@ -238,5 +240,14 @@ class KecamatanController extends Controller {
                         'success' => false
             ]);
         }
+    }
+
+    public function get_kelurahan(Request $request) {
+        $exec = MtKelurahan::select('id_kelurahan as id', 'nama as text')->where('is_trash', 0)
+                ->where('id_kecamatan', $request->id_kecamatan)
+                ->get();
+        return response()->json([
+                    'results' => $exec
+        ]);
     }
 }
