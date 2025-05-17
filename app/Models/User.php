@@ -31,6 +31,10 @@ class User extends Authenticatable {
         'name',
         'email',
         'pict',
+        'id_provinsi',
+        'id_kabupaten',
+        'id_kecamatan',
+        'id_kelurahan',
         'email_verified_at',
         'password',
         'remember_token',
@@ -72,6 +76,22 @@ class User extends Authenticatable {
 
     public function permissions() {
         return $this->hasMany(SysPermission::class, 'role_id', 'role');
+    }
+
+    public function provinsi() {
+        return $this->belongsTo(MtProvinsi::class, 'id_provinsi', 'id_provinsi');
+    }
+
+    public function kabupaten() {
+        return $this->belongsTo(MtKabupaten::class, 'id_kabupaten', 'id_kabupaten');
+    }
+
+    public function kecamatan() {
+        return $this->belongsTo(MtKecamatan::class, 'id_kecamatan', 'id_kecamatan');
+    }
+
+    public function kelurahan() {
+        return $this->belongsTo(MtKelurahan::class, 'id_kelurahan', 'id_kelurahan');
     }
 
     public static function getUserPermissions() {
