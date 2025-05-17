@@ -56,10 +56,10 @@ class UserController extends Controller
             ->addColumn('button', fn($row) => $this->getActionButtons($row))
             ->addColumn('picture', fn($row) => $this->getPictUser($row))
             ->addColumn('group', fn($row) => $row->group ? $row->group->name : '-')
-            ->addColumn('provinsi', fn($row) => $row->provinsi ? $row->provinsi->name : '-')
-            ->addColumn('kabupaten', fn($row) => $row->kabupaten ? $row->kabupaten->name : '-')
-            ->addColumn('kecamatan', fn($row) => $row->kecamatan ? $row->kecamatan->name : '-')
-            ->addColumn('kelurahan', fn($row) => $row->kelurahan ? $row->kelurahan->name : '-')
+            ->addColumn('provinsi', fn($row) => $row->provinsi ? $row->provinsi->nama : '-')
+            ->addColumn('kabupaten', fn($row) => $row->kabupaten ? $row->kabupaten->nama : '-')
+            ->addColumn('kecamatan', fn($row) => $row->kecamatan ? $row->kecamatan->nama : '-')
+            ->addColumn('kelurahan', fn($row) => $row->kelurahan ? $row->kelurahan->nama : '-')
             ->rawColumns(['status_aktif', 'button', 'picture'])
             ->skipPaging()
             ->setTotalRecords($TotalRecords)
@@ -251,6 +251,10 @@ class UserController extends Controller
                         'name' => $request->namatxt2,
                         'email' => $request->mailtxt2,
                         'role' => $request->leveltxt2,
+                        'id_provinsi' => $request->provinsitxt2,
+                        'id_kabupaten' => $request->kabtxt2,
+                        'id_kecamatan' => $request->kectxt2,
+                        'id_kelurahan' => $request->keltxt2,
                         'updated_by' => auth()->user()->id
                     ]);
             } elseif ($request->d_id) {
