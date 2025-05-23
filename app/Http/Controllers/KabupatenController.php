@@ -10,6 +10,8 @@ use App\Models\MtProvinsi;
 use App\Models\MtKabupaten;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use Yajra\DataTables\Facades\DataTables;
+use Exception;
+use App\Models\MtKecamatan;
 
 class KabupatenController extends Controller {
 
@@ -219,5 +221,14 @@ class KabupatenController extends Controller {
                         'success' => false
             ]);
         }
+    }
+
+    public function get_kecamatan(Request $request) {
+        $exec = MtKecamatan::select('id_kecamatan as id', 'nama as text')->where('is_trash', 0)
+                ->where('id_kabupaten', $request->id_kabupaten)
+                ->get();
+        return response()->json([
+                    'results' => $exec
+        ]);
     }
 }

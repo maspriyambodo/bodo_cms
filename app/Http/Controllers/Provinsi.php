@@ -7,23 +7,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\MtProvinsi;
+use App\Models\MtKabupaten;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use Yajra\DataTables\Facades\DataTables;
+use Exception;
 
-class Provinsi extends Controller {
+class Provinsi extends Controller
+{
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $user_access = $this->permission_user();
         return view('master.provinsi.provinsi_index', compact('user_access'));
     }
 
-    public function json(Request $request) {
+    public function json(Request $request)
+    {
         if (!$this->permission_user()['read']) {
             return response()->json([
-                        'draw' => 0,
-                        'recordsTotal' => 0,
-                        'recordsFiltered' => 0,
-                        'data' => []
+                'draw' => 0,
+                'recordsTotal' => 0,
+                'recordsFiltered' => 0,
+                'data' => []
             ]);
         }
         $offset = $request->start;
@@ -32,26 +37,27 @@ class Provinsi extends Controller {
         $exec = MtProvinsi::orderBy('id_provinsi', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->offset($offset)->limit($limit)->get();
-        if($request->keyword) {
+        if ($request->keyword) {
             $FilteredRecords = count($dt_param);
         } else {
             $FilteredRecords = $TotalRecords;
         }
         return Datatables::of($dt_param)
-                        ->addIndexColumn()
-                        ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
-                        ->addColumn('longitude', fn($row) => $row->coordinates->longitude)
-                        ->addColumn('latitude', fn($row) => $row->coordinates->latitude)
-                        ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
-                        ->addColumn('button', fn($row) => $this->getActionButtons($row))
-                        ->rawColumns(['status_aktif', 'button'])
-                        ->skipPaging()
-                        ->setTotalRecords($TotalRecords)
-                        ->setFilteredRecords($FilteredRecords)
-                        ->make(true);
+            ->addIndexColumn()
+            ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
+            ->addColumn('longitude', fn($row) => $row->coordinates->longitude)
+            ->addColumn('latitude', fn($row) => $row->coordinates->latitude)
+            ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
+            ->addColumn('button', fn($row) => $this->getActionButtons($row))
+            ->rawColumns(['status_aktif', 'button'])
+            ->skipPaging()
+            ->setTotalRecords($TotalRecords)
+            ->setFilteredRecords($FilteredRecords)
+            ->make(true);
     }
 
-    private function applyFilters($query, Request $request) {
+    private function applyFilters($query, Request $request)
+    {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', "%" . $request->keyword . "%");
@@ -60,7 +66,8 @@ class Provinsi extends Controller {
         }
     }
 
-    private function getActionButtons($row) {
+    private function getActionButtons($row)
+    {
         $permissions = $this->permission_user();
         $canUpdate = $permissions['update'];
         $canDelete = $permissions['delete'];
@@ -100,7 +107,8 @@ class Provinsi extends Controller {
         return $buttons;
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
                 'kdtxt' => 'required|integer|unique:mt_provinsi,id_provinsi',
@@ -128,9 +136,9 @@ class Provinsi extends Controller {
 
         if ($validator->fails()) {
             return response()->json([
-                        'success' => false,
-                        'errors' => $validator->errors(),
-                            ], 422);
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
         }
         DB::beginTransaction(); // Start transaction
         try {
@@ -144,29 +152,29 @@ class Provinsi extends Controller {
                 ]);
             } elseif ($request->q == 'update') {
                 MtProvinsi::where('id_provinsi', $request->eid)
-                        ->update([
-                            'id_provinsi' => $request->kdtxt2,
-                            'nama' => $request->nmatxt2,
-                            'coordinates' => DB::raw(new Point($request->longtxt2, $request->lattxt2)),
-                            'updated_by' => auth()->user()->id
-                ]);
+                    ->update([
+                        'id_provinsi' => $request->kdtxt2,
+                        'nama' => $request->nmatxt2,
+                        'coordinates' => DB::raw(new Point($request->longtxt2, $request->lattxt2)),
+                        'updated_by' => auth()->user()->id
+                    ]);
             } elseif ($request->q == 'delete') {
                 MtProvinsi::where('id_provinsi', $request->d_id)
-                        ->update([
-                            'is_trash' => 1,
-                            'updated_by' => auth()->user()->id
-                ]);
+                    ->update([
+                        'is_trash' => 1,
+                        'updated_by' => auth()->user()->id
+                    ]);
             } elseif ($request->q == 'restore') {
                 MtProvinsi::where('id_provinsi', $request->delidtxt)
-                        ->update([
-                            'is_trash' => 0,
-                            'updated_by' => auth()->user()->id
-                ]);
+                    ->update([
+                        'is_trash' => 0,
+                        'updated_by' => auth()->user()->id
+                    ]);
             }
 
             DB::commit(); // Commit transaction
             return response()->json([
-                        'success' => true
+                'success' => true
             ]);
         } catch (Exception $exc) {
             DB::rollBack(); // Rollback transaction
@@ -175,30 +183,46 @@ class Provinsi extends Controller {
                 'request_data' => $request->all(),
             ]);
             return response()->json([
-                        'success' => false,
-                        'message' => 'Failed to create user.',
-                        'error' => $exc->getMessage() // Optionally log the error for debugging
-                            ], 500);
+                'success' => false,
+                'message' => 'Failed to create user.',
+                'error' => $exc->getMessage() // Optionally log the error for debugging
+            ], 500);
         }
     }
 
-    public function edit(Request $request) {
+    public function edit(Request $request)
+    {
         $exec = MtProvinsi::where('id_provinsi', $request->id)->first();
         if ($exec) {
             if ($request->input('q')) {
                 return response()->json([
-                            'success' => true,
-                            'dt_provinsi' => $exec
+                    'success' => true,
+                    'dt_provinsi' => $exec
                 ]);
             } else {
                 return response()->json([
-                            'success' => true,
-                            'dt_provinsi' => $exec
+                    'success' => true,
+                    'dt_provinsi' => $exec
                 ]);
             }
         } else {
             return response()->json([
-                        'success' => false
+                'success' => false
+            ]);
+        }
+    }
+
+    public function get_kabupaten(Request $request)
+    {
+        $exec = MtKabupaten::where('id_provinsi', $request->id_provinsi)->get();
+        if ($exec) {
+            return response()->json([
+                'success' => true,
+                'dt_kabupaten' => $exec
+            ]);
+        } else {
+            return response()->json([
+                'success' => false
             ]);
         }
     }

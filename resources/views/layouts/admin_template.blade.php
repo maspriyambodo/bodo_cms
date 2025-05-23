@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang=en>
     <head>
-        <base href="{{route('dashboard');}}">
+        <base href="{{route('dashboard')}}">
         @isset($paramsys['APP_NAME'])
-        <title>{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . $paramsys['APP_NAME']; }}</title>
+        <title>{{ ucfirst(str_replace('-',' ', request()->route()->uri)) . ' | ' . $paramsys['APP_NAME'] }}</title>
         @endisset
-        <meta name="csrf-token" content="{{ csrf_token(); }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name=description content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free.">
         <meta name=keywords content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon">
         <meta name=viewport content="width=device-width,initial-scale=1">
@@ -15,14 +15,14 @@
         <meta property=og:title content="Metronic - Bootstrap 5 HTML, VueJS, React, Angular &amp; Laravel Admin Dashboard Theme">
         <meta property=og:url content=https://keenthemes.com/metronic>
         @isset($paramsys['APP_NAME'])
-        <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . $paramsys['APP_NAME']; }}">
+        <meta property=og:site_name content="{{ str_replace('-',' ',request()->route()->uri) . ' | ' . $paramsys['APP_NAME'] }}">
         @endisset
         <link rel=canonical href=https://preview.keenthemes.com/metronic8>
         @isset($paramsys['FAVICON'])
-        <link rel="shortcut icon" href="{{ $paramsys['FAVICON']; }}">
+        <link rel="shortcut icon" href="{{ $paramsys['FAVICON'] }}">
         @endisset
-        <link href="{{ asset('build/assets/app-Bqpnzw7s.css'); }}" rel="stylesheet" type="text/css"/>
-        <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
+        <link href="{{ asset('build/assets/app-DWyhC5Vm.css') }}" rel="stylesheet" type="text/css"/>
+        <script src="{{ asset('build/assets/app-BszynX9a.js') }}" type="text/javascript"></script>
         @stack('stylesheet')
     </head>
     <body id=kt_body class="header-tablet-and-mobile-fixed aside-enabled">
@@ -32,13 +32,13 @@
                     <div class="aside-toolbar flex-column-auto" id=kt_aside_toolbar>
                         <div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
                             <div class="symbol symbol-50px">
-                                <img src="{{ asset($user->pict); }}" alt="">
+                                <img src="{{ asset($user->pict) }}" alt="">
                             </div>
                             <div class="aside-user-info flex-row-fluid flex-wrap ms-5">
                                 <div class=d-flex>
                                     <div class="flex-grow-1 me-2">
-                                        <a href=# class="text-white text-hover-primary fs-6 fw-bold">{{ $user->name; }}</a>
-                                        <span class="text-gray-600 fw-bold d-block fs-8 mb-1">{{ $role_user->name; }}</span>
+                                        <a href=# class="text-white text-hover-primary fs-6 fw-bold">{{ $user->name }}</a>
+                                        <span class="text-gray-600 fw-bold d-block fs-8 mb-1">{{ $role_user->name }}</span>
                                         <div class="d-flex align-items-center text-success fs-9">
                                             <span class="bullet bullet-dot bg-success me-1"></span>online</div>
                                     </div>
@@ -52,7 +52,7 @@
                     <div id=kt_header class="header align-items-stretch">
                         <div class=header-brand>
                             <a href="{{ request()->routeIs('dashboard') ? 'javascript:void(0);' : route('dashboard') }}">
-                                <img alt="logo" src="{{ $paramsys['LOGO_1']; }}" class="h-25px h-lg-25px">
+                                <img alt="logo" src="{{ $paramsys['LOGO_1'] }}" class="h-25px h-lg-25px">
                             </a>
                             <div id=kt_aside_toggle class="btn btn-icon w-auto px-0 btn-active-color-primary aside-minimize" data-kt-toggle=true data-kt-toggle-state=active data-kt-toggle-target=body data-kt-toggle-name=aside-minimize>
                                 <span class="svg-icon svg-icon-1 me-n1 minimize-default">
@@ -84,20 +84,20 @@
                         <div class=toolbar>
                             <div class="container-fluid py-6 py-lg-0 d-flex flex-column flex-lg-row align-items-lg-stretch justify-content-lg-between">
                                 <div class="page-title d-flex flex-column me-5">
-                                    <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0 text-capitalize">{{  str_replace('-',' ',request()->route()->uri); }}</h1>
+                                    <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0 text-capitalize">{{  str_replace('-',' ',request()->route()->uri) }}</h1>
                                     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 pt-1">
                                         <li class="breadcrumb-item text-muted">
-                                            <a href="{{ route('dashboard'); }}" class="text-muted text-hover-primary">Home</a>
+                                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a>
                                         </li>
                                         <li class=breadcrumb-item>
                                             <span class="bullet bg-gray-200 w-5px h-2px"></span>
                                         </li>
-                                        <li class="breadcrumb-item text-dark">{{  str_replace('-',' ',request()->route()->uri); }}</li>
+                                        <li class="breadcrumb-item text-dark">{{  str_replace('-',' ',request()->route()->uri) }}</li>
                                     </ul>
                                 </div>
                                 <div class="page-title d-flex flex-column me-5">
                                     <h1 id="clock" class="d-flex flex-column text-dark fw-bolder fs-3 mb-0 text-capitalize"></h1>
-                                    <h2 class="d-flex flex-column fs-3 mb-0 text-capitalize">{{ date('d F Y'); }}<span id="dayName"></span></h2>
+                                    <h2 class="d-flex flex-column fs-3 mb-0 text-capitalize">{{ date('d F Y') }}<span id="dayName"></span></h2>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                 <span class="text-muted fw-bold me-1">@php echo date('Y'); @endphp &copy;</span>
                                 <a href=https://keenthemes.com target=_blank class="text-gray-800 text-hover-primary">
                                     @isset($paramsys['APP_NAME'])
-                                    {{ $paramsys['APP_NAME']; }}
+                                    {{ $paramsys['APP_NAME'] }}
                                     @else
                                     {{ config('app.name', 'Laravel') }}
                                     @endisset
@@ -134,10 +134,10 @@
                 </svg>
             </span>
         </div>
-        <script>var hostUrl = "{{ asset(''); }}";</script>
-        <script src="{{ asset('build/assets/app-BszynX9a.js'); }}" type="text/javascript"></script>
-        <script src="{{ asset('src/plugins/global/plugins.bundle.js'); }}"></script>
-        <script src="{{ asset('src/js/scripts.bundle.js'); }}"></script>
+        <script>var hostUrl = "{{ asset('') }}";</script>
+        <script src="{{ asset('build/assets/app-BszynX9a.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('src/plugins/global/plugins.bundle.js') }}"></script>
+        <script src="{{ asset('src/js/scripts.bundle.js') }}"></script>
         <script>
 $(document).ready(function () {
     var menu_active = $('#active').parent().parent();
