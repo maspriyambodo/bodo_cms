@@ -28,3 +28,4 @@ composer.lock
 package-lock.json
 .htaccess
 /public/src/media/logos/logo-1-dark.png
+yarn.lock
