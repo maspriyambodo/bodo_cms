@@ -1,7 +1,21 @@
+import $ from 'jquery'
 import axios from 'axios';
-window.axios = axios;
 
+import DataTable from 'laravel-datatables-vite';
+import Alpine from 'alpinejs';
+import 'laravel-datatables-vite';
+import 'datatables.net-bs5';
+import 'datatables.net-buttons-bs5';
+import 'datatables.net-select-bs5';
+
+window.jQuery = window.$ = $;
+window.axios = axios;
+window.Alpine = Alpine;
+window.DataTable = DataTable;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+import '../../public/src/plugins/global/plugins.bundle.js';
+import '../../public/src/js/scripts.bundle.js';
+Alpine.start();
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
