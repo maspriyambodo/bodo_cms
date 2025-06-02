@@ -11,7 +11,6 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/js/app.js',
-                'public/src/plugins/global/plugins.bundle.js',
             ],
             refresh: true,
         }),
