@@ -27,9 +27,9 @@ export default defineConfig({
         }
     ],
     server: {
-        https: {
-            key: 'C:/laragon/etc/ssl/laragon.key',
-            cert: 'C:/laragon/etc/ssl/laragon.crt',
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost'
         },
     },
     resolve: {
