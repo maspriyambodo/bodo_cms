@@ -13,7 +13,7 @@
                     Swal.close();
                 },
                 ajax: {
-                    url: "menu/json",
+                    url: "{{ route('menu.json') }}",
                     data: function (d) {
                         d.keyword = $("#keyword").val();
                     }
