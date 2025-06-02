@@ -35,6 +35,7 @@ class MenuServiceProvider extends ServiceProvider {
                                 }])
                             ->whereNull('menu_parent')
                             ->where('is_trash', 0)
+                            ->where('is_hide', 0)
                             ->orderBy('order_no', 'asc')
                             ->orderBy('group_menu', 'asc')
                             ->get();
