@@ -31,3 +31,4 @@ package-lock.json
 yarn.lock
 /public/C*
 C*
+public/vendor/telescope/*
