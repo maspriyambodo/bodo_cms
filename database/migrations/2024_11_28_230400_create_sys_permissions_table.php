@@ -20,9 +20,9 @@ return new class extends Migration {
             $table->integer('u')->nullable()->default(0)->comment('update'); // INT
             $table->integer('d')->nullable()->default(0)->comment('delete'); // INT
             $table->integer('is_trash')->nullable()->default(0)->comment('0. aktif 1. deleted');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->nullable()->default('2000-01-01 00:00:00');
             $table->integer('created_by')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable()->default('2000-01-01 00:00:00');
             $table->integer('updated_by')->nullable();
             // Set primary key
             $table->primary('id');
