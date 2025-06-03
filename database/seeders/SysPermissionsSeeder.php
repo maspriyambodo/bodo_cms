@@ -6163,6 +6163,19 @@ class SysPermissionsSeeder extends Seeder
                 "is_trash" => 0,
                 "created_by" => 1,
                 "updated_by" => null
+            ],
+            [
+                "id" => 690,
+                "role_id" => 9,
+                "id_menu" => 56,
+                "v" => 1,
+                "c" => 1,
+                "r" => 1,
+                "u" => 1,
+                "d" => 1,
+                "is_trash" => 0,
+                "created_by" => 1,
+                "updated_by" => 1
             ]
         ]);
     }
