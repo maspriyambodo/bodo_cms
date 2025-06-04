@@ -32,3 +32,4 @@ yarn.lock
 /public/C*
 C*
 public/vendor/telescope/*
+public/src/media/video/*
