@@ -12,7 +12,6 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Provinsi;
 use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Usergroups;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -107,16 +106,6 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [UserController::class, 'json'])->name('umgmt.json');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('umgmt.edit');
         Route::post('/store', [UserController::class, 'store'])->name('umgmt.store');
-    });
-
-Route::middleware(['auth', 'verified'])
-    ->prefix('user-groups')
-    ->group(function () {
-        Route::get('/', [Usergroups::class, 'index'])->name('ugroups');
-        Route::get('/json', [Usergroups::class, 'json'])->name('ugroups.json');
-        Route::get('/edit/{id}', [Usergroups::class, 'edit'])->name('ugroups.edit');
-        Route::post('/store', [Usergroups::class, 'store'])->name('ugroups.store');
-        Route::get('/search', [Usergroups::class, 'search'])->name('ugroups.search');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
