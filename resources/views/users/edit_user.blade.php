@@ -95,7 +95,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('get_kabupaten') }}",
+            url: "{{ route('provinsi.get_kabupaten') }}",
             type: "POST",
             data: {
                 id_provinsi: id_provinsi,
@@ -128,7 +128,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('get_kecamatan') }}",
+            url: "{{ route('kabupaten.get_kecamatan') }}",
             type: "POST",
             data: {
                 id_kabupaten: id_kabupaten,
@@ -161,7 +161,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('get_kelurahan') }}",
+            url: "{{ route('kecamatan.get_kelurahan') }}",
             type: "POST",
             data: {
                 id_kecamatan: id_kecamatan,
