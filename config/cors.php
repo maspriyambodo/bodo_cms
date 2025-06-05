@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['GET'],
 
-    'allowed_origins' => ['kemenag.go.id', '*.kemenag.go.id'],
+    'allowed_origins' => ['kemenag.go.id', '*.kemenag.go.id', 'localhost'],
 
     'allowed_origins_patterns' => [],
 
