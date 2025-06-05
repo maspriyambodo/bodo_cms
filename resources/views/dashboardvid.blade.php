@@ -21,7 +21,6 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="text-center">
-                        {{ request()->ip() }}
                         <video id="my-video" class="video-js rounded" controls preload="auto" width="100%"
                             height="100%">
                             <source src="{{ asset($dt_video[0]->path) }}" type="video/mp4" />
