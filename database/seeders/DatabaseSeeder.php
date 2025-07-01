@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder {
         $this->call(SysParamSeeder::class);
         $this->call(SysPermissionsSeeder::class);
         $this->call(UserGroupsSeeder::class);
+        $this->call(DtBankSeeder::class);
     }
 }
