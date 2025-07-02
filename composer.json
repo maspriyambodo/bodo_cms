@@ -13,6 +13,7 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1.0",
+        "coderflex/laravel-turnstile": "^2.1",
         "darkaonline/l5-swagger": "^9.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
@@ -20,6 +21,7 @@
         "lavela/phpjasper": "^3.0",
         "matanyadaev/laravel-eloquent-spatial": "^4.4",
         "predis/predis": "^3.0",
+        "stevebauman/location": "^7.5",
         "yajra/laravel-datatables": "11.0",
         "yajra/laravel-datatables-oracle": "^11.1"
     },
