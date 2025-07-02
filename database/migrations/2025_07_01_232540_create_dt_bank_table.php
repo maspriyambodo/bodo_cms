@@ -15,6 +15,12 @@ return new class extends Migration
             $table->increments('id');
             $table->string('nama', 255)->nullable();
             $table->string('kode', 3)->nullable();
+            $table->string('logo', 255)->nullable();
+            $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             // If you want to set the initial AUTO_INCREMENT value to 155,
             // you will need to do this via a raw SQL statement after creation.
         });
