@@ -79,6 +79,7 @@ class LoginController extends Controller
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
+            'cf-turnstile-response' => 'required|string',
         ]);
     }
 

@@ -18,7 +18,7 @@
     <link href="{{ asset('src/css/css.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('src/css/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('src/css/style.bundle_1.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('src/css/captcha.css') }}" rel="stylesheet" type="text/css" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -71,17 +71,19 @@
                                     class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                 </div>
                             </div>
-                            <div class="fv-row mb-3 fv-plugins-icon-container">
+                            <div class="fv-row fv-plugins-icon-container">
                                 <input type="password" placeholder="Password" name="password" autocomplete="off"
                                     class="form-control bg-transparent">
-                                <input id="captchatxt" type="hidden" name="captchatxt" autocomplete="off" value="">
+                                    <div class="mb-3 my-10"></div>
+                                <div id="cf-turnstile" class="cf-turnstile text-center"
+                                    data-sitekey="{{ env('TURNSTILE_SITE_KEY') }}" data-theme="light"
+                                    data-language="en">
+                                </div>
                                 <div
                                     class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                 </div>
                             </div>
-
-
-                            <div class="d-grid my-10">
+                            <div class="d-grid">
                                 <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
                                     <span class="indicator-label">Sign In</span>
                                     <span class="indicator-progress">
@@ -96,34 +98,14 @@
             </div>
         </div>
     </div>
-    <style>
-        .closeButton {
-            top: 0px !important;
-            right: 0px !important;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            position: static;
-        }
-
-        .sliderContainer {}
-    </style>
-    <div class="overlay card" id="overlay">
-        <div class="overlay-content" id="captcha"></div>
-    </div>
     <script src="{{ asset('src/js/auth/plugins.bundle.js') }}" type="text/javascript"></script>
     <script src="{{ asset('src/js/auth/scripts.bundle.js') }}" type="text/javascript"></script>
     <script src="{{ asset('src/js/auth/general.js') }}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"
         integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ asset('src/js/auth/captcha.js') }}" type="text/javascript"></script>
-    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1"
-        xlink="http://www.w3.org/1999/xlink" svgjs="http://svgjs.dev"
-        style="overflow:hidden;top:-100%;left:-100%;position:absolute;opacity:0">
-        <defs id="SvgjsDefs1002"></defs>
-        <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
-        <path id="SvgjsPath1004" d="M0 0 "></path>
-    </svg>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
 </body>
 
 </html>
