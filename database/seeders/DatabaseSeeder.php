@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(SysPermissionsSeeder::class);
         $this->call(UserGroupsSeeder::class);
         $this->call(DtBankSeeder::class);
+        $this->call(MtDirektoratSeeder::class);
+        $this->call(DtSubdirektoratSeeder::class);
     }
 }
