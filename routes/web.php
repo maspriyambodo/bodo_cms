@@ -13,6 +13,7 @@ use App\Http\Controllers\Provinsi;
 use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\DirektoratController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -116,6 +117,15 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [BankController::class, 'json'])->name('nama-bank.json');
         Route::post('/store', [BankController::class, 'store'])->name('nama-bank.store');
         Route::get('/edit/{id}', [BankController::class, 'edit'])->name('nama-bank.edit');
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('direktorat')
+    ->group(function () {
+        Route::get('/', [DirektoratController::class, 'index'])->name('direktorat');
+        Route::get('/json', [DirektoratController::class, 'json'])->name('direktorat.json');
+        Route::post('/store', [DirektoratController::class, 'store'])->name('direktorat.store');
+        Route::get('/edit/{id}', [DirektoratController::class, 'edit'])->name('direktorat.edit');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
