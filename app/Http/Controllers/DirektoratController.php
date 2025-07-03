@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\DtBank;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
+use App\Models\MtDirektorat;
 use Yajra\DataTables\Facades\DataTables;
 
-class BankController extends Controller
+class DirektoratController extends Controller
 {
     public function index(Request $request)
     {
         $user_access = $this->permission_user();
-        return view('nmbank.bank_index', compact('user_access'));
+        return view('direktorat.direktorat_index', compact('user_access'));
     }
     public function json(Request $request)
     {
@@ -26,7 +23,7 @@ class BankController extends Controller
                 'data' => []
             ]);
         }
-        $exec = DtBank::orderBy('id', 'asc');
+        $exec = MtDirektorat::orderBy('id', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->get();
         return Datatables::of($dt_param)
