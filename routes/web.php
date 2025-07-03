@@ -12,6 +12,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Provinsi;
 use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BankController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -106,6 +107,15 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [UserController::class, 'json'])->name('umgmt.json');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('umgmt.edit');
         Route::post('/store', [UserController::class, 'store'])->name('umgmt.store');
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('nama-bank')
+    ->group(function () {
+        Route::get('/', [BankController::class, 'index'])->name('nama-bank');
+        Route::get('/json', [BankController::class, 'json'])->name('nama-bank.json');
+        Route::post('/store', [BankController::class, 'store'])->name('nama-bank.store');
+        Route::get('/edit/{id}', [BankController::class, 'edit'])->name('nama-bank.edit');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
