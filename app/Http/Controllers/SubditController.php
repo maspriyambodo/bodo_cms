@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DtSubdirektorat;
+use App\Models\MtDirektorat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +15,8 @@ class SubditController extends Controller
     public function index(Request $request)
     {
         $user_access = $this->permission_user();
-        return view('subdit.subdit_index', compact('user_access'));
+        $direktorats = MtDirektorat::where('is_trash', 0)->get();
+        return view('subdit.subdit_index', compact('user_access', 'direktorats'));
     }
     public function json(Request $request)
     {
@@ -27,7 +29,6 @@ class SubditController extends Controller
             ]);
         }
         $exec = DtSubdirektorat::with('direktorat')
-            ->where('dt_subdirektorat.is_trash', 0)
             ->orderBy('id', 'asc');
         $this->applyFilters($exec, $request);
         $dt_param = $exec->get();
@@ -90,12 +91,14 @@ class SubditController extends Controller
     {
         if ($request->q == 'add') {
             $validator = Validator::make($request->all(), [
-                'nmatxt' => 'required|string|unique:mt_direktorat,nama',
+                'nmadir' => 'required|integer|exists:mt_direktorat,id',
+                'nmatxt' => 'required|string|unique:mt_direktorat,nama'
             ]);
         } elseif ($request->q == 'update') {
             $validator = Validator::make($request->all(), [
                 'eid' => 'required|integer',
                 'nmatxt2' => 'required|string',
+                'nmadir2' => 'required|integer|exists:mt_direktorat,id'
             ]);
         } elseif ($request->q == 'delete') {
             $validator = Validator::make($request->all(), [
@@ -117,6 +120,7 @@ class SubditController extends Controller
         try {
             if ($request->q == 'add') {
                 DtSubdirektorat::create([
+                    'id_direktorat' => $request->nmadir,
                     'nama' => $request->nmatxt,
                     'is_trash' => 0,
                     'created_by' => auth()->user()->id
@@ -124,6 +128,7 @@ class SubditController extends Controller
             } elseif ($request->q == 'update') {
                 DtSubdirektorat::where('id', $request->eid)
                     ->update([
+                        'id_direktorat' => $request->nmadir2,
                         'nama' => $request->nmatxt2,
                         'updated_by' => auth()->user()->id
                     ]);
@@ -166,12 +171,12 @@ class SubditController extends Controller
             if ($request->input('q')) {
                 return response()->json([
                     'success' => true,
-                    'dt_direktorat' => $exec
+                    'dt_subdit' => $exec
                 ]);
             } else {
                 return response()->json([
                     'success' => true,
-                    'dt_direktorat' => $exec
+                    'dt_subdit' => $exec
                 ]);
             }
         } else {
