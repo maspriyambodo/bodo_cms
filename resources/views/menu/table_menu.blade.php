@@ -26,7 +26,6 @@
                 ],
                 columns: [
                     {
-
                         className: "text-center",
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
@@ -34,7 +33,6 @@
                     }, {
                         data: "button",
                         className: "text-center"
-
                     }, {
                         render: function (data, type, row, meta) {
                             var nama_parent = '';
@@ -61,6 +59,10 @@
                     },
                     {
                         data: "description"
+                    },
+                    {
+                        data: "visibility",
+                        className: 'text-center',
                     },
                     {
                         data: "status_aktif"
