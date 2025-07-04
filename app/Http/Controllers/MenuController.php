@@ -50,8 +50,9 @@ class MenuController extends Controller {
         return Datatables::of($dt_param)
                         ->editColumn('created_at', fn($row) => date('d M Y', strtotime($row->created_at)))
                         ->addColumn('status_aktif', fn($row) => $row->is_trash == 0 ? "<span class=\"badge badge-success w-100\">aktif</span>" : "<span class=\"badge badge-light-dark w-100\">deleted</span>")
+                        ->addColumn('visibility', fn($row) => $row->is_hide == 0 ? "<span class=\"badge badge-light w-100\">visible</span>" : "<span class=\"badge badge-light-dark w-100\">hidden</span>")
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
-                        ->rawColumns(['status_aktif', 'button'])
+                        ->rawColumns(['status_aktif', 'button', 'visibility'])
                         ->make(true);
     }
 
