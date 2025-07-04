@@ -60,6 +60,7 @@
                         <th class="text-center">Group</th>
                         <th class="text-center">Icon</th>
                         <th class="text-center">Description</th>
+                        <th class="text-center">Visibility</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Register Date</th>
                     </tr>
