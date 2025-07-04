@@ -144,7 +144,7 @@ class GroupMenu extends Controller {
                     'nama' => $request->nmatxt,
                     'description' => $request->desctxt,
                     'order_no' => $request->ordtxt,
-                    'is_trash' => 1,
+                    'is_trash' => 0,
                     'created_by' => auth()->user()->id
                 ]);
             } elseif ($request->q == 'update') {
