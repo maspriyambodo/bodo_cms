@@ -14,6 +14,7 @@ use App\Http\Controllers\SpeedTestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\DirektoratController;
+use App\Http\Controllers\SubditController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -126,6 +127,15 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [DirektoratController::class, 'json'])->name('direktorat.json');
         Route::post('/store', [DirektoratController::class, 'store'])->name('direktorat.store');
         Route::get('/edit/{id}', [DirektoratController::class, 'edit'])->name('direktorat.edit');
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('subdit')
+    ->group(function () {
+        Route::get('/', [SubditController::class, 'index'])->name('subdit');
+        Route::get('/json', [SubditController::class, 'json'])->name('subdit.json');
+        Route::post('/store', [SubditController::class, 'store'])->name('subdit.store');
+        Route::get('/edit/{id}', [SubditController::class, 'edit'])->name('subdit.edit');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
