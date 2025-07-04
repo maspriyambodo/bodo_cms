@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MtDirektorat;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class DirektoratController extends Controller
@@ -32,7 +35,6 @@ class DirektoratController extends Controller
             ->rawColumns(['status_aktif', 'button'])
             ->make(true);
     }
-
     private function applyFilters($query, Request $request)
     {
         if ($request->filled('keyword')) {
@@ -41,7 +43,6 @@ class DirektoratController extends Controller
             });
         }
     }
-
     private function getActionButtons($row)
     {
         $permissions = $this->permission_user();
@@ -81,5 +82,99 @@ class DirektoratController extends Controller
         $buttons .= "</div>";
 
         return $buttons;
+    }
+
+    public function store(Request $request)
+    {
+        if ($request->q == 'add') {
+            $validator = Validator::make($request->all(), [
+                'nmatxt' => 'required|string|unique:mt_direktorat,nama',
+            ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                'eid' => 'required|integer',
+                'nmatxt2' => 'required|string',
+            ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                'd_id' => 'required|integer'
+            ]);
+        } elseif ($request->q == 'restore') {
+            $validator = Validator::make($request->all(), [
+                'delidtxt' => 'required|integer'
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+        DB::beginTransaction(); // Start transaction
+        try {
+            if ($request->q == 'add') {
+                MtDirektorat::create([
+                    'nama' => $request->nmatxt,
+                    'is_trash' => 0,
+                    'created_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'update') {
+                MtDirektorat::where('id', $request->eid)
+                    ->update([
+                        'nama' => $request->nmatxt2,
+                        'updated_by' => auth()->user()->id
+                    ]);
+            } elseif ($request->q == 'delete') {
+                MtDirektorat::where('id', $request->d_id)
+                    ->update([
+                        'is_trash' => 1,
+                        'updated_by' => auth()->user()->id
+                    ]);
+            } elseif ($request->q == 'restore') {
+                MtDirektorat::where('id', $request->delidtxt)
+                    ->update([
+                        'is_trash' => 0,
+                        'updated_by' => auth()->user()->id
+                    ]);
+            }
+
+            DB::commit(); // Commit transaction
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create user.',
+                'error' => $exc->getMessage() // Optionally log the error for debugging
+            ], 500);
+        }
+    }
+
+    public function edit(Request $request) {
+        $exec = MtDirektorat::where('id', $request->id)->first();
+        if ($exec) {
+            if ($request->input('q')) {
+                return response()->json([
+                            'success' => true,
+                            'dt_direktorat' => $exec
+                ]);
+            } else {
+                return response()->json([
+                            'success' => true,
+                            'dt_direktorat' => $exec
+                ]);
+            }
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
     }
 }
