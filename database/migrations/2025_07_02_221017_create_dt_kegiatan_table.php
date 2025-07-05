@@ -17,6 +17,12 @@ return new class extends Migration
             $table->integer('direktorat')->nullable();
             $table->date('tanggal_mulai_kegiatan')->nullable();
             $table->date('tanggal_selesai_kegiatan')->nullable();
+            $table->integer('provinsi')->nullable();
+            $table->integer('kabupaten')->nullable();
+            $table->integer('kecamatan')->nullable();
+            $table->integer('kelurahan')->nullable();
+            $table->string('lokasi_acara', 255)->nullable()->collation('utf8mb4_general_ci');
+            $table->string('link_biodata', 255)->nullable()->collation('utf8mb4_general_ci');
             $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted'); // Kolom `is_trash`
             $table->timestamp('created_at')->nullable();
             $table->timestamp('update_at')->nullable();
