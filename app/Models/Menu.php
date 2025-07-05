@@ -22,6 +22,7 @@ class Menu extends Model {
         'group_menu',
         'icon',
         'description',
+        'is_hide',
         'is_trash',
         'created_by',
         'updated_by'
