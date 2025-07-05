@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('link_biodata', 255)->nullable()->collation('utf8mb4_general_ci');
             $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted'); // Kolom `is_trash`
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('update_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
         });
