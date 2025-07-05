@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('nama', 255)->nullable()->collation('utf8mb4_general_ci');
             $table->integer('direktorat')->nullable();
+            $table->integer('subdirektorat')->nullable();
             $table->date('tanggal_mulai_kegiatan')->nullable();
             $table->date('tanggal_selesai_kegiatan')->nullable();
             $table->integer('provinsi')->nullable();
