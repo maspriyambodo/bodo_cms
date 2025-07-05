@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\DirektoratController;
 use App\Http\Controllers\SubditController;
+use App\Http\Controllers\KegiatanController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -136,6 +137,15 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [SubditController::class, 'json'])->name('subdit.json');
         Route::post('/store', [SubditController::class, 'store'])->name('subdit.store');
         Route::get('/edit/{id}', [SubditController::class, 'edit'])->name('subdit.edit');
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('kegiatan')
+    ->group(function () {
+        Route::get('/', [KegiatanController::class, 'index'])->name('kegiatan');
+        Route::get('/json', [KegiatanController::class, 'json'])->name('kegiatan.json');
+        Route::post('/store', [KegiatanController::class, 'store'])->name('kegiatan.store');
+        Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('kegiatan.edit');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
