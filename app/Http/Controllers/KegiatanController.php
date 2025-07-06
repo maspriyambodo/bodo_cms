@@ -10,6 +10,7 @@ use App\Models\DtSubdirektorat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class KegiatanController extends Controller
@@ -162,7 +163,7 @@ class KegiatanController extends Controller
         switch ($request->q) {
             case 'add':
                 return Validator::make($request->all(), [
-                    'nmatxt' => 'required|string|max:255',
+                    'nmatxt' => 'required|string|max:255|unique:dt_kegiatan,nama',
                     'nmadir' => 'required|integer|exists:mt_direktorat,id',
                     'subdittxt' => 'required|integer|exists:dt_subdirektorat,id',
                     'tglmulaitxt' => 'required|date',
@@ -208,7 +209,7 @@ class KegiatanController extends Controller
                     'tanggal_mulai_kegiatan' => $request->tglmulaitxt,
                     'tanggal_selesai_kegiatan' => $request->tglendtxt,
                     'lokasi_acara' => $request->loktxt,
-                    'link_biodata' => '',
+                    'link_biodata' => url('form-biodata/' . $slug = Str::slug($request->nmatxt)),
                     'is_trash' => 0,
                     'created_by' => auth()->user()->id
                 ]);
@@ -265,5 +266,14 @@ class KegiatanController extends Controller
             ->where('is_trash', 0)
             ->get(['id', 'nama']);
         return response()->json($subdirektorats);
+    }
+
+    // Check if kegiatan name already exists
+    public function cekNama(Request $request, $nama)
+    {
+        $exists = DtKegiatan::where('nama', $nama)
+            ->where('is_trash', 0)
+            ->exists();
+        return response()->json(['exists' => $exists]);
     }
 }

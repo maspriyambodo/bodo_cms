@@ -74,12 +74,56 @@
     
     const form = document.getElementById('add_form');
     const submitButton = document.getElementById('addbtn_submit');
+
+    function nmatxtCallback(value) {
+        fetch(`{{ url('kegiatan/checknama') }}/${value}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    Swal.fire({
+                        text: "Nama Kegiatan sudah ada, silakan gunakan nama lain.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                    return {
+                        valid: false,
+                        message: 'Nama Kegiatan sudah ada, silakan gunakan nama lain.'
+                    };
+                } else {
+                    return {
+                        valid: true,
+                        message: ''
+                    };
+                }
+            })
+            .catch(error => {
+                console.error('Error get data kegiatan:', error);
+                window.dispatchEvent(new Event('subdit-loading-error'));
+            })
+            .finally(() => {
+                // Fire event when finished (success or error)
+                window.dispatchEvent(new Event('subdit-loading-end'));
+            });
+    }
+
     var validator = FormValidation.formValidation(form, {
         fields: {
             nmatxt: {
                 validators: {
                     notEmpty: {
                         message: 'Nama Kegiatan is required'
+                    },
+                    callback: {
+                        message: 'Nama Kegiatan sudah ada, silakan gunakan nama lain.',
+                        callback: function(input) {
+                            const result = nmatxtCallback(input.value);
+                            return result.valid;
+                        }
                     }
                 }
             },
@@ -126,6 +170,7 @@
         if (validator) {
             validator.validate().then(function (status) {
                 if (status == 'Valid') {
+                    
                     Swal.fire({
                         title: 'memuat data...',
                         html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
