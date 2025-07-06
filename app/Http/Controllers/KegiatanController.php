@@ -303,6 +303,6 @@ class KegiatanController extends Controller
                 ];
             });
         }
-        // return response()->json(['success' => true, 'detail' => $detail]);
+        return response()->json(['success' => true, 'detail' => $detail]);
     }
 }
