@@ -37,6 +37,7 @@
                         <label for="subdittxt2" class="required form-label">Nama Subdit</label>
                         <select id="subdittxt2" name="subdittxt2" class="form-select form-select-solid"
                             data-control="select2" data-placeholder="Pilih Subdit" required></select>
+                        <input type="hidden" id="subditid2" name="subditid2" value="" />
                     </div>
                     
                     <!-- Tanggal Kegiatan -->
@@ -53,7 +54,7 @@
                     <!-- Lokasi Kegiatan -->
                     <div class="fv-row mb-10">
                         <label for="loktxt2" class="required form-label">Lokasi Kegiatan</label>
-                        <textarea id="loktxt2" name="loktxt" class="form-control form-control-solid" required></textarea>
+                        <textarea id="loktxt2" name="loktxt2" class="form-control form-control-solid" required></textarea>
                     </div>
                 </div>
                 
@@ -110,6 +111,7 @@
                         $('#eid').val(data.dt_kegiatan['id']);
                         $('#nmadir2').val(data.dt_kegiatan['direktorat']).trigger('change');
                         $('#subdittxt2').val(data.dt_kegiatan['subdirektorat']).trigger('change');
+                        $('#subditid2').val(data.dt_kegiatan['subdirektorat']);
                         $('#nmatxt2').val(data.dt_kegiatan['nama']);
                         $('#tglmulaitxt2').val(data.dt_kegiatan['tanggal_mulai_kegiatan']);
                         $('#tglendtxt2').val(data.dt_kegiatan['tanggal_selesai_kegiatan']);
@@ -174,6 +176,13 @@
                         }
                     }
                 },
+                subdittxt2: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nama Subdit is required'
+                        }
+                    }
+                },
                 tglmulaitxt2: {
                     validators: {
                         notEmpty: {
@@ -227,7 +236,7 @@
                         updateButton.disabled = true;
                         
                         const formData = new FormData(formEdit);
-                        fetch("{{ route('subdit.store', 'q=update') }}", {
+                        fetch("{{ route('kegiatan.store', 'q=update') }}", {
                             method: 'POST',
                             body: formData
                         })
@@ -317,6 +326,7 @@
                 // Fire event when finished (success or error)
                 window.dispatchEvent(new Event('subdit-loading-end'));
                 Swal.close();
+                $('#subdittxt2').val($('#subditid2').val()).trigger('change');
             });
     }
     </script>

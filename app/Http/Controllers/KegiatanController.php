@@ -216,12 +216,13 @@ class KegiatanController extends Controller
                 
             case 'update':
                 DtKegiatan::where('id', $request->eid)->update([
+                    'nama' => $request->nmatxt2,
                     'direktorat' => $request->nmadir2,
                     'subdirektorat' => $request->subdittxt2,
-                    'nama' => $request->nmatxt2,
                     'tanggal_mulai_kegiatan' => $request->tglmulaitxt2,
                     'tanggal_selesai_kegiatan' => $request->tglendtxt2,
                     'lokasi_acara' => $request->loktxt2,
+                    'link_biodata' => '',
                     'updated_by' => auth()->user()->id
                 ]);
                 break;
