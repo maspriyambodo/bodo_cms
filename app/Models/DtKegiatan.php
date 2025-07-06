@@ -35,8 +35,8 @@ class DtKegiatan extends Model
     protected $casts = [
         'id' => 'integer',
         'direktorat' => 'integer',
-        'tanggal_mulai_kegiatan' => 'date',
-        'tanggal_selesai_kegiatan' => 'date',
+        'tanggal_mulai_kegiatan' => 'date:Y-m-d',
+        'tanggal_selesai_kegiatan' => 'date:Y-m-d',
         'provinsi' => 'integer',
         'kabupaten' => 'integer',
         'kecamatan' => 'integer',

@@ -42,12 +42,12 @@
                     <!-- Tanggal Kegiatan -->
                     <div class="fv-row mb-10">
                         <label for="tglmulaitxt2" class="required form-label">Tanggal Mulai Kegiatan</label>
-                        <input type="date" id="tglmulaitxt2" name="tglmulaitxt2" class="form-control form-control-solid" required />
+                        <input type="text" id="tglmulaitxt2" name="tglmulaitxt2" class="form-control form-control-solid" required />
                     </div>
                     
                     <div class="fv-row mb-10">
                         <label for="tglendtxt2" class="required form-label">Tanggal Selesai Kegiatan</label>
-                        <input type="date" id="tglendtxt2" name="tglendtxt2" class="form-control form-control-solid" required />
+                        <input type="text" id="tglendtxt2" name="tglendtxt2" class="form-control form-control-solid" required />
                     </div>
                     
                     <!-- Lokasi Kegiatan -->
@@ -72,6 +72,23 @@
 </div>
 
 @push('scripts')
+    <script>
+        $(function () {
+            $("#tglmulaitxt2").datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true,
+            });
+
+            $("#tglendtxt2").datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true,
+            });
+        });
+    </script>
     <script>
         function editData(val) {
             Swal.fire({

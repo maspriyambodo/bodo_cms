@@ -1,6 +1,7 @@
 @extends('layouts.admin_template')
 @push('stylesheet')
 <link href="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
 <div class="card">
@@ -82,5 +83,6 @@
 @push('scripts')
 <script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
 <script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @include('kegiatan.table_kegiatan')
 @endpush

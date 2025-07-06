@@ -28,11 +28,11 @@
                     </div>
                     <div class="fv-row mb-10">
                         <label for="tglmulaitxt" class="required form-label">Tanggal Mulai Kegiatan</label>
-                        <input type="date" id="tglmulaitxt" name="tglmulaitxt" class="form-control form-control-solid" required=""/>
+                        <input type="text" id="tglmulaitxt" name="tglmulaitxt" class="form-control form-control-solid" required=""/>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="tglendtxt" class="required form-label">Tanggal Selesai Kegiatan</label>
-                        <input type="date" id="tglendtxt" name="tglendtxt" class="form-control form-control-solid" required=""/>
+                        <input type="text" id="tglendtxt" name="tglendtxt" class="form-control form-control-solid" required=""/>
                     </div>
                     <div class="fv-row mb-10">
                         <label for="loktxt" class="required form-label">Lokasi Kegiatan</label>
@@ -54,6 +54,24 @@
 </div>
 @push('scripts')
 <script>
+    $(function () {
+        $("#tglmulaitxt").datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+        });
+
+        $("#tglendtxt").datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+        });
+    });
+</script>
+<script>
+    
     const form = document.getElementById('add_form');
     const submitButton = document.getElementById('addbtn_submit');
     var validator = FormValidation.formValidation(form, {
@@ -172,6 +190,7 @@
             });
         }
     });
+    
     function getSubdit(direktoratId) {
         $('#subdittxt').empty();
         // Fire event when starting request
