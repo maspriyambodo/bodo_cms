@@ -49,10 +49,13 @@ class KegiatanController extends Controller
                     ? '<span class="badge badge-success w-100">aktif</span>' 
                     : '<span class="badge badge-light-dark w-100">deleted</span>';
             })
+            ->addColumn('url_form_biodata', function ($row) {
+                return url('form-biodata/' . $row->slug);
+            })
             ->addColumn('button', function ($row) {
                 return $this->getActionButtons($row);
             })
-            ->rawColumns(['status_aktif', 'button'])
+            ->rawColumns(['status_aktif', 'button', 'url_form_biodata'])
             ->make(true);
     }
 
@@ -204,12 +207,12 @@ class KegiatanController extends Controller
             case 'add':
                 DtKegiatan::create([
                     'nama' => $request->nmatxt,
+                    'slug' => Str::slug($request->nmatxt),
                     'direktorat' => $request->nmadir,
                     'subdirektorat' => $request->subdittxt,
                     'tanggal_mulai_kegiatan' => $request->tglmulaitxt,
                     'tanggal_selesai_kegiatan' => $request->tglendtxt,
                     'lokasi_acara' => $request->loktxt,
-                    'link_biodata' => url('form-biodata/' . $slug = Str::slug($request->nmatxt)),
                     'is_trash' => 0,
                     'created_by' => auth()->user()->id
                 ]);
@@ -223,7 +226,6 @@ class KegiatanController extends Controller
                     'tanggal_mulai_kegiatan' => $request->tglmulaitxt2,
                     'tanggal_selesai_kegiatan' => $request->tglendtxt2,
                     'lokasi_acara' => $request->loktxt2,
-                    'link_biodata' => '',
                     'updated_by' => auth()->user()->id
                 ]);
                 break;
@@ -275,5 +277,32 @@ class KegiatanController extends Controller
             ->where('is_trash', 0)
             ->exists();
         return response()->json(['exists' => $exists]);
+    }
+    
+    public function detailKegiatan(Request $request, $nama)
+    {
+        // $kegiatan = DtKegiatan::find($nama);
+        // if (!$kegiatan) {
+        //     return response()->json(['success' => false, 'message' => 'Kegiatan not found'], 404);
+        // }
+        $detail = DetailKegiatan::where('slug', $nama)->get();
+        if ($detail->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'Detail Kegiatan not found'], 404);
+        } else {
+            // Optionally, you can format the detail data if needed
+            $detail = $detail->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'nama' => $item->nama,
+                    'slug' => $item->slug,
+                    'direktorat' => $item->direktorat,
+                    'subdirektorat' => $item->subdirektorat,
+                    'tanggal_mulai_kegiatan' => $item->tanggal_mulai_kegiatan,
+                    'tanggal_selesai_kegiatan' => $item->tanggal_selesai_kegiatan,
+                    'lokasi_acara' => $item->lokasi_acara,
+                ];
+            });
+        }
+        // return response()->json(['success' => true, 'detail' => $detail]);
     }
 }

@@ -61,7 +61,7 @@
                         className: "text-center"
                     },
                     {
-                        data: "link_biodata",
+                        data: "url_form_biodata",
                         className: "text-center"
                     }
                 ],
