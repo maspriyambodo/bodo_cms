@@ -18,6 +18,7 @@ class DtKegiatan extends Model
     protected $fillable = [
         'nama',
         'direktorat',
+        'subdirektorat',
         'tanggal_mulai_kegiatan',
         'tanggal_selesai_kegiatan',
         'provinsi',
@@ -35,6 +36,7 @@ class DtKegiatan extends Model
     protected $casts = [
         'id' => 'integer',
         'direktorat' => 'integer',
+        'subdirektorat' => 'integer',
         'tanggal_mulai_kegiatan' => 'date:Y-m-d',
         'tanggal_selesai_kegiatan' => 'date:Y-m-d',
         'provinsi' => 'integer',

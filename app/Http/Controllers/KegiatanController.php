@@ -175,7 +175,7 @@ class KegiatanController extends Controller
                     'eid' => 'required|integer',
                     'nmatxt2' => 'required|string|max:255',
                     'nmadir2' => 'required|integer|exists:mt_direktorat,id',
-                    'subdittxt' => 'required|integer|exists:dt_subdirektorat,id',
+                    'subdittxt2' => 'required|integer|exists:dt_subdirektorat,id',
                     'tglmulaitxt2' => 'required|date',
                     'tglendtxt2' => 'required|date',
                     'loktxt2' => 'required|string',

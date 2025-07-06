@@ -246,7 +246,7 @@
                                 }).then(function() {
                                     updateButton.setAttribute('data-kt-indicator', 'off');
                                     updateButton.disabled = false;
-                                    $('#table-subdirektorat').DataTable().ajax.reload();
+                                    $('#table-kegiatan').DataTable().ajax.reload();
                                     $("#editModal").modal('toggle');
                                 });
                             } else {
