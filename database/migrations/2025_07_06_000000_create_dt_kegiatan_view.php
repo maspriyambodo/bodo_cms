@@ -17,6 +17,7 @@ class CreateDtKegiatanView extends Migration
             SELECT 
                 dt_kegiatan.id AS id,
                 dt_kegiatan.nama AS nama,
+                dt_kegiatan.slug AS slug,
                 dt_kegiatan.direktorat AS direktorat,
                 dt_kegiatan.tanggal_mulai_kegiatan AS tanggal_mulai_kegiatan,
                 dt_kegiatan.tanggal_selesai_kegiatan AS tanggal_selesai_kegiatan,
