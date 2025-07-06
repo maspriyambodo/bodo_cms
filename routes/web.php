@@ -147,6 +147,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/store', [KegiatanController::class, 'store'])->name('kegiatan.store');
         Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('kegiatan.edit');
         Route::get('/subdirektorat/{id}', [KegiatanController::class, 'getSubdit'])->name('kegiatan.subdirektorat');
+        Route::get('/checknama/{nama}', [KegiatanController::class, 'cekNama'])->name('kegiatan.checknama');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
