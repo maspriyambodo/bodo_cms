@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->integer('id_bank')->nullable();
             $table->string('atas_nama_rek', 255)->nullable()->collation('utf8mb4_general_ci');
             $table->string('ttd', 255)->nullable()->collation('utf8mb4_general_ci');
+            $table->integer('is_trash')->default(0)->comment('0. aktif 1. deleted'); // Kolom `is_trash`
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->integer('created_by')->nullable();
