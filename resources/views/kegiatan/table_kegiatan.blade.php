@@ -121,3 +121,9 @@
         KTDatatablesServerSide.init();
     });
 </script>
+<script>
+    function bidodataPeserta(id) {
+        var url = "{{ url('peserta') }}/?q=" + id;
+        window.location.href = url;
+    }
+</script>

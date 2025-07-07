@@ -98,6 +98,12 @@ class KegiatanController extends Controller
         if ($canUpdate) {
             $buttons .= '<div class="menu-item px-3 border">
                 <a href="javascript:void(0);" class="menu-link px-3" 
+                    onclick="bidodataPeserta(\'' . $row->id . '\');">
+                    <i class="bi bi-file-text text-default mx-2"></i> Biodata Peserta
+                </a>
+            </div>
+            <div class="menu-item px-3 border">
+                <a href="javascript:void(0);" class="menu-link px-3" 
                     onclick="editData(\'' . $row->id . '\');">
                     <i class="bi bi-pencil-square text-warning mx-2"></i> Edit
                 </a>
@@ -305,4 +311,5 @@ class KegiatanController extends Controller
         }
         return response()->json(['success' => true, 'detail' => $detail]);
     }
+
 }
