@@ -48,8 +48,8 @@
                     </div>
                     <div class="fv-row mb-10">
                         <label for="banktxt" class="required form-label">Nama Bank</label>
-                        <select id="banktxt" name="banktxt" class="form-select form-select-solid" data-dropdown-parent="#addModal" data-control="select2" required="">
-                            <option value="">Pilih Bank</option>
+                        <select id="banktxt" name="banktxt" class="banktxt form-control form-select form-select-solid" required="">
+                            <option></option>
                             @foreach($banks as $bank)
                                 <option value="{{ $bank->id }}">{{ $bank->nama }}</option>
                             @endforeach
@@ -65,6 +65,7 @@
                         <div class='js-signature w-100 text-center mt-2'></div>
                         <div class="text-center">
                             <button type="button" class="btn btn-light btn-sm mt-2" id="btn_clear_signature" onclick="clearTtd()">Hapus TTD</button>
+                            <button type="button" class="btn btn-success btn-sm mt-2" id="svttd" onclick="getTtd()">Simpan TTD</button>
                         </div>
                     </div>
                 </div>
@@ -84,6 +85,12 @@
 @push('scripts')
 <script>
     $(function () {
+        
+        $('.banktxt').select2({
+            dropdownParent: $('#addModal .modal-content'),
+            placeholder: "Pilih Bank",
+        });
+
         $("#tgllahirtxt").datepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
@@ -96,8 +103,43 @@
         });
     });
 
+    function getTtd() {
+        var dataUrl = $('.js-signature').jqSignature('getDataURL');;
+        if (dataUrl == '') {
+            Swal.fire({
+                text: "TTD harus diisi",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return;
+        }
+        $('#ttdtxt').val(dataUrl);
+        Swal.fire({
+            text: "TTD berhasil disimpan",
+            icon: "success",
+            buttonsStyling: false,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        }).then(function () {
+            $('#svttd').attr('disabled', true);
+            $('#svttd').html('<span class="indicator-label">TTD Sudah Disimpan</span>');
+        });
+
+    }
+
     function clearTtd() {
         $('.js-signature').jqSignature('clearCanvas');
+        $('#ttdtxt').val('');
+        $('#svttd').attr('disabled', false);
+        $('#svttd').html('<span class="indicator-label">Simpan TTD</span>');
     }
 
     function isNumber(b) {
@@ -113,24 +155,7 @@
     
     const form = document.getElementById('add_form');
     const submitButton = document.getElementById('addbtn_submit');
-    submitButton.addEventListener('click', function () {
-        if ($('.js-signature').eq(1).jqSignature('getDataURL') == '') {
-            Swal.fire({
-                text: "TTD harus diisi",
-                icon: "error",
-                buttonsStyling: false,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                    confirmButton: "btn btn-primary"
-                }
-            });
-            return {
-                        valid: false,
-                        message: 'TTD harus diisi'
-                    };
-        }
-    });
+
     var validator = FormValidation.formValidation(form, {
         fields: {
             nmatxt: {
@@ -232,8 +257,6 @@
         if (validator) {
             validator.validate().then(function (status) {
                 if (status == 'Valid') {
-                    var dataUrl = $('.js-signature').eq(1).jqSignature('getDataURL');
-                    document.getElementById('ttdtxt').value = dataUrl;
                     Swal.fire({
                         title: 'memuat data...',
                         html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Diverifikasi">',
