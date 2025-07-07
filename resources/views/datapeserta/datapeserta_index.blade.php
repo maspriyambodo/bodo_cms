@@ -13,6 +13,7 @@
             <div class="col-md-8 text-end my-2">
                 <div class="btn-group" role="group" aria-label="action button">
                     <div>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-printer" data-kt-initialized="1"></i> Cetak Absensi</button>
                         <button type="button" class="btn btn-secondary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
                             show data
                             <span class="svg-icon fs-3 rotate-180 ms-3 me-0"><i class="bi bi-caret-down-fill"></i></span>
@@ -56,7 +57,7 @@
                         <th class="text-center">No</th>
                         <th class="text-center">#</th>
                         <th class="text-center">Nama</th>
-                        <th class="text-center">NO. Hp</th>
+                        <th class="text-center">No. Hp</th>
                         <th class="text-center">Utusan</th>
                         <th class="text-center">Jabatan</th>
                     </tr>
@@ -82,5 +83,6 @@
 <script src="{{ asset('src/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
 <script src="{{ asset('src/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ asset('src/js/custom/jq-signature.min.js') }}"></script>
 @include('datapeserta.table_peserta')
 @endpush
