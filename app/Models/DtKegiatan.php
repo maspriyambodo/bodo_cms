@@ -49,4 +49,9 @@ class DtKegiatan extends Model
         'created_by' => 'integer',
         'updated_by' => 'integer',
     ];
+
+    public function peserta()
+    {
+        return $this->hasMany(TrBiodataPeserta::class, 'id_kegiatan');
+    }
 }

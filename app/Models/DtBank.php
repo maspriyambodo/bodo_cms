@@ -17,4 +17,9 @@ class DtBank extends Model
         'created_by',
         'updated_by',
     ];
+
+    public function peserta()
+    {
+        return $this->hasMany(TrBiodataPeserta::class, 'id_bank');
+    }
 }
