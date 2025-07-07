@@ -48,7 +48,7 @@
                     </div>
                     <div class="fv-row mb-10">
                         <label for="banktxt" class="required form-label">Nama Bank</label>
-                        <select id="banktxt" name="banktxt" class="form-select form-select-solid"  data-control="select2" required="">
+                        <select id="banktxt" name="banktxt" class="form-select form-select-solid" data-dropdown-parent="#addModal" data-control="select2" required="">
                             <option value="">Pilih Bank</option>
                             @foreach($banks as $bank)
                                 <option value="{{ $bank->id }}">{{ $bank->nama }}</option>
@@ -150,7 +150,7 @@
             tgllahirtxt: {
                 validators: {
                     notEmpty: {
-                        message: 'Tempat Lahir is required'
+                        message: 'Tanggal Lahir is required'
                     }
                 }
             },
