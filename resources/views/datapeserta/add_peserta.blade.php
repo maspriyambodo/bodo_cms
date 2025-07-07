@@ -162,7 +162,7 @@
                 validators: {
                     notEmpty: {
                         message: 'Nama Peserta is required'
-                    }
+                    },
                 }
             },
             tmplahirtxt: {
@@ -244,6 +244,9 @@
             }
         },
         plugins: {
+            declarative: new FormValidation.plugins.Declarative({
+                            html5Input: true,
+                        }),
             trigger: new FormValidation.plugins.Trigger(),
             bootstrap: new FormValidation.plugins.Bootstrap5({
                 rowSelector: '.fv-row',
