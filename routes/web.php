@@ -16,6 +16,7 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\DirektoratController;
 use App\Http\Controllers\SubditController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\BiodataPesertaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -148,6 +149,16 @@ Route::middleware(['auth', 'verified'])
         Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('kegiatan.edit');
         Route::get('/subdirektorat/{id}', [KegiatanController::class, 'getSubdit'])->name('kegiatan.subdirektorat');
         Route::get('/checknama/{nama}', [KegiatanController::class, 'cekNama'])->name('kegiatan.checknama');
+        // Route::get('/data-peserta/{id}', [KegiatanController::class, 'dataPeserta'])->name('kegiatan.data-peserta');
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('peserta')
+    ->group(function () {
+        Route::get('/', [BiodataPesertaController::class, 'index'])->name('peserta');
+        Route::get('/json', [BiodataPesertaController::class, 'json'])->name('peserta.json');
+        Route::post('/store', [BiodataPesertaController::class, 'store'])->name('peserta.store');
+        Route::get('/edit/{id}', [BiodataPesertaController::class, 'edit'])->name('peserta.edit');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
