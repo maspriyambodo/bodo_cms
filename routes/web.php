@@ -159,6 +159,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/json', [BiodataPesertaController::class, 'json'])->name('peserta.json');
         Route::post('/store', [BiodataPesertaController::class, 'store'])->name('peserta.store');
         Route::get('/edit/{id}', [BiodataPesertaController::class, 'edit'])->name('peserta.edit');
+        Route::post('/detail', [BiodataPesertaController::class, 'detailPeserta'])->name('peserta.detail');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
