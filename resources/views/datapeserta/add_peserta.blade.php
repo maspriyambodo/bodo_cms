@@ -85,7 +85,7 @@
 @push('scripts')
 <script>
     $(function () {
-        
+        // Initialize form elements
         $('.banktxt').select2({
             dropdownParent: $('#addModal .modal-content'),
             placeholder: "Pilih Bank",
@@ -97,9 +97,53 @@
             todayHighlight: true,
             clearBtn: true,
         });
+        
         $('.js-signature').jqSignature({
             width: 400,
             height: 150
+        });
+
+        // Restore form data from localStorage
+        $('#addModal').on('show.bs.modal', function () {
+            const fields = [
+                'nmatxt', 'tmplahirtxt', 'tgllahirtxt', 'alamattxt',
+                'nohptxt', 'utustxt', 'jabtxt', 'almktrtxt',
+                'rektxt', 'banktxt', 'antxt', 'ttdtxt'
+            ];
+
+            fields.forEach(field => {
+                const savedValue = localStorage.getItem(`peserta_${field}`);
+                if (savedValue) {
+                    const $element = $(`#${field}`);
+                    
+                    if (field === 'banktxt') {
+                        $element.val(savedValue).trigger('change');
+                    } else if (field === 'ttdtxt' && savedValue) {
+                        $('.js-signature').jqSignature('reset');
+                        $('.js-signature').jqSignature('draw', savedValue);
+                        $(`#${field}`).val(savedValue);
+                    } else {
+                        $element.val(savedValue);
+                    }
+                }
+            });
+        });
+
+        // Save form data to localStorage
+        $('#add_form').on('keyup change', 'input, textarea, select', function(e) {
+            const field = e.target.id;
+            const value = $(this).val();
+            localStorage.setItem(`peserta_${field}`, value);
+        });
+
+        // Handle Select2 change
+        $('#banktxt').on('change', function() {
+            localStorage.setItem('peserta_banktxt', $(this).val());
+        });
+
+        // Handle datepicker change
+        $("#tgllahirtxt").on('changeDate', function(e) {
+            localStorage.setItem('peserta_tgllahirtxt', e.format());
         });
     });
 
@@ -287,6 +331,17 @@
                                     confirmButton: "btn btn-primary"
                                 }
                             }).then(function () {
+                                // Clear localStorage on success
+                                const fields = [
+                                    'nmatxt', 'tmplahirtxt', 'tgllahirtxt', 'alamattxt',
+                                    'nohptxt', 'utustxt', 'jabtxt', 'almktrtxt',
+                                    'rektxt', 'banktxt', 'antxt', 'ttdtxt'
+                                ];
+                                
+                                fields.forEach(field => {
+                                    localStorage.removeItem(`peserta_${field}`);
+                                });
+
                                 submitButton.setAttribute('data-kt-indicator', 'off');
                                 submitButton.disabled = false;
                                 $('#table-peserta').DataTable().ajax.reload();
