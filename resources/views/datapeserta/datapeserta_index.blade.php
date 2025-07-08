@@ -73,6 +73,7 @@
 @endif
 @if($user_access['update'])
 @include('datapeserta.edit_peserta')
+@include('datapeserta.detail_peserta')
 @endif
 @if($user_access['delete'])
 @include('datapeserta.delete_peserta')

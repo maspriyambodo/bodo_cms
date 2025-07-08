@@ -283,4 +283,17 @@ class BiodataPesertaController extends Controller
                 break;
         }
     }
+
+    public function detailPeserta(Request $request)
+    {
+        $peserta = TrBiodataPeserta::with('bank')
+            ->where('id', $request->id)
+            ->where('is_trash', 0)
+            ->firstOrFail();
+        return response()->json([
+            'success' => true,
+            'data' => $peserta,
+            'message' => 'Detail peserta retrieved successfully.'
+        ]);
+    }
 }
