@@ -10,6 +10,7 @@
             <form id="add_form" class="form" action="#" autocomplete="off" method="POST">
                 @csrf
                 @method('POST')
+                <input type="hidden" name="id" id="peserta_id" value="">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
@@ -102,7 +103,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="ctkbtn_submit" type="button" class="btn btn-primary">
+                    <button id="ctkbtn_submit" type="button" class="btn btn-primary"
+                        onclick="event.preventDefault(); cetakBiodata();">
                         <span class="indicator-label">
                             Cetak Biodata
                         </span>
@@ -136,6 +138,7 @@
                 success: function (response) {
                     if (response.success) {
                         Swal.close();
+                        $('#peserta_id').val(response.data.id);
                         $('#detailModalLabel').text('Peserta: ' + response.data.nama);
                         $('#peserta_nama').text(': ' + response.data.nama);
                         $('#peserta_lahir1').text(': ' + response.data.tempat_lahir + ', ' + response.data.tanggal_lahir);
@@ -162,6 +165,50 @@
                         icon: 'error',
                         title: 'Error',
                         text: 'An error occurred while fetching the data.',
+                    });
+                }
+            });
+        }
+
+        function cetakBiodata() {
+            var pesertaId = $('#peserta_id').val();
+            if (!pesertaId) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'ID Peserta tidak ditemukan.',
+                });
+                return;
+            }
+            Swal.fire({
+                title: 'Mencetak Biodata...',
+                html: '<img src="{{ asset("src/media/misc/loading.gif") }}" title="Sedang Mencetak">',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                onOpen: function () {
+                    Swal.showLoading();
+                }
+            });
+            $.ajax({
+                url: "{{ route('peserta.cetak-biodata') }}",
+                type: "POST",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: pesertaId
+                },
+                success: function (response) {
+                    Swal.close();
+                    var fileURL = URL.createObjectURL(response);
+                    window.open(fileURL);
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while printing the biodata.',
                     });
                 }
             });

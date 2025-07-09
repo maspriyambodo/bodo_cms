@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class BiodataPesertaController extends Controller
 {
@@ -294,6 +295,23 @@ class BiodataPesertaController extends Controller
             'success' => true,
             'data' => $peserta,
             'message' => 'Detail peserta retrieved successfully.'
+        ]);
+    }
+
+    public function cetakBiodata(Request $request)
+    {
+        $peserta = BiodataPeserta::where('id_peserta', $request->id)
+            ->firstOrFail();
+        $pdf = PDF::setPaper('A4', 'portrait')
+            ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+            ->loadView('datapeserta.cetak_biodata', compact('peserta'));
+        // return $pdf->stream('biodata_peserta_' . Str::slug($peserta->nama) . '.pdf');
+        $pdfContent = $pdf->output();
+        return response()->stream(function () use ($pdfContent) {
+            echo $pdfContent;
+        }, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="biodata_peserta_' . Str::slug($peserta->nama) . '.pdf"'
         ]);
     }
 }
