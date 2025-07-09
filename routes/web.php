@@ -160,6 +160,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/store', [BiodataPesertaController::class, 'store'])->name('peserta.store');
         Route::get('/edit/{id}', [BiodataPesertaController::class, 'edit'])->name('peserta.edit');
         Route::post('/detail', [BiodataPesertaController::class, 'detailPeserta'])->name('peserta.detail');
+        Route::post('/cetak-biodata', [BiodataPesertaController::class, 'cetakBiodata'])->name('peserta.cetak-biodata');
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {
